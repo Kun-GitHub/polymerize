@@ -13,9 +13,11 @@
     <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
             <ul class="nav nav-sidebar" role="tablist">
-                <li role="presentation">
-                    <a href="${ctx!''}/user/user-list">商户管理</a>
-                </li>
+                <#if type??&&type=='admin'>
+                    <li role="presentation">
+                        <a href="${ctx!''}/user/user-list">商户管理</a>
+                    </li>
+                </#if>
                 <li role="presentation" class="active">
                     <a href="${ctx!''}/loan/loan-list">订单管理</a>
                 </li>
@@ -91,7 +93,7 @@
                     <table class="table table-striped">
                         <thead>
                         <tr>
-                            <th class="th-checkbox"><input type="checkbox" onclick="selectAll('itemCb')"></th>
+                            <th class="th-checkbox"><input type="checkbox" onclick="selectAll('itemCb')" disabled></th>
                             <th data-sort="field:'name'">姓名</th>
                             <th data-sort="field:'phone'">卡号</th>
                             <th data-sort="field:'price'">金额</th>
@@ -101,14 +103,18 @@
                             <#--<th data-sort="field:'userName'">商户</th>-->
                             <th data-sort="field:'source'">订单号</th>
                             <th data-sort="field:'loanTime'">添加时间</th>
-                            <th data-sort="field:'operator/remark'">操作 / 备注</th>
+                            <th data-sort="field:'operator/remark'">操作</th>
                         </tr>
                         </thead>
                         <tbody>
                         <#list page.list as item>
                         <tr>
                             <td>
-                                <input type="checkbox" name="itemCb" value=${item.id!''}>
+                                <#if item.status??&&item.status==0>
+                                    <input type="checkbox" name="itemCb" value=${item.id!''}>
+                                <#else>
+                                    <input type="checkbox" name="itemCb" value=${item.id!''} disabled>
+                                </#if>
                             </td>
                             <td>${item.name!''}</td>
                             <td>${item.phone!''}</td>
@@ -123,8 +129,9 @@
                             <td>${(item.loanTime?datetime)!''}</td>
                             <td>
                                 <#if item.status??&&item.status==0>
+                                    <#if type??&&type=='admin'>
                                     <a href="#"
-                                       onclick="robbing(${item.id!''})">下发</a>&nbsp;&nbsp;
+                                       onclick="robbing(${item.id!''})">点击下发</a>&nbsp;&nbsp;</#if>
                                 <#--<#elseif item.status??&&item.status!=0&&item.status!=11&&item.status!=10&&item.status!=5&&item.status!=2&&item.status!=12>
                                     &lt;#&ndash;<a href="#" data-toggle="modal" data-target="#setUserModal"
                                        onclick="initEdit(${item.id!''})">安排跟进</a>&nbsp;&nbsp;&ndash;&gt;
@@ -132,8 +139,6 @@
                                        onclick="initEdit(${item.id!''})">跟进结果</a>&nbsp;&nbsp;
                                     <a href="#" data-toggle="modal" data-target="#updateLoanModal"
                                        onclick="initEdit(${item.id!''})">客户信息</a>&nbsp;&nbsp;-->
-                                <#else>
-                                    <span style="color: #0e90d2">${item.remark!''}</span>
                                 </#if>
                             </td>
                         </tr>

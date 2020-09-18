@@ -13,9 +13,11 @@
     <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
             <ul class="nav nav-sidebar" role="tablist">
-                <li role="presentation" class="active">
-                    <a href="${ctx!''}/user/user-list">商户管理</a>
-                </li>
+                <#if type??&&type=='admin'>
+                    <li role="presentation">
+                        <a href="${ctx!''}/user/user-list">商户管理</a>
+                    </li>
+                </#if>
                 <li role="presentation">
                     <a href="${ctx!''}/loan/loan-list">订单管理</a>
                 </li>
@@ -134,16 +136,16 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label"><span class="red">*</span> 姓名：</label>
+                                    <label class="col-sm-3 control-label"><span class="red">*</span> 昵称：</label>
                                     <div class="col-sm-7">
                                         <input type="text" class="form-control" placeholder="" name="name"
                                                data-rule-required="true">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label"><span class="red">*</span> 联系方式：</label>
+                                    <label class="col-sm-3 control-label"><span class="red">*</span> 密码：</label>
                                     <div class="col-sm-7">
-                                        <input type="text" class="form-control" placeholder="" name="mobile"
+                                        <input type="password" class="form-control" placeholder="" name="pwd"
                                                data-rule-required="true">
                                     </div>
                                 </div>
@@ -177,16 +179,16 @@
                             <form class="form-horizontal" id="editForm">
                                 <input type="hidden" name="id"/>
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label"><span class="red">*</span> 姓名：</label>
+                                    <label class="col-sm-3 control-label"><span class="red">*</span> 昵称：</label>
                                     <div class="col-sm-7">
                                         <input type="text" class="form-control" placeholder="" name="name"
                                                data-rule-required="true">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label"><span class="red">*</span> 联系方式：</label>
+                                    <label class="col-sm-3 control-label"><span class="red">*</span> 密码：</label>
                                     <div class="col-sm-7">
-                                        <input type="text" class="form-control" placeholder="" name="mobile"
+                                        <input type="password" class="form-control" placeholder="" name="pwd"
                                                data-rule-required="true">
                                     </div>
                                 </div>

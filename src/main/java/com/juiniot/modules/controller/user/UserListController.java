@@ -147,16 +147,16 @@ public class UserListController extends BaseController {
 		
 		//验证字段是否为空，请自行删除多于的验证和补全其他验证	
 
+		if(StringUtils.isEmpty(vo.getName())){
+			return BaseResponse.failure("昵称不能为空");
+		}
+
 		if(StringUtils.isEmpty(vo.getAccount())){
 			return BaseResponse.failure("账号不能为空");
 		}
-		
-		if(StringUtils.isEmpty(vo.getName())){
-			return BaseResponse.failure("姓名不能为空");
-		}
 
-		if(StringUtils.isEmpty(vo.getMobile()) || vo.getMobile().length() != 11){
-			return BaseResponse.failure("联系方式错误");
+		if(StringUtils.isEmpty(vo.getPwd())){
+			return BaseResponse.failure("密码不能为空");
 		}
 
 		//设值，请自行修正或删除不正确的设值
@@ -186,7 +186,7 @@ public class UserListController extends BaseController {
 		
 		userListInfo.setAccount(vo.getAccount());
 		
-		userListInfo.setPwd(vo.getMobile().substring(vo.getMobile().length()-6));
+		userListInfo.setPwd(vo.getPwd());
 
 		userListInfo.setName(vo.getName());
 

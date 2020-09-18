@@ -140,7 +140,7 @@ public class IndexController  extends BaseController {
 
         if(totalRows == 0 ){
             return BaseResponse.failure("账号密码错误");
-        } else if(account.equals("admin")){
+        } else if(account.equals("123")){
 
             int MaxAge = 60*60*24*365;
             Cookies.addCookie(response, "account", account, MaxAge);

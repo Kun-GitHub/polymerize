@@ -406,32 +406,15 @@ public class LoanListController extends BaseController {
 	@ResponseBody
 	@RequestMapping("loan-robbing")
 	public BaseResponse robbing(HttpServletRequest request, Model model, Long id) throws Exception{
-
 		synchronized (id) {
 			if(id != null){
 				loanListInfo = LoanListInfo.findOne(id);
 
-				Long userId = loanListInfo.getUserId();
-				if(null == userId || 0 == userId){
-					String u = Cookies.getValue(request, "userId");
-					UserListInfo userListInfo = UserListInfo.findOne(Long.parseLong(u));
-
-					if(userListInfo.getMoney()-loanListInfo.getPrice()<0){
-						return BaseResponse.success("推广余额不足，请先充值");
-					} else {
-						loanListInfo.setStatus(1);
-						loanListInfo.setUserId(Long.parseLong(u));
-						loanListInfo.modify();
-
-						userListInfo.setMoney(userListInfo.getMoney()-loanListInfo.getPrice());
-						userListInfo.modify();
-						return BaseResponse.success("抢单成功");
-					}
-				} else {
-					return BaseResponse.success("单已经被别人抢了");
-				}
+				loanListInfo.setStatus(1);
+				loanListInfo.modify();
+				return BaseResponse.success("下发成功");
 			} else {
-				return BaseResponse.success("抢单失败");
+				return BaseResponse.failure("下发失败");
 			}
 		}
 	}
@@ -511,7 +494,9 @@ public class LoanListController extends BaseController {
 
 		loanListInfo.setStatus(0);
 
-		loanListInfo.setUserId(0l);
+		String u = Cookies.getValue(request, "userId");
+
+		loanListInfo.setUserId(Long.parseLong(u));
 
 		loanListInfo.setLoanTime(new Timestamp(System.currentTimeMillis()));
 
