@@ -93,10 +93,6 @@ public class LoanListController extends BaseController {
 
 		param1.putValue(LoanListParamKey.source, this.allFuzzy(vo.getSource()));
 
-     	if(!"admin".equals(type)){
-			param1.putValue(LoanListParamKey.treeCode, this.allFuzzy(treeCode));
-		}
-
 	 	//数据过滤。若需要过滤数据，请自行在下面设置参数
 	 	
 	 	
@@ -116,22 +112,6 @@ public class LoanListController extends BaseController {
 		//获取列表
 		List<LoanListInfo> list1 = LoanListInfo.queryLoanLists(vo.getStartRow(), vo.getPageSize(), keyMap1, orderList);
 
-		if(!"admin".equals(type)){
-			//设置查询参数，请自行修改或删除不需要的参数
-			LoanListParam param2 = new LoanListParam();
-
-			param2.putValue(LoanListParamKey.source, this.allFuzzy("3rd_"));
-
-			param2.putValue(LoanListParamKey.userId, 0);
-
-			//将查询参数转为HashMap
-			HashMap<LoanListParamKey, Object> keyMap2 = param2.getKeyMap();
-
-			List<LoanListInfo> list2 = LoanListInfo.queryAll(keyMap2, null);
-
-			list1.addAll(list2);
-		}
-		
 		//获取分页模型对象
 		PageModel<LoanListInfo> pm = this.getPageModel(vo.getPage(), totalRows, vo.getPageSize(), list1);
 

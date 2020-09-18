@@ -1,8 +1,8 @@
 <footer class="main-footer" >
-    李志坤  &nbsp; 版权所有
+    <#--李志坤  &nbsp; 版权所有
     <div class="pull-right hidden-xs">
         <b>Version</b> 2.0
-    </div>
+    </div>-->
 </footer>
 
 <script src="${ctx!''}/resources/js/bootstrap.min.js"></script>
