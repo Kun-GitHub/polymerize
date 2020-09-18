@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<conf>
+
+    <global name="appName">卡号登记系统</global>
+    <global name="phone">15089965780</global>
+    <global name="type">loan</global>
+
+</conf>

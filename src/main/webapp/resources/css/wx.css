@@ -1,0 +1,27 @@
+﻿@charset "utf-8";
+/* CSS Document */
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video, select{margin: 0;padding: 0;border: 0;}
+table{ border-collapse:collapse;}
+body{font-size:12px;color:#333; font-family:"Microsoft Yahei"; overflow-x:hidden; background:#f7f7f7;}
+img,a{border:0; text-decoration:none;}
+ol, ul {list-style: none; }
+
+a{color:#333;-webkit-transition: all .3s ease-out;-moz-transition: all .3s ease-out;transition: all .3s ease-out;}
+a:hover{color:#005b9e;-webkit-transition: all .3s ease-out;-moz-transition: all .3s ease-out;transition: all .3s ease-out;}
+img{ max-width:100%; height:auto;}
+.web-width{width:100%;margin:0 auto;}
+.fl{float:left;}
+.fr{float:right;}
+
+
+/*忘记密码  必要样式*/
+.clears{ clear:both;}
+.for-liucheng{width:100%;margin:5% auto; height:50px;padding:20px 0 0 0; position:relative;}
+.liulist{float:left;width:33%; height:7px; background:#ccc;}
+.liutextbox{ position:absolute;width:100%;left:0;top:10px;}
+.liutextbox .liutext{float:left;width:33%; text-align:center;}
+.liutextbox .liutext em{ display:inline-block;width:24px; height:24px;-moz-border-radius: 24px; -webkit-border-radius: 24px;border-radius:24px; background:#ccc; text-align:center; font-size:14px; line-height:24px; font-style:normal; font-weight:bold;color:#fff;}
+.liutextbox .liutext strong{ display:inline-block;height:26px; line-height:26px; font-weight:400;}
+.liulist.for-cur{ background:#77b852;}
+.liutextbox .for-cur em{ background:#77b852;}
+.liutextbox .for-cur strong{color:#77b852;}

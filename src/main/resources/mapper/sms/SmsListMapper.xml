@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.juiniot.modules.dao.mapper.sms.SmsListMapper">
+
+  <!-- 以下配置是系统自动生成的 -->
+
+  <!-- 显示的记录对应的列-->
+  <sql id="SmsListColumns" >
+		    smslist.id as id,smslist.phone as phone,smslist.last_time as lastTime,smslist.nums as nums,smslist.sms as sms,smslist.code as code,smslist.source as source
+  </sql>
+  
+  
+  <!-- 列表对应的查询条件组合  -->
+  <sql id="queryOptions">
+       <where>
+            	  <if test="paramMap.lastTime != null"> AND smslist.last_time = #{paramMap.lastTime}</if><if test="paramMap.lastTime1 != null"> AND smslist.last_time &gt;= #{paramMap.lastTime1}</if><if test="paramMap.lastTime2!=null"> AND smslist.last_time &lt;= #{paramMap.lastTime2}</if>
+            	  <if test="paramMap.code != null and paramMap.code != '' "> AND smslist.code like #{paramMap.code}</if>
+            	  <if test="paramMap.phone != null and paramMap.phone != '' "> AND smslist.phone like #{paramMap.phone}</if>
+           <if test="paramMap.sms != null and paramMap.sms != '' "> AND smslist.sms like #{paramMap.sms}</if>
+           <if test="paramMap.source != null and paramMap.source != '' "> AND smslist.source like #{paramMap.source}</if>
+            	   
+        </where> 
+  </sql>
+
+
+  <!-- 列表查询对应的排序选项  -->
+  <sql id="orderControl">
+       <if test="orderList!=null">
+		  <trim prefix="ORDER BY" prefixOverrides=",">
+				<foreach collection="orderList" item="order" open=""  separator="," close="" >
+				   <choose> 
+				       <when test="order.columnName=='lastTime'"> smslist.last_time ${order.type} </when> 
+				       <when test="order.columnName=='code'"> smslist.code ${order.type} </when> 
+				       <when test="order.columnName=='phone'"> smslist.phone ${order.type} </when> 
+				       <when test="order.columnName=='sms'"> smslist.sms ${order.type} </when>
+                       <when test="order.columnName=='nums'"> smslist.nums ${order.type} </when>
+                       <when test="order.columnName=='source'"> smslist.source ${order.type} </when>
+                       
+				       <when test="order.columnName=='id'"> smslist.id  ${order.type}  </when> 
+				       
+				  </choose>
+			 </foreach>
+		 </trim>
+	   </if>
+  </sql>
+
+ 
+  <!-- 列表查询对应的表关系SQL  -->
+  <sql id="querySqlMain">
+			  sms_list  smslist
+  </sql>
+
+  
+   
+   <!-- 根据ID查询记录 -->
+   <select id="findOne" resultType="com.juiniot.modules.dao.entity.sms.SmsListEntry">
+	     SELECT  <include refid="SmsListColumns"/>              
+		    FROM <include refid="querySqlMain"/>
+			where smslist.id=#{id}
+   </select>
+   
+
+
+   <!-- 返回记录总数的语句 -->
+   <select id="querySmsListsRecordCount" resultType="int">
+        SELECT count(*) num  FROM  <include refid="querySqlMain"/>
+        <include refid="queryOptions"/> 
+   </select>
+   
+   
+    <!-- 分页查询对应的记录 -->
+   <select id="querySmsLists" resultType="com.juiniot.modules.dao.entity.sms.SmsListEntry">
+      
+	   SELECT <include refid="SmsListColumns"/>   
+	   		FROM <include refid="querySqlMain"/>
+		         <include refid="queryOptions"/>
+		         <include refid="orderControl"/>
+		    LIMIT ${startRow},${pageSize} 
+   </select>
+   
+   <!-- 不分页查询所有记录 -->
+   <select id="queryAll" resultType="com.juiniot.modules.dao.entity.sms.SmsListEntry">
+      
+	   SELECT <include refid="SmsListColumns"/>   
+	   		FROM <include refid="querySqlMain"/>
+		         <include refid="queryOptions"/>
+		         <include refid="orderControl"/>
+   </select>
+   
+
+   <!-- 新增记录 -->
+   <insert id="insertSmsList" useGeneratedKeys="true" keyProperty="smsList.id">
+
+        INSERT INTO sms_list (last_time,code,phone,sms,nums,source)
+        VALUES(#{smsList.lastTime},#{smsList.code,jdbcType=VARCHAR},#{smsList.phone,jdbcType=VARCHAR},#{smsList.sms,jdbcType=VARCHAR},#{smsList.nums},#{smsList.source,jdbcType=VARCHAR})
+           
+   </insert>
+   
+   
+   
+   <!-- 更新记录 -->       
+   <update id="updateSmsList" >
+           UPDATE sms_list 
+           <set>
+                last_time=#{smsList.lastTime},
+                code=#{smsList.code,jdbcType=VARCHAR},
+                phone=#{smsList.phone,jdbcType=VARCHAR},
+               sms=#{smsList.sms,jdbcType=VARCHAR},
+               source=#{smsList.source,jdbcType=VARCHAR},
+                nums=#{smsList.nums},
+	   </set>
+	       WHERE id = #{smsList.id}
+   </update> 
+   
+
+
+   
+   <!-- 删除记录 -->
+   <delete id="deleteSmsList">
+          DELETE FROM sms_list
+          WHERE id in 
+          <foreach collection="ids" item="id" open="("  separator="," close=")" >
+                #{id}
+          </foreach>
+   </delete>
+  
+  
+  
+  <!-- 检查是字段值是否已存在 -->
+   <select id="isExist" resultType="int">
+   		SELECT COUNT(1) FROM sms_list WHERE ${columnName} = #{columnValue}
+   		<if test="id != null">
+   			AND id != #{id}
+   		</if>
+   </select>
+   
+   <!-- 以下是自定义的配置信息，配置要写上注释用途 -->
+
+    <!-- 根据ID查询记录 -->
+    <select id="findSmsByPhoneAndDate" resultType="com.juiniot.modules.dao.entity.sms.SmsListEntry">
+        SELECT  *
+        FROM sms_list
+        where phone = #{phone}
+        AND last_time > #{lastTime}
+        <if test="code != null">
+            AND code = #{code}
+        </if>
+        ORDER BY id DESC
+    </select>
+   
+   
+
+</mapper>
+
+
+

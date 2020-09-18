@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+
+	<!-- JDBC参数配置 -->
+	<bean
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
+		lazy-init="true">
+		<property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE" />
+		<property name="ignoreResourceNotFound" value="true" />
+		<property name="locations">
+			<list>
+				<value>classpath:/global.properties</value>
+			</list>
+		</property>
+	</bean>
+
+
+	<!-- 数据源配置 -->
+	<bean id="dataSource" class="org.logicalcobwebs.proxool.ProxoolDataSource">
+		<!-- 设置JDBC驱动名称 -->
+		<property name="driver" value="${jdbc.driver}" />
+		<!-- 设置JDBC连接URL -->
+		<property name="driverUrl" value="${jdbc.url}" />
+		<!-- 设置数据库用户名 -->
+		<property name="user" value="${jdbc.username}" />
+		<!-- 设置数据库密码 -->
+		<property name="password" value="${jdbc.password}" />
+		<!-- 设置连接池初始值 -->
+		<property name="prototypeCount" value="${jdbc.prototypeCount}" />
+		<!-- 设置连接池最小值 -->
+		<property name="minimumConnectionCount" value="${jdbc.minimumConnectionCount}" />
+		<!-- 设置连接池最大值 -->
+		<property name="simultaneousBuildThrottle" value="${jdbc.simultaneousBuildThrottle}" />
+		<property name="maximumConnectionCount" value="${jdbc.maximumConnectionCount}" />
+		<!-- 设置连接超时时间 1分钟 -->
+		<property name="maximumActiveTime" value="${jdbc.maximumActiveTime}" />
+		<!-- 设置数据库连接别名 -->
+		<property name="alias" value="${jdbc.alias}" />
+		<property name="trace" value="${jdbc.trace}"/>
+        <property name="verbose" value="true"/>
+		<!-- 检查连接是否可用 -->
+		<property name="testBeforeUse" value="true"/>
+		<!-- 检查连接是否可用 -->
+		<property name="houseKeepingTestSql" value="select 1 from dual"/>
+	</bean>
+
+	<!-- 配置事务管理器 -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+		<property name="nestedTransactionAllowed" value="true"></property>
+	</bean>
+
+	<!-- 配置SqlSessionFactoryBean -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<!-- mapper和resultmap配置路径 -->
+		<property name="mapperLocations">
+			<list>
+				<value>classpath:mapper/**/*.xml</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- 自动扫描com.juiniot.dao.mapper包下的Mapper接口,并实现其功能 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.juiniot.modules.dao.mapper" />
+	</bean>
+
+</beans>

@@ -1,0 +1,108 @@
+@charset "utf-8";
+/* CSS Document */
+@font-face {
+	font-family: "syicon";
+    src: url('../iconfont/iconfont.eot'); /* IE9*/
+    src: url('../iconfont/iconfont.eot#iefix') format('embedded-opentype'), /* IE6-IE8 */
+    url('../iconfont/iconfont.woff') format('woff'), /* chrome, firefox */
+    url('../iconfont/iconfont.ttf') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+    url('../iconfont/iconfont.svg#iconfont') format('svg'); /* iOS 4.1- */
+}
+.syicon {
+    font-family:"syicon" !important;
+    font-size:14px;
+    font-style:normal;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-stroke-width: 0.2px;
+    -moz-osx-font-smoothing: grayscale;
+ }
+
+body{ padding:0; margin:0;font-family: Microsoft YaHei,"Hiragino Sans GB W3", Helvetica, Arial, sans-serif; font-size:12px;}
+ul,li{ list-style:none; padding:0; margin:0;}
+a,a[href]{ text-decoration:inherit;}
+.fl{ float:left !important;}
+.fr{ float:right !important;}
+.clear:before,.clear:after{ content: " "; display: table;}
+.clear:after {clear: both;}
+hr{border: 0;border-top: 1px solid #3e5d7d;height: 0;-webkit-box-sizing: content-box;-moz-box-sizing: content-box;box-sizing: content-box;}
+.r180{transform:rotate(-180deg); -webkit-transform:rotate(-180deg);-moz-transform:rotate(-180deg); display:inline-block;}
+.trn{-webkit-transition: all 0.25s ease-out 0s;-moz-transition: all 0.25s ease-out 0s;transition: all 0.25s ease-out 0s;}/*过度执行动画  ie8以及以下没作用*/
+
+
+.sy_body{ position:absolute; height:100%; width:100%; left:0; top:0;}
+
+/*头部*/
+.sy_logo{ position:fixed; left:00px; top:00px; background:url(../images/mask_bghover.png); border:1px solid #3e5d7d; color:#60b7d7; font-size:22px; padding:10px; z-index:9; box-sizing:border-box;}
+.sy_logo b{ display:block; position:absolute; width:8px; height:8px; background:#60b7d7;}
+.sy_logo b.lu{ top:0; left:0;}.sy_logo b.ru{ top:0; right:0;}.sy_logo b.ld{bottom:0; left:0;}.sy_logo b.rd{ bottom:0; right:0;}
+.sy_heard{ position:fixed; width:100%; background: url(../images/mask_bg.png); height:50px; z-index:7; top:0; left:0; margin-top:-50px;}
+.sy_heard.open{ margin-top:0;}
+.sy_nav{ width:1080px; margin:0 auto;}
+.sy_nav li{ float:left; display:block;}
+.sy_nav li a{ display:block; color:#bbb; height:50px; line-height:50px; padding:0 20px; text-decoration:inherit; font-size:14px;}
+.sy_nav li a:hover,.sy_nav li.active a{ color:#fff; background: url(../images/mask_bghover.png);}
+.sy_select{  position:absolute; right:10px; height:50px; line-height:50px; top:0; width:100px;}
+.sy_select a.select_btn{ padding-left:10px; cursor:pointer; font-size:14px;color:#bbb;}
+.sy_select_mian{ position:absolute; top:100%; background:url(../images/mask_bg.png); left:0; width:100%; display:none;}
+.sy_select_mian a{ display:block; padding:5px 10px; line-height:18px; cursor:pointer;font-size:14px;color:#bbb;}
+.sy_select a:hover{color:#fff; background: url(../images/mask_bghover.png);}
+.sy_heard_ibtn{ position:absolute; width:18px; top:100%; left:50%; margin-left:-9px; color:#fff; display:block; cursor:pointer; color:#bbb;}
+.sy_heard_ibtn:hover{color:#fff;}
+.sy_heard_ibtn i{ font-size:18px;}
+
+/*中部*/
+
+/*地图展示*/
+.sy_mian{ width:100%; height:100%; position:absolute; left:0; top:0;}
+.sy_mian .sy_map{ width:100%; height:100%; overflow:hidden; position:absolute;left:0; top:0;}
+.sy_mian .sy_map img{ width:100%; height:100%;}
+
+/*点展示*/
+.sy_popbox{ position:absolute; left:20%; top:50%; z-index:10;}
+.sy_popbtn{ width:80px; cursor:pointer; display:block;}
+.sy_popbtn img{ width:20%;}
+
+.sy_popmian{ position:absolute; bottom:-5%; left:52%; background:url(../images/popmian.png) no-repeat  50% 50%; width:600px; height:360px; color:#fff; display:none;}
+.sy_popmian_titles{ text-align:right; font-size:18px; padding-right:20px; line-height:30px;}
+.sy_popmian_time{ text-align:right; padding-right:20px; color:#ddd; margin-top:15px;}
+.sy_popmian_cont{ padding: 20px 0 0 24%; }
+.list{ margin-bottom:15px; }
+.list div{ margin-right:20px;}
+.list label,.list span{ display:block; padding:2px 0;}
+.list label{ font-size:14px;}
+.list span{  font-size:20px;}
+.list.one label{ font-size:16px;}
+.list.one span{ display:inline-block; padding-right:20px; font-size:26px;}
+@-webkit-keyframes flash {
+  from, 50%, to {opacity: 1;}
+  25%, 75% { opacity: 0; }
+}
+
+@keyframes flash {
+  from, 50%, to {opacity: 1;}
+  25%, 75% { opacity: 0;}
+}
+.flash { 
+  -webkit-animation-duration:2s;
+  animation-duration:2s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+  -webkit-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
+  -webkit-animation-name: flash;
+  animation-name: flash;
+ }
+
+/*右部信息*/
+.sy_rightdata{ position: fixed; top:0; right:0; width:26%; height:100%; background:url(../images/right_higling.png) no-repeat 50% 50%; z-index:6; box-sizing:border-box;overflow:hidden;}
+.sy_scorll{ height:100%; overflow-y:scroll; width:140%; padding-right:40%; box-sizing:border-box; padding-top:60px; } 
+.sydata_box{ width:100%; color:#fff; margin-top:15px;}
+.sydata_box.one{ width:100%; margin:0 auto; background: url(../images/databg.png); padding:15px 0; }
+.sydata_box.one div{ text-align:center; line-height:26px; font-size:14px; color:#f1f1f1;}
+.sydata_box.one div span{ text-decoration:underline; padding:0 10px; color:#fff;}
+.sydata_title{ border-bottom:1px solid rgba(255,255,255,0.15); padding: 10px; font-size:16px;}
+.sydata_title span{ color:#aaa; font-size:14px;}
+.sydata_mian{ height:210px; background:url(../images/mask_bg.png) !important;}
+
+/*底部*/
+.sy_foot{ width:100%; position:absolute; bottom:0; height:36px;z-index:2px; left:0; text-align:center; line-height:36px; color:#eee;}

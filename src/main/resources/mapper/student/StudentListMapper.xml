@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.juiniot.modules.dao.mapper.student.StudentListMapper">
+
+  <!-- 以下配置是系统自动生成的 -->
+
+  <!-- 显示的记录对应的列-->
+  <sql id="StudentListColumns" >
+		    studentlist.id as id,studentlist.name as name,studentlist.num as num,studentlist.phone as phone,studentlist.sex as sex,studentlist.age as age,studentlist.classes as classes,studentlist.create_time as createTime
+  </sql>
+  
+  
+  <!-- 列表对应的查询条件组合  -->
+  <sql id="queryOptions">
+       <where>
+            	  <if test="paramMap.phone != null and paramMap.phone != '' "> AND studentlist.phone like #{paramMap.phone}</if>
+            	  <if test="paramMap.createTime != null"> AND studentlist.create_time = #{paramMap.createTime}</if><if test="paramMap.createTime1 != null"> AND studentlist.create_time &gt;= #{paramMap.createTime1}</if><if test="paramMap.createTime2!=null"> AND studentlist.create_time &lt;= #{paramMap.createTime2}</if>
+            	  <if test="paramMap.num != null and paramMap.num != '' "> AND studentlist.num like #{paramMap.num}</if>
+            	  
+            	  <if test="paramMap.classes != null and paramMap.classes != '' "> AND studentlist.classes like #{paramMap.classes}</if>
+            	  <if test="paramMap.name != null and paramMap.name != '' "> AND studentlist.name like #{paramMap.name}</if>
+            	   
+        </where> 
+  </sql>
+
+
+  <!-- 列表查询对应的排序选项  -->
+  <sql id="orderControl">
+       <if test="orderList!=null">
+		  <trim prefix="ORDER BY" prefixOverrides=",">
+				<foreach collection="orderList" item="order" open=""  separator="," close="" >
+				   <choose> 
+				       <when test="order.columnName=='phone'"> studentlist.phone ${order.type} </when> 
+				       <when test="order.columnName=='createTime'"> studentlist.create_time ${order.type} </when> 
+				       <when test="order.columnName=='num'"> studentlist.num ${order.type} </when> 
+				       <when test="order.columnName=='sex'"> studentlist.sex ${order.type} </when> 
+				       <when test="order.columnName=='classes'"> studentlist.classes ${order.type} </when> 
+				       <when test="order.columnName=='name'"> studentlist.name ${order.type} </when> 
+				       <when test="order.columnName=='age'"> studentlist.age ${order.type} </when>
+                       
+				       <when test="order.columnName=='id'"> studentlist.id  ${order.type}  </when> 
+				       
+				  </choose>
+			 </foreach>
+		 </trim>
+	   </if>
+  </sql>
+
+ 
+  <!-- 列表查询对应的表关系SQL  -->
+  <sql id="querySqlMain">
+			  student_list  studentlist
+  </sql>
+
+  
+   
+   <!-- 根据ID查询记录 -->
+   <select id="findOne" resultType="com.juiniot.modules.dao.entity.student.StudentListEntry">
+	     SELECT  <include refid="StudentListColumns"/>              
+		    FROM <include refid="querySqlMain"/>
+			where studentlist.id=#{id}
+   </select>
+   
+
+
+   <!-- 返回记录总数的语句 -->
+   <select id="queryStudentListsRecordCount" resultType="int">
+        SELECT count(*) num  FROM  <include refid="querySqlMain"/>
+        <include refid="queryOptions"/> 
+   </select>
+   
+   
+    <!-- 分页查询对应的记录 -->
+   <select id="queryStudentLists" resultType="com.juiniot.modules.dao.entity.student.StudentListEntry">
+      
+	   SELECT <include refid="StudentListColumns"/>   
+	   		FROM <include refid="querySqlMain"/>
+		         <include refid="queryOptions"/>
+		         <include refid="orderControl"/>
+		    LIMIT ${startRow},${pageSize} 
+   </select>
+   
+   <!-- 不分页查询所有记录 -->
+   <select id="queryAll" resultType="com.juiniot.modules.dao.entity.student.StudentListEntry">
+      
+	   SELECT <include refid="StudentListColumns"/>   
+	   		FROM <include refid="querySqlMain"/>
+		         <include refid="queryOptions"/>
+		         <include refid="orderControl"/>
+   </select>
+   
+
+   <!-- 新增记录 -->
+   <insert id="insertStudentList" useGeneratedKeys="true" keyProperty="studentList.id">
+
+        INSERT INTO student_list (phone,create_time,num,sex,classes,name,age)
+        VALUES(#{studentList.phone,jdbcType=VARCHAR},#{studentList.createTime},#{studentList.num,jdbcType=VARCHAR},#{studentList.sex},#{studentList.classes,jdbcType=VARCHAR},#{studentList.name,jdbcType=VARCHAR},#{studentList.age})
+           
+   </insert>
+   
+   
+   
+   <!-- 更新记录 -->       
+   <update id="updateStudentList" >
+           UPDATE student_list 
+           <set>
+                phone=#{studentList.phone,jdbcType=VARCHAR},
+                create_time=#{studentList.createTime},
+                num=#{studentList.num,jdbcType=VARCHAR},
+                sex=#{studentList.sex},
+                classes=#{studentList.classes,jdbcType=VARCHAR},
+                name=#{studentList.name,jdbcType=VARCHAR},
+                age=#{studentList.age},
+	   </set>
+	       WHERE id = #{studentList.id}
+   </update> 
+   
+
+
+   
+   <!-- 删除记录 -->
+   <delete id="deleteStudentList">
+          DELETE FROM student_list
+          WHERE id in 
+          <foreach collection="ids" item="id" open="("  separator="," close=")" >
+                #{id}
+          </foreach>
+   </delete>
+  
+  
+  
+  <!-- 检查是字段值是否已存在 -->
+   <select id="isExist" resultType="int">
+   		SELECT COUNT(1) FROM student_list WHERE ${columnName} = #{columnValue}
+   		<if test="id != null">
+   			AND id != #{id}
+   		</if>
+   </select>
+   
+   <!-- 以下是自定义的配置信息，配置要写上注释用途 -->
+
+    <select id="selectStudent" resultType="map">
+        SELECT id as "id", CONCAT_WS("_",name,num,classes) as "text" FROM student_list where name != "admin" order by id
+    </select>
+   
+   
+   
+
+</mapper>
+
+
+

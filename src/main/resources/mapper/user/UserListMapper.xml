@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.juiniot.modules.dao.mapper.user.UserListMapper">
+
+  <!-- 以下配置是系统自动生成的 -->
+
+  <!-- 显示的记录对应的列-->
+  <sql id="UserListColumns" >
+		    userlist.id as id,userlist.parent_id as parentId,userlist.account as account,userlist.mobile as mobile,userlist.pwd as pwd,userlist.name as name,userlist.money as money,userlist.tree_code as treeCode,userlist.unique_identify as uniqueIdentify,userlist.create_time as createTime,userlist1.name as parentName
+  </sql>
+  
+  
+  <!-- 列表对应的查询条件组合  -->
+  <sql id="queryOptions">
+       <where>
+            	  <if test="paramMap.uniqueIdentify != null and paramMap.uniqueIdentify != '' "> AND userlist.unique_identify like #{paramMap.uniqueIdentify}</if>
+            	  
+            	  
+            	  <if test="paramMap.createTime != null"> AND userlist.create_time = #{paramMap.createTime}</if><if test="paramMap.createTime1 != null"> AND userlist.create_time &gt;= #{paramMap.createTime1}</if><if test="paramMap.createTime2!=null"> AND userlist.create_time &lt;= #{paramMap.createTime2}</if>
+            	  <if test="paramMap.mobile != null and paramMap.mobile != '' "> AND userlist.mobile like #{paramMap.mobile}</if>
+            	  <if test="paramMap.name != null and paramMap.name != '' "> AND userlist.name like #{paramMap.name}</if>
+            	  <if test="paramMap.pwd != null and paramMap.pwd != '' "> AND userlist.pwd like #{paramMap.pwd}</if>
+            	  <if test="paramMap.treeCode != null and paramMap.treeCode != '' "> AND userlist.tree_code like #{paramMap.treeCode}</if>
+            	  <if test="paramMap.parentId != null"> AND userlist.parent_id = #{paramMap.parentId}</if>
+            	  <if test="paramMap.account != null and paramMap.account != '' "> AND userlist.account like #{paramMap.account}</if>         
+                  <if test="paramMap.parentName != null and paramMap.parentName != '' "> AND userlist1.name like #{paramMap.parentName}</if> 
+        </where> 
+  </sql>
+
+
+  <!-- 列表查询对应的排序选项  -->
+  <sql id="orderControl">
+       <if test="orderList!=null">
+		  <trim prefix="ORDER BY" prefixOverrides=",">
+				<foreach collection="orderList" item="order" open=""  separator="," close="" >
+				   <choose> 
+				       <when test="order.columnName=='uniqueIdentify'"> userlist.unique_identify ${order.type} </when> 
+				       <when test="order.columnName=='money'"> userlist.money ${order.type} </when> 
+				       <when test="order.columnName=='createTime'"> userlist.create_time ${order.type} </when>
+				       <when test="order.columnName=='mobile'"> userlist.mobile ${order.type} </when> 
+				       <when test="order.columnName=='name'"> userlist.name ${order.type} </when> 
+				       <when test="order.columnName=='pwd'"> userlist.pwd ${order.type} </when> 
+				       <when test="order.columnName=='treeCode'"> userlist.tree_code ${order.type} </when> 
+				       <when test="order.columnName=='parentId'"> userlist.parent_id ${order.type} </when> 
+				       <when test="order.columnName=='account'"> userlist.account ${order.type} </when>   
+				       <when test="order.columnName=='parentName'"> userlist1.name ${order.type} </when>
+                       
+				       <when test="order.columnName=='id'"> userlist.id  ${order.type}  </when> 
+				       
+				  </choose>
+			 </foreach>
+		 </trim>
+	   </if>
+  </sql>
+
+ 
+  <!-- 列表查询对应的表关系SQL  -->
+  <sql id="querySqlMain">
+			  user_list  userlist LEFT JOIN user_list userlist1 ON userlist.parent_id = userlist1.id
+  </sql>
+
+  
+   
+   <!-- 根据ID查询记录 -->
+   <select id="findOne" resultType="com.juiniot.modules.dao.entity.user.UserListEntry">
+	     SELECT  <include refid="UserListColumns"/>              
+		    FROM <include refid="querySqlMain"/>
+			where userlist.id=#{id}
+   </select>
+   
+
+
+   <!-- 返回记录总数的语句 -->
+   <select id="queryUserListsRecordCount" resultType="int">
+        SELECT count(*) num  FROM  <include refid="querySqlMain"/>
+        <include refid="queryOptions"/> 
+   </select>
+   
+   
+    <!-- 分页查询对应的记录 -->
+   <select id="queryUserLists" resultType="com.juiniot.modules.dao.entity.user.UserListEntry">
+      
+	   SELECT <include refid="UserListColumns"/>   
+	   		FROM <include refid="querySqlMain"/>
+		         <include refid="queryOptions"/>
+		         <include refid="orderControl"/>
+		    LIMIT ${startRow},${pageSize} 
+   </select>
+   
+   <!-- 不分页查询所有记录 -->
+   <select id="queryAll" resultType="com.juiniot.modules.dao.entity.user.UserListEntry">
+      
+	   SELECT <include refid="UserListColumns"/>   
+	   		FROM <include refid="querySqlMain"/>
+		         <include refid="queryOptions"/>
+		         <include refid="orderControl"/>
+   </select>
+   
+
+   <!-- 新增记录 -->
+   <insert id="insertUserList" useGeneratedKeys="true" keyProperty="userList.id">
+
+        INSERT INTO user_list (unique_identify,money,create_time,mobile,name,pwd,tree_code,parent_id,account)
+        VALUES(#{userList.uniqueIdentify,jdbcType=VARCHAR},#{userList.money},#{userList.createTime},#{userList.mobile,jdbcType=VARCHAR},#{userList.name,jdbcType=VARCHAR},#{userList.pwd,jdbcType=VARCHAR},#{userList.treeCode,jdbcType=VARCHAR},#{userList.parentId,jdbcType=NUMERIC},#{userList.account,jdbcType=VARCHAR})
+           
+   </insert>
+   
+   
+   
+   <!-- 更新记录 -->       
+   <update id="updateUserList" >
+           UPDATE user_list 
+           <set>
+                unique_identify=#{userList.uniqueIdentify,jdbcType=VARCHAR},
+                money=#{userList.money},
+                create_time=#{userList.createTime},
+                mobile=#{userList.mobile,jdbcType=VARCHAR},
+                name=#{userList.name,jdbcType=VARCHAR},
+                pwd=#{userList.pwd,jdbcType=VARCHAR},
+                tree_code=#{userList.treeCode,jdbcType=VARCHAR},
+                parent_id=#{userList.parentId,jdbcType=NUMERIC},
+                account=#{userList.account,jdbcType=VARCHAR},
+	   </set>
+	       WHERE id = #{userList.id}
+   </update> 
+   
+
+
+   
+   <!-- 删除记录 -->
+   <delete id="deleteUserList">
+          DELETE FROM user_list
+          WHERE id in 
+          <foreach collection="ids" item="id" open="("  separator="," close=")" >
+                #{id}
+          </foreach>
+   </delete>
+  
+  
+  
+  <!-- 检查是字段值是否已存在 -->
+   <select id="isExist" resultType="int">
+   		SELECT COUNT(1) FROM user_list WHERE ${columnName} = #{columnValue}
+   		<if test="id != null">
+   			AND id != #{id}
+   		</if>
+   </select>
+   
+   <!-- 以下是自定义的配置信息，配置要写上注释用途 -->
+
+    <select id="selectUserName" resultType="map">
+        SELECT id as "id", name as "text" FROM user_list WHERE tree_code Like #{treeCode} order by id
+    </select>
+   
+   
+
+</mapper>
+
+
+

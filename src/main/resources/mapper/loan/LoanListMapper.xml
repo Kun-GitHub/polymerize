@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.juiniot.modules.dao.mapper.loan.LoanListMapper">
+
+  <!-- 以下配置是系统自动生成的 -->
+
+  <!-- 显示的记录对应的列-->
+  <sql id="LoanListColumns" >
+		    loanlist.id as id,loanlist.user_id as userId,loanlist.name as name,loanlist.phone as phone,loanlist.sex as sex,loanlist.city as city,loanlist.quota as quota,loanlist.status as status,loanlist.loan_time as loanTime,loanlist.source as source,loanlist.remark as remark,userlist.name as userName,userlist.tree_code as treeCode,loanlist.price as price
+  </sql>
+  
+  
+  <!-- 列表对应的查询条件组合  -->
+  <sql id="queryOptions">
+       <where>
+            	  <if test="paramMap.loanTime != null"> AND loanlist.loan_time = #{paramMap.loanTime}</if><if test="paramMap.loanTime1 != null"> AND loanlist.loan_time &gt;= #{paramMap.loanTime1}</if><if test="paramMap.loanTime2!=null"> AND loanlist.loan_time &lt;= #{paramMap.loanTime2}</if>
+            	  <if test="paramMap.phone != null and paramMap.phone != '' "> AND loanlist.phone like #{paramMap.phone}</if>
+            	  <if test="paramMap.city != null and paramMap.city != '' "> AND loanlist.city like #{paramMap.city}</if>
+            	  <if test="paramMap.sex != null and paramMap.sex != '' "> AND loanlist.sex like #{paramMap.sex}</if>
+            	  <if test="paramMap.quota != null"> AND loanlist.quota = #{paramMap.quota}</if>
+            	  <if test="paramMap.name != null and paramMap.name != '' "> AND loanlist.name like #{paramMap.name}</if>
+            	  <if test="paramMap.remark != null and paramMap.remark != '' "> AND loanlist.remark like #{paramMap.remark}</if>
+            	  <if test="paramMap.source != null and paramMap.source != '' "> AND loanlist.source like #{paramMap.source}</if>
+           <if test="paramMap.userId != null"> AND loanlist.user_id = #{paramMap.userId}</if>
+           <if test="paramMap.price != null"> AND loanlist.price = #{paramMap.price}</if>
+
+           <if test="paramMap.userName != null and paramMap.userName != '' "> AND userlist.name like #{paramMap.userName}</if>
+           <if test="paramMap.treeCode != null and paramMap.treeCode != '' "> AND userlist.tree_code like #{paramMap.treeCode}</if>
+       </where>
+  </sql>
+
+
+  <!-- 列表查询对应的排序选项  -->
+  <sql id="orderControl">
+       <if test="orderList!=null">
+		  <trim prefix="ORDER BY" prefixOverrides=",">
+				<foreach collection="orderList" item="order" open=""  separator="," close="" >
+				   <choose> 
+				       <when test="order.columnName=='loanTime'"> loanlist.loan_time ${order.type} </when> 
+				       <when test="order.columnName=='phone'"> loanlist.phone ${order.type} </when> 
+				       <when test="order.columnName=='city'"> loanlist.city ${order.type} </when> 
+				       <when test="order.columnName=='sex'"> loanlist.sex ${order.type} </when> 
+				       <when test="order.columnName=='quota'"> loanlist.quota ${order.type} </when> 
+				       <when test="order.columnName=='name'"> loanlist.name ${order.type} </when> 
+				       <when test="order.columnName=='remark'"> loanlist.remark ${order.type} </when>
+                       <when test="order.columnName=='price'"> loanlist.price ${order.type} </when>
+                       <when test="order.columnName=='source'"> loanlist.source ${order.type} </when>
+				       <when test="order.columnName=='userId'"> loanlist.user_id ${order.type} </when> 
+				       <when test="order.columnName=='status'"> loanlist.status ${order.type} </when>
+                       <when test="order.columnName=='userName'"> userlist.name ${order.type} </when>
+                       <when test="order.columnName=='treeCode'"> userlist.tree_code ${order.type} </when>
+                       
+				       <when test="order.columnName=='id'"> loanlist.id  ${order.type}  </when>
+				       
+				  </choose>
+			 </foreach>
+		 </trim>
+	   </if>
+  </sql>
+
+ 
+  <!-- 列表查询对应的表关系SQL  -->
+  <sql id="querySqlMain">
+			  loan_list  loanlist LEFT JOIN user_list userlist ON loanlist.user_id = userlist.id
+  </sql>
+
+  
+   
+   <!-- 根据ID查询记录 -->
+   <select id="findOne" resultType="com.juiniot.modules.dao.entity.loan.LoanListEntry">
+	     SELECT  <include refid="LoanListColumns"/>              
+		    FROM <include refid="querySqlMain"/>
+			where loanlist.id=#{id}
+   </select>
+   
+
+
+   <!-- 返回记录总数的语句 -->
+   <select id="queryLoanListsRecordCount" resultType="int">
+        SELECT count(*) num  FROM  <include refid="querySqlMain"/>
+        <include refid="queryOptions"/> 
+   </select>
+   
+   
+    <!-- 分页查询对应的记录 -->
+   <select id="queryLoanLists" resultType="com.juiniot.modules.dao.entity.loan.LoanListEntry">
+      
+	   SELECT <include refid="LoanListColumns"/>   
+	   		FROM <include refid="querySqlMain"/>
+		         <include refid="queryOptions"/>
+		         <include refid="orderControl"/>
+		    LIMIT ${startRow},${pageSize} 
+   </select>
+   
+   <!-- 不分页查询所有记录 -->
+   <select id="queryAll" resultType="com.juiniot.modules.dao.entity.loan.LoanListEntry">
+      
+	   SELECT <include refid="LoanListColumns"/>   
+	   		FROM <include refid="querySqlMain"/>
+		         <include refid="queryOptions"/>
+		         <include refid="orderControl"/>
+   </select>
+   
+
+   <!-- 新增记录 -->
+   <insert id="insertLoanList" useGeneratedKeys="true" keyProperty="loanList.id">
+
+        INSERT INTO loan_list (price,loan_time,phone,city,sex,quota,name,remark,source,user_id,status)
+        VALUES(#{loanList.price},#{loanList.loanTime},#{loanList.phone,jdbcType=VARCHAR},#{loanList.city,jdbcType=VARCHAR},#{loanList.sex,jdbcType=VARCHAR},#{loanList.quota,jdbcType=NUMERIC},#{loanList.name,jdbcType=VARCHAR},#{loanList.remark,jdbcType=VARCHAR},#{loanList.source,jdbcType=VARCHAR},#{loanList.userId,jdbcType=NUMERIC},#{loanList.status})
+           
+   </insert>
+   
+   
+   
+   <!-- 更新记录 -->       
+   <update id="updateLoanList" >
+           UPDATE loan_list 
+           <set>
+                loan_time=#{loanList.loanTime},
+                phone=#{loanList.phone,jdbcType=VARCHAR},
+                city=#{loanList.city,jdbcType=VARCHAR},
+                sex=#{loanList.sex,jdbcType=VARCHAR},
+               price=#{loanList.price},
+                quota=#{loanList.quota,jdbcType=NUMERIC},
+                name=#{loanList.name,jdbcType=VARCHAR},
+                remark=#{loanList.remark,jdbcType=VARCHAR},
+                source=#{loanList.source,jdbcType=VARCHAR},
+                user_id=#{loanList.userId,jdbcType=NUMERIC},
+                status=#{loanList.status},
+	   </set>
+	       WHERE id = #{loanList.id}
+   </update> 
+   
+
+
+   
+   <!-- 删除记录 -->
+   <delete id="deleteLoanList">
+          DELETE FROM loan_list
+          WHERE id in 
+          <foreach collection="ids" item="id" open="("  separator="," close=")" >
+                #{id}
+          </foreach>
+   </delete>
+  
+  
+  
+  <!-- 检查是字段值是否已存在 -->
+   <select id="isExist" resultType="int">
+   		SELECT COUNT(1) FROM loan_list WHERE ${columnName} = #{columnValue}
+   		<if test="id != null">
+   			AND id != #{id}
+   		</if>
+   </select>
+   
+   <!-- 以下是自定义的配置信息，配置要写上注释用途 -->
+   
+   
+   
+   
+
+</mapper>
+
+
+

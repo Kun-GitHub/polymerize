@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.juiniot.modules.dao.mapper.feedback.FeedbackListMapper">
+
+  <!-- 以下配置是系统自动生成的 -->
+
+  <!-- 显示的记录对应的列-->
+  <sql id="FeedbackListColumns" >
+		    feedbacklist.id as id,feedbacklist.student_id as studentId,feedbacklist.create_time as createTime,feedbacklist.learning_content as learningContent,feedbacklist.learning_achievement as learningAchievement,feedbacklist.clear as clear,feedbacklist.fluency as fluency,feedbacklist.creativity as creativity,feedbacklist.logical_thinking as logicalThinking,feedbacklist.homework_compleaon as homeworkCompleaon,feedbacklist.concentration as concentration,feedbacklist.expression as expression,feedbacklist.reaction as reaction,feedbacklist.interaction as interaction,feedbacklist.rule_consciousness as ruleConsciousness,feedbacklist.concern_for_others as concernForOthers,feedbacklist.leader_ship as leaderShip,feedbacklist.corporation as corporation,feedbacklist.comments_on_student as commentsOnStudent,feedbacklist.today_achievement as todayAchievement,studentlist.name as name,studentlist.num as num,studentlist.classes as classes,studentlist.phone as phone
+  </sql>
+  
+  
+  <!-- 列表对应的查询条件组合  -->
+  <sql id="queryOptions">
+       <where>
+            	  <if test="paramMap.todayAchievement != null and paramMap.todayAchievement != '' "> AND feedbacklist.today_achievement like #{paramMap.todayAchievement}</if>
+            	  
+            	  
+            	  
+            	  
+            	  
+            	  
+            	  
+            	  
+            	  
+            	  <if test="paramMap.commentsOnStudent != null and paramMap.commentsOnStudent != '' "> AND feedbacklist.comments_on_student like #{paramMap.commentsOnStudent}</if>
+            	  <if test="paramMap.studentId != null"> AND feedbacklist.student_id = #{paramMap.studentId}</if>
+            	  
+            	  
+            	  <if test="paramMap.createTime != null"> AND feedbacklist.create_time = #{paramMap.createTime}</if><if test="paramMap.createTime1 != null"> AND feedbacklist.create_time &gt;= #{paramMap.createTime1}</if><if test="paramMap.createTime2!=null"> AND feedbacklist.create_time &lt;= #{paramMap.createTime2}</if>
+            	  
+            	  
+            	  <if test="paramMap.learningContent != null and paramMap.learningContent != '' "> AND feedbacklist.learning_content like #{paramMap.learningContent}</if>
+            	           
+                  <if test="paramMap.num != null and paramMap.num != '' "> AND studentlist.num like #{paramMap.num}</if>
+           <if test="paramMap.classes != null and paramMap.classes != '' "> AND studentlist.classes like #{paramMap.classes}</if>
+           <if test="paramMap.phone != null and paramMap.phone != '' "> AND studentlist.phone like #{paramMap.phone}</if>
+           <if test="paramMap.name != null and paramMap.name != '' "> AND studentlist.name like #{paramMap.name}</if>
+        </where> 
+  </sql>
+
+
+  <!-- 列表查询对应的排序选项  -->
+  <sql id="orderControl">
+       <if test="orderList!=null">
+		  <trim prefix="ORDER BY" prefixOverrides=",">
+				<foreach collection="orderList" item="order" open=""  separator="," close="" >
+				   <choose> 
+				       <when test="order.columnName=='todayAchievement'"> feedbacklist.today_achievement ${order.type} </when> 
+				       <when test="order.columnName=='expression'"> feedbacklist.expression ${order.type} </when> 
+				       <when test="order.columnName=='reaction'"> feedbacklist.reaction ${order.type} </when> 
+				       <when test="order.columnName=='leaderShip'"> feedbacklist.leader_ship ${order.type} </when> 
+				       <when test="order.columnName=='corporation'"> feedbacklist.corporation ${order.type} </when> 
+				       <when test="order.columnName=='clear'"> feedbacklist.clear ${order.type} </when> 
+				       <when test="order.columnName=='fluency'"> feedbacklist.fluency ${order.type} </when> 
+				       <when test="order.columnName=='learningAchievement'"> feedbacklist.learning_achievement ${order.type} </when> 
+				       <when test="order.columnName=='concentration'"> feedbacklist.concentration ${order.type} </when> 
+				       <when test="order.columnName=='concernForOthers'"> feedbacklist.concern_for_others ${order.type} </when> 
+				       <when test="order.columnName=='commentsOnStudent'"> feedbacklist.comments_on_student ${order.type} </when> 
+				       <when test="order.columnName=='studentId'"> feedbacklist.student_id ${order.type} </when> 
+				       <when test="order.columnName=='homeworkCompleaon'"> feedbacklist.homework_compleaon ${order.type} </when> 
+				       <when test="order.columnName=='logicalThinking'"> feedbacklist.logical_thinking ${order.type} </when> 
+				       <when test="order.columnName=='createTime'"> feedbacklist.create_time ${order.type} </when> 
+				       <when test="order.columnName=='interaction'"> feedbacklist.interaction ${order.type} </when> 
+				       <when test="order.columnName=='ruleConsciousness'"> feedbacklist.rule_consciousness ${order.type} </when> 
+				       <when test="order.columnName=='learningContent'"> feedbacklist.learning_content ${order.type} </when> 
+				       <when test="order.columnName=='creativity'"> feedbacklist.creativity ${order.type} </when>   
+				       <when test="order.columnName=='num'"> studentlist.num ${order.type} </when>
+                       <when test="order.columnName=='classes'"> studentlist.classes ${order.type} </when>
+                       <when test="order.columnName=='phone'"> studentlist.phone ${order.type} </when>
+                       <when test="order.columnName=='name'"> studentlist.name ${order.type} </when>
+                       
+				       <when test="order.columnName=='id'"> feedbacklist.id  ${order.type}  </when> 
+				       
+				  </choose>
+			 </foreach>
+		 </trim>
+	   </if>
+  </sql>
+
+ 
+  <!-- 列表查询对应的表关系SQL  -->
+  <sql id="querySqlMain">
+			  feedback_list  feedbacklist LEFT JOIN student_list studentlist ON feedbacklist.student_id = studentlist.id
+  </sql>
+
+  
+   
+   <!-- 根据ID查询记录 -->
+   <select id="findOne" resultType="com.juiniot.modules.dao.entity.feedback.FeedbackListEntry">
+	     SELECT  <include refid="FeedbackListColumns"/>              
+		    FROM <include refid="querySqlMain"/>
+			where feedbacklist.id=#{id}
+   </select>
+   
+
+
+   <!-- 返回记录总数的语句 -->
+   <select id="queryFeedbackListsRecordCount" resultType="int">
+        SELECT count(*) num  FROM  <include refid="querySqlMain"/>
+        <include refid="queryOptions"/> 
+   </select>
+   
+   
+    <!-- 分页查询对应的记录 -->
+   <select id="queryFeedbackLists" resultType="com.juiniot.modules.dao.entity.feedback.FeedbackListEntry">
+      
+	   SELECT <include refid="FeedbackListColumns"/>   
+	   		FROM <include refid="querySqlMain"/>
+		         <include refid="queryOptions"/>
+		         <include refid="orderControl"/>
+		    LIMIT ${startRow},${pageSize} 
+   </select>
+   
+   <!-- 不分页查询所有记录 -->
+   <select id="queryAll" resultType="com.juiniot.modules.dao.entity.feedback.FeedbackListEntry">
+      
+	   SELECT <include refid="FeedbackListColumns"/>   
+	   		FROM <include refid="querySqlMain"/>
+		         <include refid="queryOptions"/>
+		         <include refid="orderControl"/>
+   </select>
+   
+
+   <!-- 新增记录 -->
+   <insert id="insertFeedbackList" useGeneratedKeys="true" keyProperty="feedbackList.id">
+
+        INSERT INTO feedback_list (today_achievement,expression,reaction,leader_ship,corporation,clear,fluency,learning_achievement,concentration,concern_for_others,comments_on_student,student_id,homework_compleaon,logical_thinking,create_time,interaction,rule_consciousness,learning_content,creativity)
+        VALUES(#{feedbackList.todayAchievement,jdbcType=VARCHAR},#{feedbackList.expression},#{feedbackList.reaction},#{feedbackList.leaderShip},#{feedbackList.corporation},#{feedbackList.clear},#{feedbackList.fluency},#{feedbackList.learningAchievement},#{feedbackList.concentration},#{feedbackList.concernForOthers},#{feedbackList.commentsOnStudent,jdbcType=VARCHAR},#{feedbackList.studentId,jdbcType=NUMERIC},#{feedbackList.homeworkCompleaon},#{feedbackList.logicalThinking},#{feedbackList.createTime},#{feedbackList.interaction},#{feedbackList.ruleConsciousness},#{feedbackList.learningContent,jdbcType=VARCHAR},#{feedbackList.creativity})
+           
+   </insert>
+   
+   
+   
+   <!-- 更新记录 -->       
+   <update id="updateFeedbackList" >
+           UPDATE feedback_list 
+           <set>
+                today_achievement=#{feedbackList.todayAchievement,jdbcType=VARCHAR},
+                expression=#{feedbackList.expression},
+                reaction=#{feedbackList.reaction},
+                leader_ship=#{feedbackList.leaderShip},
+                corporation=#{feedbackList.corporation},
+                clear=#{feedbackList.clear},
+                fluency=#{feedbackList.fluency},
+                learning_achievement=#{feedbackList.learningAchievement},
+                concentration=#{feedbackList.concentration},
+                concern_for_others=#{feedbackList.concernForOthers},
+                comments_on_student=#{feedbackList.commentsOnStudent,jdbcType=VARCHAR},
+                student_id=#{feedbackList.studentId,jdbcType=NUMERIC},
+                homework_compleaon=#{feedbackList.homeworkCompleaon},
+                logical_thinking=#{feedbackList.logicalThinking},
+                create_time=#{feedbackList.createTime},
+                interaction=#{feedbackList.interaction},
+                rule_consciousness=#{feedbackList.ruleConsciousness},
+                learning_content=#{feedbackList.learningContent,jdbcType=VARCHAR},
+                creativity=#{feedbackList.creativity},
+	   </set>
+	       WHERE id = #{feedbackList.id}
+   </update> 
+   
+
+
+   
+   <!-- 删除记录 -->
+   <delete id="deleteFeedbackList">
+          DELETE FROM feedback_list
+          WHERE id in 
+          <foreach collection="ids" item="id" open="("  separator="," close=")" >
+                #{id}
+          </foreach>
+   </delete>
+  
+  
+  
+  <!-- 检查是字段值是否已存在 -->
+   <select id="isExist" resultType="int">
+   		SELECT COUNT(1) FROM feedback_list WHERE ${columnName} = #{columnValue}
+   		<if test="id != null">
+   			AND id != #{id}
+   		</if>
+   </select>
+   
+   <!-- 以下是自定义的配置信息，配置要写上注释用途 -->
+
+    <!-- 根据ID查询记录 -->
+    <select id="findOneByLast" resultType="com.juiniot.modules.dao.entity.feedback.FeedbackListEntry">
+        SELECT *
+        FROM feedback_list
+        order by id
+        LIMIT 0,1
+    </select>
+
+</mapper>
+
+
+
