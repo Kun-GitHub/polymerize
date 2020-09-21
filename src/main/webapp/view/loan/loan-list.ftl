@@ -21,6 +21,12 @@
                 <li role="presentation" class="active">
                     <a href="${ctx!''}/loan/loan-list">订单管理</a>
                 </li>
+                <li role="presentation">
+                    <a href="${ctx!''}/loan/loan-list">充值记录</a>
+                </li>
+                <li role="presentation">
+                    <a href="${ctx!''}/loan/loan-list">扣费记录</a>
+                </li>
                 <#--<#if type??&&type=='admin'>
                     <li role="presentation">
                         <a href="${ctx!''}/sms/sms-list">短信发送记录</a>

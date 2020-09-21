@@ -14,12 +14,18 @@
         <div class="col-sm-3 col-md-2 sidebar">
             <ul class="nav nav-sidebar" role="tablist">
                 <#if type??&&type=='admin'>
-                    <li role="presentation">
+                    <li role="presentation" class="active">
                         <a href="${ctx!''}/user/user-list">商户管理</a>
                     </li>
                 </#if>
                 <li role="presentation">
                     <a href="${ctx!''}/loan/loan-list">订单管理</a>
+                </li>
+                <li role="presentation">
+                    <a href="${ctx!''}/loan/loan-list">充值记录</a>
+                </li>
+                <li role="presentation">
+                    <a href="${ctx!''}/loan/loan-list">扣费记录</a>
                 </li>
                 <#--<#if type??&&type=='admin'>
                     <li role="presentation">
@@ -53,7 +59,7 @@
                     <h4 class="sub-header" style="clear:both;">
                         <input class="form-control" type="text" name="account" value="${vo.account!''}" placeholder="账号"
                                style="display: inline-block; width: auto;"/>
-                        <input class="form-control" type="text" name="name" value="${vo.name!''}" placeholder="姓名"
+                        <input class="form-control" type="text" name="name" value="${vo.name!''}" placeholder="昵称"
                                style="display: inline-block; width: auto;"/>
                         <input class="form-control" type="text" name="mobile" value="${vo.mobile!''}" placeholder="联系方式"
                                style="display: inline-block; width: auto;"/>
