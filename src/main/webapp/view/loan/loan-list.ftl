@@ -205,87 +205,6 @@
             </div>
 
             <!-- 新增Modal -->
-            <div class="modal fade" id="setUserModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                            <h4 class="modal-title">安排员工跟进</h4>
-                        </div>
-                        <div class="modal-body">
-                            <form class="form-horizontal" id="setUserForm">
-                                <input type="hidden" name="id"/>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label"><span class="red">*</span>跟进人：</label>
-                                    <div class="col-sm-6">
-                                        <select name="userId" id="userId" class="form-control userId" data-rule-required="true">
-                                            <option value="">请选择跟进人</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-sm-3 errorText"></div>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                            <button type="button" class="btn btn-primary" onclick="setUser()">确定</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 新增Modal -->
-            <div class="modal fade" id="updateStatusModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                            <h4 class="modal-title">更新跟进结果</h4>
-                        </div>
-                        <div class="modal-body">
-                            <form class="form-horizontal" id="updateStatusForm">
-                                <input type="hidden" name="id"/>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label"><span class="red">*</span>跟进结果：</label>
-                                    <div class="col-sm-6">
-                                        <select name="status" class="form-control status" data-rule-required="true">
-                                            <option value="">请选择跟进结果</option>
-                                            <option value="2">条件不符</option>
-                                            <option value="3">电话未接通</option>
-                                            <option value="4">用户考虑中</option>
-                                            <option value="5">用户放弃</option>
-                                            <option value="6">邀约到店中</option>
-                                            <option value="7">提交资料</option>
-                                            <option value="8">提交审批中</option>
-                                            <option value="9">审批通过</option>
-                                            <option value="10">审批未通过</option>
-                                            <option value="11">完成放款</option>
-                                            <option value="12">异地客户</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-sm-3 errorText"></div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label"> 备注：</label>
-                                    <div class="col-sm-6">
-                                        <input type="text" class="form-control" placeholder="" name="remark">
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                            <button type="button" class="btn btn-primary" onclick="updateStatus()">确定</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 新增Modal -->
             <div class="modal fade" id="updateLoanModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -339,10 +258,6 @@
                 $(function () {
                     $("#userId").selection("${ctx!''}/user/user-select",${vo.userId!'0'});
                 });
-
-                function createData(dataType) {
-                    window.location.href = '${ctx!''}/loan/add-loan?source=${uniqueIdentify!''}';
-                }
 
                 function initEdit(dataId) {
                     $.get(ctx + "/loan/loan-load",

@@ -21,7 +21,7 @@ public class UserListEntry implements Serializable {
     private String  name; // 
     private Double  money; // 
     private String  treeCode; //
-    private String  uniqueIdentify; // 
+    private Double  surplus; //
     private Timestamp  createTime; //
     
      
@@ -139,20 +139,15 @@ public class UserListEntry implements Serializable {
     public String getTreeCode(  ){ 
 	    return this.treeCode;    
     }
-     
-    /**
-     * @param uniqueIdentify 
-     */
-    public void setUniqueIdentify(String uniqueIdentify){
-	    this.uniqueIdentify=uniqueIdentify;    
+
+    public Double getSurplus() {
+        return surplus;
     }
-    /**
-     * @return uniqueIdentify 
-     */
-    public String getUniqueIdentify(  ){ 
-	    return this.uniqueIdentify;    
+
+    public void setSurplus(Double surplus) {
+        this.surplus = surplus;
     }
-     
+
     /**
      * @param createTime 
      */

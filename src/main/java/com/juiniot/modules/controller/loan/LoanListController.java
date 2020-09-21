@@ -49,20 +49,6 @@ public class LoanListController extends BaseController {
     @Autowired
 	private LoanListInfo loanListInfo;
 
-	@RequestMapping("add-loan")
-	@Authority(needSession = NeedSession.NO)
-	public String addLoan(HttpServletRequest request, Model model, String source) throws BusinessException {
-		model.addAttribute("source", source);
-		return "/loan/add-loan";
-	}
-
-	@RequestMapping("add-loan-success")
-	@Authority(needSession = NeedSession.NO)
-	public String addLoanSuccess(HttpServletRequest request, Model model, String source) throws BusinessException {
-		model.addAttribute("source", source);
-		return "/loan/add-loan-success";
-	}
-
     /**
 	 * 查询列表数据
 	 */
@@ -119,27 +105,11 @@ public class LoanListController extends BaseController {
 		UserListInfo userListInfo = UserListInfo.findOne(Long.valueOf(userId));
 
 		//将数据集合返回到页面端
-		model.addAttribute("uniqueIdentify", userListInfo.getUniqueIdentify());
 		model.addAttribute("type", type);
 		model.addAttribute("page", pm);
 		model.addAttribute("vo", vo);
 
 		return "/loan/loan-list"; //返回页面
-	
-	}
-	
-	/**
-	 * 新增或修改页面初始化
-	 */
-	@RequestMapping("loan-add") //请求路径
-	public String addInit(HttpServletRequest request, Model model, Long id) throws Exception{
-		
-		if(id != null){
-			loanListInfo = LoanListInfo.findOne(id);
-		}
-		
-		model.addAttribute("info", loanListInfo);
-		return "/loan/loan-add"; //返回页面
 	}
 	
 	/**
@@ -148,139 +118,12 @@ public class LoanListController extends BaseController {
 	@ResponseBody
 	@RequestMapping("loan-load")
 	public LoanListInfo load(HttpServletRequest request, Model model, Long id) throws Exception{
-		
 		if(id != null){
 			loanListInfo = LoanListInfo.findOne(id);
 		}
-		
-		return loanListInfo; 
+		return loanListInfo;
 	}
-	
-	
-	/**
-	 * 保存方法
-	 */
-	@ResponseBody
-	@Authority(needSession = NeedSession.NO)
-	@RequestMapping(value = "loan-save", method = RequestMethod.POST) //请求路径，请修改为正确的路径
-	public BaseResponse save(HttpServletRequest request,LoanListVO vo, String code) throws Exception{
-		
-		//验证字段是否为空，请自行删除多于的验证和补全其他验证
 
-		if(StringUtils.isEmpty(vo.getName())){
-			return BaseResponse.failure("姓名不能为空");
-		}
-		
-		if(StringUtils.isEmpty(vo.getCity())){
-			return BaseResponse.failure("居住地不能为空");
-		}
-
-		if(StringUtils.isEmpty(vo.getQuota())){
-			return BaseResponse.failure("贷款额度不能为空");
-		}
-
-		if(StringUtils.isEmpty(code) || code.length() != 4){
-			return BaseResponse.failure("请输入正确的验证码");
-		}
-
-		if(StringUtils.isEmpty(vo.getPhone()) || vo.getPhone().length() != 11){
-			return BaseResponse.failure("联系方式错误");
-		}
-
-//		LoanListParam param = new LoanListParam();
-//		param.putValue(LoanListParamKey.phone, this.allFuzzy(vo.getPhone()));
-//		HashMap<LoanListParamKey, Object> keyMap = param.getKeyMap();
-//		int totalRows = LoanListInfo.getTotalRows(keyMap);
-//		if(totalRows > 0){
-//			return BaseResponse.failure("该手机号码已填写过信息");
-//		}
-
-		//设值，请自行修正或删除不正确的设值
-
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-		String dateString = formatter.format(new Date())+" 00:00:01";
-
-		List<SmsListInfo> smsListInfos = SmsListInfo.findSmsByPhoneAndDate(vo.getPhone(), dateString, code);
-
-		if(null == smsListInfos || smsListInfos.size() == 0){
-			return BaseResponse.failure("请输入正确的验证码");
-		}
-
-		loanListInfo.setName(vo.getName());
-		
-		loanListInfo.setPhone(vo.getPhone());
-		
-		loanListInfo.setSex(vo.getSex());
-		
-		loanListInfo.setCity(vo.getCity());
-
-		loanListInfo.setQuota(vo.getQuota());
-
-		loanListInfo.setPrice(100.0);
-
-		//设置查询参数，请自行修改或删除不需要的参数
-		UserListParam userListParam = new UserListParam();
-
-		userListParam.putValue(UserListParam.UserListParamKey.uniqueIdentify, vo.getSource());
-
-		//将查询参数转为HashMap
-		HashMap<UserListParam.UserListParamKey, Object> UserListkeyMap = userListParam.getKeyMap();
-
-		//设置排序条件
-		List<OrderItem> orderList = new ArrayList<>();
-
-		orderList.add(new OrderItem(UserListParam.UserListParamKey.id, OrderType.ASC));//默认主键降序排序
-
-		//获取总数
-		int totalRow = UserListInfo.getTotalRows(UserListkeyMap);
-
-		if(totalRow > 0){
-			//获取列表
-			List<UserListInfo> list = UserListInfo.queryAll(UserListkeyMap, orderList);
-
-			loanListInfo.setSource(list.get(0).getName());
-
-			loanListInfo.setUserId(list.get(0).getId());
-
-			loanListInfo.setStatus(1);
-		} else {
-			loanListInfo.setSource(vo.getSource());
-
-			loanListInfo.setStatus(0);
-
-			loanListInfo.setUserId(0l);
-		}
-
-		loanListInfo.setLoanTime(new Timestamp(System.currentTimeMillis()));
-
-
-		try {
-			loanListInfo.add();
-
-			String phone = CommonConfUtil.getInstance().getGlobalParams("phone");
-
-			String tpl_value = URLEncoder.encode("#code#=0000", "UTF-8") ;
-			Map<String, String> map = new HashMap<>();
-			map.put("mobile", phone);
-			map.put("tpl_id", "93302");
-			map.put("tpl_value", tpl_value);
-			map.put("dtype", "json");
-			map.put("key", "f734f8478e3f090b9c2f8f851b5ec964");
-
-			String sms = "【指尖触动】您的验证码是0000。如非本人操作，请忽略本短信";
-
-			String url = "http://v.juhe.cn/sms/send";
-			String result = ApiWebUtils.doGet(url, map, "UTF-8");
-
-			return BaseResponse.SUCCESS;
-			
-		} catch (BusinessException e) {
-			logger.error(e.getMessage(), e);
-			return BaseResponse.failure(e.getMessage());
-		}
-	
-	}
-	
 	/**
 	 * 更新方法
 	 */

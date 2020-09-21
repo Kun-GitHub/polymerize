@@ -161,19 +161,14 @@ public class UserListInfo extends BaseBusiness {
 	         return this.userListEntry.getTreeCode( );   
          }
      
-        /**
-         * @param uniqueIdentify 
-         */
-         public void setUniqueIdentify(String uniqueIdentify){
-	         this.userListEntry.setUniqueIdentify(uniqueIdentify);     
-         }
-        /**
-         * @return uniqueIdentify 
-         */
-         public String getUniqueIdentify( ){ 
-	         return this.userListEntry.getUniqueIdentify( );   
-         }
-     
+	public Double getSurplus() {
+		return this.userListEntry.getSurplus();
+	}
+
+	public void setSurplus(Double surplus) {
+		this.userListEntry.setSurplus(surplus);
+	}
+
         /**
          * @param createTime 
          */

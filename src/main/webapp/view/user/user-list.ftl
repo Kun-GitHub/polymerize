@@ -57,8 +57,6 @@
                                style="display: inline-block; width: auto;"/>
                         <input class="form-control" type="text" name="mobile" value="${vo.mobile!''}" placeholder="联系方式"
                                style="display: inline-block; width: auto;"/>
-                        <#--<input class="form-control" type="text" name="uniqueIdentify" value="${vo.uniqueIdentify!''}" placeholder="推广标识"
-                               style="display: inline-block; width: auto;"/>-->
                         <button type="submit" class="btn btn-primary">查询</button>
                         <button type="button" class="btn btn-default" onclick="resetForm('searchForm')"> 重置</button>
                     </h4>
@@ -71,12 +69,13 @@
                                 <th class="th-checkbox"><input type="checkbox" onclick="selectAll('itemCb')"></th>
                             </#if>
                             <th data-sort="field:'account'">账号</th>
-                            <th data-sort="field:'name'">姓名</th>
+                            <th data-sort="field:'name'">昵称</th>
                             <th data-sort="field:'parentName'">上级</th>
                             <th data-sort="field:'mobile'">联系方式</th>
-                            <#--<th data-sort="field:'money'">余额</th>-->
-                            <#--<th data-sort="field:'url'">推广链接</th>-->
+                            <th data-sort="field:'money'">总金额</th>
+                            <th data-sort="field:'surplus'">可用余额</th>
                             <#if page.list?? &&page.list?size!=1><th>操作</th></#if>
+                            <#if page.list?? &&page.list?size!=1><th>充值</th></#if>
                         </tr>
                         </thead>
                         <tbody>
@@ -95,16 +94,19 @@
                             <td>${item.name!''}</td>
                             <td>${item.parentName!''}</td>
                             <td>${item.mobile!''}</td>
-                            <#--<td>${item.money!''}</td>
-                            <td>http://smdk.abact.cn/wx/loan/add-loan?source=${item.uniqueIdentify!''}</td>-->
+                            <td>${item.money!''}</td>
+                            <td>${item.surplus!''}</td>
                             <#if page.list?? &&page.list?size!=1>
                                 <td>
-                                    <#if page.page!=1>
-                                    <a href="#" data-toggle="modal" data-target="#editUserInfo"
-                                       onclick="initEdit(${item.id!''})">编辑</a>&nbsp;&nbsp;
-                                        <#elseif item??&&item_index!=0>
-                                    <a href="#" data-toggle="modal" data-target="#editUserInfo"
-                                       onclick="initEdit(${item.id!''})">编辑</a>&nbsp;&nbsp;
+                                    <#if page.page!=1 || item??&&item_index!=0>
+                                        <a href="#" data-toggle="modal" data-target="#editUserInfo"
+                                           onclick="initEdit(${item.id!''})">编辑信息</a>&nbsp;&nbsp;
+                                    </#if>
+                                </td>
+                                <td>
+                                    <#if page.page!=1 || item??&&item_index!=0>
+                                        <a href="#" data-toggle="modal" data-target="#recharge"
+                                           onclick="initEdit(${item.id!''})">充值</a>&nbsp;&nbsp;
                                     </#if>
                                 </td>
                             </#if>
@@ -143,18 +145,19 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
+                                    <label class="col-sm-3 control-label"><span class="red">*</span> 联系方式：</label>
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control" placeholder="" name="mobile"
+                                               data-rule-required="true">
+                                    </div>
+                                </div>
+                                <div class="form-group">
                                     <label class="col-sm-3 control-label"><span class="red">*</span> 密码：</label>
                                     <div class="col-sm-7">
                                         <input type="password" class="form-control" placeholder="" name="pwd"
                                                data-rule-required="true">
                                     </div>
                                 </div>
-                                <#--<div class="form-group">
-                                    <label class="col-sm-3 control-label"> 推广金额：</label>
-                                    <div class="col-sm-7">
-                                        <input type="number" class="form-control" placeholder="" name="money">
-                                    </div>
-                                </div>-->
                             </form>
                         </div>
                         <div class="modal-footer">
@@ -179,9 +182,23 @@
                             <form class="form-horizontal" id="editForm">
                                 <input type="hidden" name="id"/>
                                 <div class="form-group">
+                                    <label class="col-sm-3 control-label"><span class="red">*</span> 账号：</label>
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control" placeholder="" name="account"
+                                               data-rule-required="true" disabled>
+                                    </div>
+                                </div>
+                                <div class="form-group">
                                     <label class="col-sm-3 control-label"><span class="red">*</span> 昵称：</label>
                                     <div class="col-sm-7">
                                         <input type="text" class="form-control" placeholder="" name="name"
+                                               data-rule-required="true">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label"><span class="red">*</span> 联系方式：</label>
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control" placeholder="" name="mobile"
                                                data-rule-required="true">
                                     </div>
                                 </div>
@@ -192,12 +209,43 @@
                                                data-rule-required="true">
                                     </div>
                                 </div>
-                                <#--<div class="form-group">
-                                    <label class="col-sm-3 control-label"> 推广金额：</label>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                            <button type="button" class="btn btn-primary" onclick="update()">保存</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 修改电表Modal -->
+            <div class="modal fade" id="recharge" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                        aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">充值</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form class="form-horizontal" id="editForm">
+                                <input type="hidden" name="id"/>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label"><span class="red">*</span> 账号：</label>
                                     <div class="col-sm-7">
-                                        <input type="number" class="form-control" placeholder="" name="money">
+                                        <input type="text" class="form-control" placeholder="" name="account"
+                                               data-rule-required="true" disabled>
                                     </div>
-                                </div>-->
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label"><span class="red">*</span> 充值金额：</label>
+                                    <div class="col-sm-7">
+                                        <input type="number" class="form-control" placeholder="" name="surplus"
+                                               data-rule-required="true">
+                                    </div>
+                                </div>
                             </form>
                         </div>
                         <div class="modal-footer">
@@ -251,6 +299,21 @@
                                     notice(data.message, "red");
                                 }
                             }, "json");
+                }
+
+                function update() {
+                    if (!$("#editForm").valid()) {
+                        return;
+                    }
+                    $.post(ctx + "/user/user-recharge",
+                        $("#editForm").serialize(),
+                        function (data) {
+                            if (data.success) {
+                                location.reload();
+                            } else {
+                                notice(data.message, "red");
+                            }
+                        }, "json");
                 }
 
                 function delRows() {

@@ -7,16 +7,13 @@
 
   <!-- 显示的记录对应的列-->
   <sql id="UserListColumns" >
-		    userlist.id as id,userlist.parent_id as parentId,userlist.account as account,userlist.mobile as mobile,userlist.pwd as pwd,userlist.name as name,userlist.money as money,userlist.tree_code as treeCode,userlist.unique_identify as uniqueIdentify,userlist.create_time as createTime,userlist1.name as parentName
+		    userlist.id as id,userlist.parent_id as parentId,userlist.account as account,userlist.mobile as mobile,userlist.pwd as pwd,userlist.name as name,userlist.money as money,userlist.tree_code as treeCode,userlist.surplus as surplus,userlist.create_time as createTime,userlist1.name as parentName
   </sql>
   
   
   <!-- 列表对应的查询条件组合  -->
   <sql id="queryOptions">
        <where>
-            	  <if test="paramMap.uniqueIdentify != null and paramMap.uniqueIdentify != '' "> AND userlist.unique_identify like #{paramMap.uniqueIdentify}</if>
-            	  
-            	  
             	  <if test="paramMap.createTime != null"> AND userlist.create_time = #{paramMap.createTime}</if><if test="paramMap.createTime1 != null"> AND userlist.create_time &gt;= #{paramMap.createTime1}</if><if test="paramMap.createTime2!=null"> AND userlist.create_time &lt;= #{paramMap.createTime2}</if>
             	  <if test="paramMap.mobile != null and paramMap.mobile != '' "> AND userlist.mobile like #{paramMap.mobile}</if>
             	  <if test="paramMap.name != null and paramMap.name != '' "> AND userlist.name like #{paramMap.name}</if>
@@ -35,7 +32,7 @@
 		  <trim prefix="ORDER BY" prefixOverrides=",">
 				<foreach collection="orderList" item="order" open=""  separator="," close="" >
 				   <choose> 
-				       <when test="order.columnName=='uniqueIdentify'"> userlist.unique_identify ${order.type} </when> 
+				       <when test="order.columnName=='surplus'"> userlist.surplus ${order.type} </when> 
 				       <when test="order.columnName=='money'"> userlist.money ${order.type} </when> 
 				       <when test="order.columnName=='createTime'"> userlist.create_time ${order.type} </when>
 				       <when test="order.columnName=='mobile'"> userlist.mobile ${order.type} </when> 
@@ -45,9 +42,7 @@
 				       <when test="order.columnName=='parentId'"> userlist.parent_id ${order.type} </when> 
 				       <when test="order.columnName=='account'"> userlist.account ${order.type} </when>   
 				       <when test="order.columnName=='parentName'"> userlist1.name ${order.type} </when>
-                       
-				       <when test="order.columnName=='id'"> userlist.id  ${order.type}  </when> 
-				       
+				       <when test="order.columnName=='id'"> userlist.id  ${order.type}  </when>
 				  </choose>
 			 </foreach>
 		 </trim>
@@ -101,8 +96,8 @@
    <!-- 新增记录 -->
    <insert id="insertUserList" useGeneratedKeys="true" keyProperty="userList.id">
 
-        INSERT INTO user_list (unique_identify,money,create_time,mobile,name,pwd,tree_code,parent_id,account)
-        VALUES(#{userList.uniqueIdentify,jdbcType=VARCHAR},#{userList.money},#{userList.createTime},#{userList.mobile,jdbcType=VARCHAR},#{userList.name,jdbcType=VARCHAR},#{userList.pwd,jdbcType=VARCHAR},#{userList.treeCode,jdbcType=VARCHAR},#{userList.parentId,jdbcType=NUMERIC},#{userList.account,jdbcType=VARCHAR})
+        INSERT INTO user_list (surplus,money,create_time,mobile,name,pwd,tree_code,parent_id,account)
+        VALUES(#{userList.surplus},#{userList.money},#{userList.createTime},#{userList.mobile,jdbcType=VARCHAR},#{userList.name,jdbcType=VARCHAR},#{userList.pwd,jdbcType=VARCHAR},#{userList.treeCode,jdbcType=VARCHAR},#{userList.parentId,jdbcType=NUMERIC},#{userList.account,jdbcType=VARCHAR})
            
    </insert>
    
@@ -112,7 +107,7 @@
    <update id="updateUserList" >
            UPDATE user_list 
            <set>
-                unique_identify=#{userList.uniqueIdentify,jdbcType=VARCHAR},
+                surplus=#{userList.surplus},
                 money=#{userList.money},
                 create_time=#{userList.createTime},
                 mobile=#{userList.mobile,jdbcType=VARCHAR},

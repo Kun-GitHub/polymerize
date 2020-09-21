@@ -81,34 +81,6 @@ public class IndexController  extends BaseController {
         return "login";
     }
 
-    @RequestMapping("add-loan-uc")
-    @Authority(needSession = NeedSession.NO)
-    public String addLoanUC(HttpServletRequest request, Model model) throws BusinessException {
-        model.addAttribute("source", "3rd_UC_信用卡");
-        return "/loan/add-loan-xyk";
-    }
-
-    @RequestMapping("add-loan")
-    @Authority(needSession = NeedSession.NO)
-    public String addLoan(HttpServletRequest request, Model model) throws BusinessException {
-        model.addAttribute("source", "3rd_UC");
-        return "/loan/add-loan";
-    }
-
-    @RequestMapping("add-loan-360")
-    @Authority(needSession = NeedSession.NO)
-    public String addLoan360(HttpServletRequest request, Model model) throws BusinessException {
-        model.addAttribute("source", "3rd_360");
-        return "/loan/add-loan";
-    }
-
-    @RequestMapping("")
-    @Authority(needSession = NeedSession.NO)
-    public String addLoan360_(HttpServletRequest request, Model model) throws BusinessException {
-        model.addAttribute("source", "3rd_360");
-        return "/loan/add-loan";
-    }
-
     @ResponseBody
     @Authority(needSession = NeedSession.NO)
     @RequestMapping(value = "loginSubmit", method = RequestMethod.POST)

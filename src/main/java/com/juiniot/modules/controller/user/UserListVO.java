@@ -28,7 +28,7 @@ public class UserListVO extends BaseValueObject {
      
  	private String  treeCode; //
      
- 	private String  uniqueIdentify; //  
+ 	private Double  surplus; //
    
     private Timestamp createTime; // 
     private Timestamp createTime1; //  开始时间
@@ -158,25 +158,16 @@ public class UserListVO extends BaseValueObject {
      public String getTreeCode(  ){ 
 	    return this.treeCode;    
      }
-   
-     
-      
- 	/**
-     * @param uniqueIdentify 
-     */
-     public void setUniqueIdentify(String uniqueIdentify){
-	    this.uniqueIdentify=uniqueIdentify;    
-     }
+
+    public Double getSurplus() {
+        return surplus;
+    }
+
+    public void setSurplus(Double surplus) {
+        this.surplus = surplus;
+    }
+
     /**
-     * @return uniqueIdentify 
-     */
-     public String getUniqueIdentify(  ){ 
-	    return this.uniqueIdentify;    
-     }
-   
-     
-     
-   	/**
      * @param createTime 
      */
      public void setCreateTime(Timestamp createTime){

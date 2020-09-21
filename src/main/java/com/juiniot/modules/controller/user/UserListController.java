@@ -70,8 +70,6 @@ public class UserListController extends BaseController {
 			return "login";
 		}
 
-     	param.putValue(UserListParamKey.uniqueIdentify, this.allFuzzy(vo.getUniqueIdentify()));
-	 	 
      	param.putValue(UserListParamKey.createTime1, vo.getCreateTime1()); param.putValue(UserListParamKey.createTime2, vo.getCreateTime());
 
 	 	//数据过滤。若需要过滤数据，请自行在下面设置参数
@@ -163,7 +161,6 @@ public class UserListController extends BaseController {
 
 		String userId = Cookies.getValue(request, "userId");
 		String treeCode = Cookies.getValue(request, "treeCode");
-
 		if(StringUtil.isBlank(userId) || StringUtil.isBlank(treeCode)){
 			return BaseResponse.failure("请重新登录");
 		}
@@ -194,19 +191,14 @@ public class UserListController extends BaseController {
 
 		userListInfo.setTreeCode(treeCode + StringUtil.createNoncestr(4));
 
-		userListInfo.setMoney(vo.getMoney());
+		userListInfo.setMoney(0d);
+
+		userListInfo.setSurplus(0d);
 		
 		userListInfo.setCreateTime(new Timestamp(System.currentTimeMillis()));
-
 		try {
 			userListInfo.add();
-
-			userListInfo.setUniqueIdentify(userListInfo.getId()+ StringUtil.createNoncestr(5));
-
-			userListInfo.modify();
-
 			return BaseResponse.SUCCESS;
-			
 		} catch (BusinessException e) {
 			logger.error(e.getMessage(), e);
 			return BaseResponse.failure(e.getMessage());
@@ -236,8 +228,10 @@ public class UserListController extends BaseController {
 		//设值，请自行修正或删除不正确的设值
 		
 		userListInfo.setMobile(vo.getMobile());
-		
+
 		userListInfo.setName(vo.getName());
+
+		userListInfo.setPwd(vo.getPwd());
 		
 		try {
 			userListInfo.modify();
@@ -248,6 +242,42 @@ public class UserListController extends BaseController {
 			return BaseResponse.failure(e.getMessage());
 		}
 	
+	}
+
+	/**
+	 * 更新方法
+	 */
+	@ResponseBody
+	@RequestMapping(value = "user-recharge", method = RequestMethod.POST) //请求路径
+	public BaseResponse recharge(HttpServletRequest request,UserListVO vo) throws Exception{
+
+		//验证字段是否为空，请自行删除多于的验证和补全其他验证
+
+		if(null == vo.getSurplus() || vo.getSurplus() <= 0){
+			return BaseResponse.failure("充值金额必须大于0");
+		}
+
+		//检查ID值是否为空
+		if(vo.getId() == null){
+			return BaseResponse.failure("保存失败，请刷新页面再试试");
+		}
+		userListInfo = UserListInfo.findOne(vo.getId());
+
+		//设值，请自行修正或删除不正确的设值
+
+		userListInfo.setMoney(userListInfo.getMoney()+vo.getSurplus());
+
+		userListInfo.setSurplus(userListInfo.getSurplus() + vo.getSurplus());
+
+		try {
+			userListInfo.modify();
+			return BaseResponse.SUCCESS;
+
+		} catch (BusinessException e) {
+			logger.error(e.getMessage(), e);
+			return BaseResponse.failure(e.getMessage());
+		}
+
 	}
 	
 	/**
