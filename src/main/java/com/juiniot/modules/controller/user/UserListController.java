@@ -10,6 +10,7 @@ import com.juiniot.common.utils.Cookies;
 import com.juiniot.common.utils.StringUtil;
 import com.juiniot.common.web.preview.Authority;
 import com.juiniot.common.web.preview.NeedSession;
+import com.juiniot.modules.business.recharge.RechargeListInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -46,6 +47,9 @@ public class UserListController extends BaseController {
 
 	@Autowired
 	private UserListInfo userListInfo;
+
+	@Autowired
+	private RechargeListInfo rechargeListInfo;
     
     /**
 	 * 查询列表数据
@@ -252,6 +256,11 @@ public class UserListController extends BaseController {
 	public BaseResponse recharge(HttpServletRequest request,UserListVO vo) throws Exception{
 
 		//验证字段是否为空，请自行删除多于的验证和补全其他验证
+		String userId = Cookies.getValue(request, "userId");
+		String treeCode = Cookies.getValue(request, "treeCode");
+		if(StringUtil.isBlank(userId) || StringUtil.isBlank(treeCode)){
+			return BaseResponse.failure("请重新登录");
+		}
 
 		if(null == vo.getSurplus() || vo.getSurplus() <= 0){
 			return BaseResponse.failure("充值金额必须大于0");
@@ -262,6 +271,12 @@ public class UserListController extends BaseController {
 			return BaseResponse.failure("保存失败，请刷新页面再试试");
 		}
 		userListInfo = UserListInfo.findOne(vo.getId());
+
+		RechargeListInfo rechargeListInfo = new RechargeListInfo();
+		rechargeListInfo.setPrice(vo.getSurplus());
+		rechargeListInfo.setRechargeTime(new Timestamp(System.currentTimeMillis()));
+		rechargeListInfo.setUserId(userListInfo.getId());
+		rechargeListInfo.add();
 
 		//设值，请自行修正或删除不正确的设值
 

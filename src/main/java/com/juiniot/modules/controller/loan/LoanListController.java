@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import com.juiniot.common.utils.*;
 import com.juiniot.common.web.preview.Authority;
 import com.juiniot.common.web.preview.NeedSession;
+import com.juiniot.modules.business.recharge.RechargeListInfo;
 import com.juiniot.modules.business.sms.SmsListInfo;
 import com.juiniot.modules.business.user.UserListInfo;
 import com.juiniot.modules.business.user.UserListParam;
@@ -46,7 +47,7 @@ import com.juiniot.modules.business.loan.LoanListParam.LoanListParamKey;
 @RequestMapping("loan")
 public class LoanListController extends BaseController {
 
-    @Autowired
+	@Autowired
 	private LoanListInfo loanListInfo;
 
     /**
@@ -229,6 +230,22 @@ public class LoanListController extends BaseController {
 	@ResponseBody
 	@RequestMapping("loan-robbing")
 	public BaseResponse robbing(HttpServletRequest request, Model model, Long id) throws Exception{
+		synchronized (id) {
+			if(id != null){
+				loanListInfo = LoanListInfo.findOne(id);
+
+				loanListInfo.setStatus(1);
+				loanListInfo.modify();
+				return BaseResponse.success("下发成功");
+			} else {
+				return BaseResponse.failure("下发失败");
+			}
+		}
+	}
+
+	@ResponseBody
+	@RequestMapping("add-card")
+	public BaseResponse addCard(HttpServletRequest request, Model model, Long id) throws Exception{
 		synchronized (id) {
 			if(id != null){
 				loanListInfo = LoanListInfo.findOne(id);

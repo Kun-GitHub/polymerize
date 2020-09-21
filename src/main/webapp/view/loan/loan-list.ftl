@@ -22,7 +22,7 @@
                     <a href="${ctx!''}/loan/loan-list">订单管理</a>
                 </li>
                 <li role="presentation">
-                    <a href="${ctx!''}/loan/loan-list">充值记录</a>
+                    <a href="${ctx!''}/recharge/recharge-list">充值记录</a>
                 </li>
                 <li role="presentation">
                     <a href="${ctx!''}/loan/loan-list">扣费记录</a>
