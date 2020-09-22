@@ -81,8 +81,8 @@
                         <thead>
                         <tr>
                             <th data-sort="field:'userName'">商户昵称</th>
-                            <th data-sort="field:'price'">金额</th>
-                            <th data-sort="field:'rechargeTime'">添加时间</th>
+                            <th data-sort="field:'price'">充值金额</th>
+                            <th data-sort="field:'rechargeTime'">充值时间</th>
                         </tr>
                         </thead>
                         <tbody>

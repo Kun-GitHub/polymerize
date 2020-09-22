@@ -181,8 +181,14 @@ public class UserListInfo extends BaseBusiness {
          public Timestamp getCreateTime( ){ 
 	         return this.userListEntry.getCreateTime( );   
          }
-    
-    
+
+	public Double getProfit() {
+		return this.userListEntry.getProfit( );
+	}
+
+	public void setProfit(Double profit) {
+		this.userListEntry.setProfit(profit);
+	}
                
         /**
          * @param parentName 

@@ -161,7 +161,9 @@ public class UserListController extends BaseController {
 		if(null == vo.getRate()){
 			return BaseResponse.failure("费率不能为空");
 		}
-
+		if(0 < vo.getRate() || 100 > vo.getRate()){
+			return BaseResponse.failure("费率区间在0~100");
+		}
 		//设值，请自行修正或删除不正确的设值
 
 		String userId = Cookies.getValue(request, "userId");
@@ -199,6 +201,8 @@ public class UserListController extends BaseController {
 		userListInfo.setMoney(0d);
 
 		userListInfo.setSurplus(0d);
+
+		userListInfo.setProfit(0d);
 
 		userListInfo.setRate(vo.getRate());
 		
@@ -285,7 +289,7 @@ public class UserListController extends BaseController {
 
 		//设值，请自行修正或删除不正确的设值
 
-		userListInfo.setMoney(userListInfo.getMoney()+vo.getSurplus());
+		userListInfo.setMoney(userListInfo.getMoney() + vo.getSurplus());
 
 		userListInfo.setSurplus(userListInfo.getSurplus() + vo.getSurplus());
 

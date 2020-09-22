@@ -23,6 +23,7 @@ public class UserListEntry implements Serializable {
     private String  treeCode; //
     private Double  surplus; //
     private Double  rate; //
+    private Double  profit; //
     private Timestamp  createTime; //
     
      
@@ -183,5 +184,13 @@ public class UserListEntry implements Serializable {
 
     public void setRate(Double rate) {
         this.rate = rate;
+    }
+
+    public Double getProfit() {
+        return profit;
+    }
+
+    public void setProfit(Double profit) {
+        this.profit = profit;
     }
 }

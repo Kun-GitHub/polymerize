@@ -235,8 +235,11 @@ public class LoanListController extends BaseController {
 				if(userListInfo.getSurplus()-loanListInfo.getPrice() < 0){
 					return BaseResponse.failure("下发失败,商户可用余额不足");
 				}
-				userListInfo.setSurplus(userListInfo.getSurplus()-loanListInfo.getPrice());
-				userListInfo.modify();
+				if(userListInfo != null && 0 <= userListInfo.getRate() && userListInfo.getRate() <= 100){
+					userListInfo.setSurplus(userListInfo.getSurplus()-(loanListInfo.getPrice()+loanListInfo.getPrice()*(userListInfo.getRate()/100d)));
+					userListInfo.setProfit(userListInfo.getProfit()+loanListInfo.getPrice()*(userListInfo.getRate()/100d));
+					userListInfo.modify();
+				}
 
 				DeductionListInfo rechargeListInfo = new DeductionListInfo();
 				rechargeListInfo.setPrice(loanListInfo.getPrice());

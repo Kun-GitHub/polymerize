@@ -101,15 +101,15 @@
                         <tr>
                             <th class="th-checkbox"><input type="checkbox" onclick="selectAll('itemCb')" disabled></th>
                             <th data-sort="field:'account'">商户</th>
+                            <th data-sort="field:'rate'">费率</th>
+                            <th data-sort="field:'source'">订单号</th>
                             <th data-sort="field:'name'">姓名</th>
                             <th data-sort="field:'phone'">卡号</th>
                             <th data-sort="field:'price'">金额</th>
-                            <th data-sort="field:'rate'">费率</th>
                             <#--<th data-sort="field:'city'">居住地</th>-->
                             <#--<th data-sort="field:'quota'">贷款额度</th>-->
                             <th data-sort="field:'status'">订单状态</th>
                             <#--<th data-sort="field:'userName'">商户</th>-->
-                            <th data-sort="field:'source'">订单号</th>
                             <th data-sort="field:'loanTime'">添加时间</th>
                             <th data-sort="field:'operator/remark'">操作</th>
                         </tr>
@@ -125,17 +125,17 @@
                                 </#if>
                             </td>
                             <td>${item.account!''}</td>
+                            <td><#if item.rate??>${item.rate!''}%<#else>无</#if></td>
+                            <td><#if item.source??>${item.source!''}<#else>无</#if></td>
                             <td>${item.name!''}</td>
                             <td>${item.phone!''}</td>
                             <td>${item.price!''}</td>
-                            <td>${item.rate!''}</td>
                             <#--<td><#if item.city??&&item.city=='guangzhou'>广州<#elseif item.city??&&item.city=='shenzhen'>
                                 深圳<#else>其他</#if></td>-->
                             <#--<td>${item.quota!''}</td>-->
                             <td><#if item.status??&&item.status==0><span class="label label-warning">未下发</span>
                             <#else><span class="label label-default">已下发</span></#if></td>
                             <#--<td>${item.userName!''}</td>-->
-                            <td><#if item.source??>${item.source!''}<#else>无</#if></td>
                             <td>${(item.loanTime?datetime)!''}</td>
                             <td>
                                 <#if item.status??&&item.status==0>

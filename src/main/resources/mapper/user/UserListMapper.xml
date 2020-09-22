@@ -7,7 +7,7 @@
 
   <!-- 显示的记录对应的列-->
   <sql id="UserListColumns" >
-		    userlist.id as id,userlist.parent_id as parentId,userlist.account as account,userlist.mobile as mobile,userlist.pwd as pwd,userlist.name as name,userlist.money as money,userlist.tree_code as treeCode,userlist.surplus as surplus,userlist.rate as rate,userlist.create_time as createTime,userlist1.name as parentName
+		    userlist.id as id,userlist.parent_id as parentId,userlist.account as account,userlist.mobile as mobile,userlist.pwd as pwd,userlist.name as name,userlist.money as money,userlist.profit as profit,userlist.tree_code as treeCode,userlist.surplus as surplus,userlist.rate as rate,userlist.create_time as createTime,userlist1.name as parentName
   </sql>
   
   
@@ -35,6 +35,7 @@
                        <when test="order.columnName=='surplus'"> userlist.surplus ${order.type} </when>
                        <when test="order.columnName=='rate'"> userlist.rate ${order.type} </when>
                        <when test="order.columnName=='money'"> userlist.money ${order.type} </when>
+                       <when test="order.columnName=='profit'"> userlist.profit ${order.type} </when>
 				       <when test="order.columnName=='createTime'"> userlist.create_time ${order.type} </when>
 				       <when test="order.columnName=='mobile'"> userlist.mobile ${order.type} </when> 
 				       <when test="order.columnName=='name'"> userlist.name ${order.type} </when> 
@@ -97,8 +98,8 @@
    <!-- 新增记录 -->
    <insert id="insertUserList" useGeneratedKeys="true" keyProperty="userList.id">
 
-        INSERT INTO user_list (rate,surplus,money,create_time,mobile,name,pwd,tree_code,parent_id,account)
-        VALUES(#{userList.rate},#{userList.surplus},#{userList.money},#{userList.createTime},#{userList.mobile,jdbcType=VARCHAR},#{userList.name,jdbcType=VARCHAR},#{userList.pwd,jdbcType=VARCHAR},#{userList.treeCode,jdbcType=VARCHAR},#{userList.parentId,jdbcType=NUMERIC},#{userList.account,jdbcType=VARCHAR})
+        INSERT INTO user_list (rate,surplus,money,profit,create_time,mobile,name,pwd,tree_code,parent_id,account)
+        VALUES(#{userList.rate},#{userList.surplus},#{userList.money},#{userList.profit},#{userList.createTime},#{userList.mobile,jdbcType=VARCHAR},#{userList.name,jdbcType=VARCHAR},#{userList.pwd,jdbcType=VARCHAR},#{userList.treeCode,jdbcType=VARCHAR},#{userList.parentId,jdbcType=NUMERIC},#{userList.account,jdbcType=VARCHAR})
            
    </insert>
    
@@ -110,7 +111,8 @@
            <set>
                surplus=#{userList.surplus},
                rate=#{userList.rate},
-                money=#{userList.money},
+               money=#{userList.money},
+               profit=#{userList.profit},
                 create_time=#{userList.createTime},
                 mobile=#{userList.mobile,jdbcType=VARCHAR},
                 name=#{userList.name,jdbcType=VARCHAR},

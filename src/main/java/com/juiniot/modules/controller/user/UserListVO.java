@@ -31,6 +31,8 @@ public class UserListVO extends BaseValueObject {
     private Double  surplus; //
 
     private Double  rate; //
+
+    private Double  profit; //
    
     private Timestamp createTime; // 
     private Timestamp createTime1; //  开始时间
@@ -230,5 +232,13 @@ public class UserListVO extends BaseValueObject {
 
     public void setRate(Double rate) {
         this.rate = rate;
+    }
+
+    public Double getProfit() {
+        return profit;
+    }
+
+    public void setProfit(Double profit) {
+        this.profit = profit;
     }
 }

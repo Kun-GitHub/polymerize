@@ -80,6 +80,7 @@
                             <th data-sort="field:'mobile'">联系方式</th>
                             <th data-sort="field:'rate'">费率</th>
                             <th data-sort="field:'money'">总金额</th>
+                            <th data-sort="field:'profit'">总利润</th>
                             <th data-sort="field:'surplus'">可用余额</th>
                             <#if page.list?? &&page.list?size!=1><th>操作</th></#if>
                             <#if page.list?? &&page.list?size!=1><th>充值</th></#if>
@@ -101,8 +102,9 @@
                             <td>${item.name!''}</td>
                             <td>${item.parentName!''}</td>
                             <td>${item.mobile!''}</td>
-                            <td>${item.rate!''}</td>
+                            <td><#if item.rate??>${item.rate!''}%<#else>无</#if></td>
                             <td>${item.money!''}</td>
+                            <td>${item.profit!''}</td>
                             <td>${item.surplus!''}</td>
                             <#if page.list?? &&page.list?size!=1>
                                 <td>

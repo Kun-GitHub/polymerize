@@ -68,9 +68,9 @@
                 <form method="get" id="searchForm">
                     <h4 class="sub-header" style="clear:both;">
                         <input class="form-control" type="text" name="userName" value="${vo.userName!''}" placeholder="商户昵称" style="display: inline-block; width: auto;"/>
-                        <input type="text" name="deductionTime1" value="${vo.deductionTime1!''}" placeholder="开始充值时间  " class="form-control time_input" style="display: inline-block; width: auto;"
+                        <input type="text" name="deductionTime1" value="${vo.deductionTime1!''}" placeholder="开始扣费时间  " class="form-control time_input" style="display: inline-block; width: auto;"
                                onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" >~
-                        <input type="text" name="deductionTime2" value="${vo.deductionTime2!''}" placeholder="结束充值时间  " class="form-control time_input" style="display: inline-block; width: auto;"
+                        <input type="text" name="deductionTime2" value="${vo.deductionTime2!''}" placeholder="结束扣费时间  " class="form-control time_input" style="display: inline-block; width: auto;"
                                onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" ><br/><br/>
                         <button type="submit" class="btn btn-primary">查询</button>
                         <button type="button" class="btn btn-default" onclick="resetForm('searchForm')"> 重置</button>
@@ -81,8 +81,8 @@
                         <thead>
                         <tr>
                             <th data-sort="field:'userName'">商户昵称</th>
-                            <th data-sort="field:'price'">金额</th>
-                            <th data-sort="field:'deductionTime'">添加时间</th>
+                            <th data-sort="field:'price'">扣费金额</th>
+                            <th data-sort="field:'deductionTime'">扣费时间</th>
                         </tr>
                         </thead>
                         <tbody>
