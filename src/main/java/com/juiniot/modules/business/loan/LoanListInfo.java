@@ -199,22 +199,23 @@ public class LoanListInfo extends BaseBusiness {
          public String getRemark( ){ 
 	         return this.loanListEntry.getRemark( );   
          }
-    
-    
+
+	public Double getRate() {
+		return this.loanListEntry.getRate( );
+	}
+
+	public void setRate(Double rate) {
+		this.loanListEntry.setRate(rate);
+	}
+
+	public String getAccount() {
+		return this.loanListEntry.getAccount( );
+	}
+
+	public void setAccount(String account) {
+		this.loanListEntry.setAccount(account);
+	}
                
-        /**
-         * @param userName 
-         */
-         private void setUserName(String userName){
-	         this.loanListEntry.setUserName(userName);
-         }
-         
-        /**
-          * @return userName 
-         */
-         public String getUserName( ){ 
-	         return this.loanListEntry.getUserName( );     
-         }
 
 	public Double getPrice() {
 		return this.loanListEntry.getPrice();

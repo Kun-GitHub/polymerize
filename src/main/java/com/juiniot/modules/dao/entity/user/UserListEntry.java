@@ -22,6 +22,7 @@ public class UserListEntry implements Serializable {
     private Double  money; // 
     private String  treeCode; //
     private Double  surplus; //
+    private Double  rate; //
     private Timestamp  createTime; //
     
      
@@ -175,7 +176,12 @@ public class UserListEntry implements Serializable {
     public String getParentName(  ){ 
 	    return this.parentName;    
     }
-    
-    
-    
+
+    public Double getRate() {
+        return rate;
+    }
+
+    public void setRate(Double rate) {
+        this.rate = rate;
+    }
 }

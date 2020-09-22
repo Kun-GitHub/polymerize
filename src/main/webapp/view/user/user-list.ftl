@@ -78,6 +78,7 @@
                             <th data-sort="field:'name'">昵称</th>
                             <th data-sort="field:'parentName'">上级</th>
                             <th data-sort="field:'mobile'">联系方式</th>
+                            <th data-sort="field:'rate'">费率</th>
                             <th data-sort="field:'money'">总金额</th>
                             <th data-sort="field:'surplus'">可用余额</th>
                             <#if page.list?? &&page.list?size!=1><th>操作</th></#if>
@@ -100,6 +101,7 @@
                             <td>${item.name!''}</td>
                             <td>${item.parentName!''}</td>
                             <td>${item.mobile!''}</td>
+                            <td>${item.rate!''}</td>
                             <td>${item.money!''}</td>
                             <td>${item.surplus!''}</td>
                             <#if page.list?? &&page.list?size!=1>
@@ -158,6 +160,13 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
+                                    <label class="col-sm-3 control-label"><span class="red">*</span> 费率：</label>
+                                    <div class="col-sm-7">
+                                        <input type="number" class="form-control" placeholder="" name="rate"
+                                               data-rule-required="true">
+                                    </div>
+                                </div>
+                                <div class="form-group">
                                     <label class="col-sm-3 control-label"><span class="red">*</span> 密码：</label>
                                     <div class="col-sm-7">
                                         <input type="password" class="form-control" placeholder="" name="pwd"
@@ -209,6 +218,13 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
+                                    <label class="col-sm-3 control-label"><span class="red">*</span> 费率：</label>
+                                    <div class="col-sm-7">
+                                        <input type="number" class="form-control" placeholder="" name="rate"
+                                               data-rule-required="true">
+                                    </div>
+                                </div>
+                                <div class="form-group">
                                     <label class="col-sm-3 control-label"><span class="red">*</span> 密码：</label>
                                     <div class="col-sm-7">
                                         <input type="password" class="form-control" placeholder="" name="pwd"
@@ -256,7 +272,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                            <button type="button" class="btn btn-primary" onclick="update()">保存</button>
+                            <button type="button" class="btn btn-primary" onclick="recharge()">保存</button>
                         </div>
                     </div>
                 </div>
@@ -307,7 +323,7 @@
                             }, "json");
                 }
 
-                function update() {
+                function recharge() {
                     if (!$("#editForm").valid()) {
                         return;
                     }

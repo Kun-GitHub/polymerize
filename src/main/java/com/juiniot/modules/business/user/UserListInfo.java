@@ -161,11 +161,11 @@ public class UserListInfo extends BaseBusiness {
 	         return this.userListEntry.getTreeCode( );   
          }
      
-	public Double getSurplus() {
+         public Double getSurplus() {
 		return this.userListEntry.getSurplus();
 	}
 
-	public void setSurplus(Double surplus) {
+		public void setSurplus(Double surplus) {
 		this.userListEntry.setSurplus(surplus);
 	}
 
@@ -197,8 +197,14 @@ public class UserListInfo extends BaseBusiness {
          public String getParentName( ){ 
 	         return this.userListEntry.getParentName( );     
          }
-    
-    
+
+		public Double getRate() {
+			return this.userListEntry.getRate( );
+		}
+
+		public void setRate(Double rate) {
+			this.userListEntry.setRate(rate);
+		}
 	
 	//实现对应具体的业务功能
 	//*****************************************************************************************************************

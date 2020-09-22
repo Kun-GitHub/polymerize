@@ -27,8 +27,10 @@ public class UserListVO extends BaseValueObject {
  	private Double  money; //  
      
  	private String  treeCode; //
-     
- 	private Double  surplus; //
+
+    private Double  surplus; //
+
+    private Double  rate; //
    
     private Timestamp createTime; // 
     private Timestamp createTime1; //  开始时间
@@ -221,8 +223,12 @@ public class UserListVO extends BaseValueObject {
      public String getParentName(  ){ 
 	    return this.parentName;    
      }
-   
-    
-    
-    
+
+    public Double getRate() {
+        return rate;
+    }
+
+    public void setRate(Double rate) {
+        this.rate = rate;
+    }
 }

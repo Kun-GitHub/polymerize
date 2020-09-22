@@ -20,7 +20,7 @@ public class LoanListParam {
 	 * LoanList参数key枚举类型
 	 */
 	public enum LoanListParamKey {
-	    id, userId, name, phone, sex, city, quota, status, loanTime, loanTime1, loanTime2, source, remark, userName, treeCode, price
+	    id, userId, name, phone, sex, city, quota, status, loanTime, loanTime1, loanTime2, source, remark, account, treeCode, price, rate
     }
     
     //构造函数，初始化参数默认值
@@ -49,11 +49,13 @@ public class LoanListParam {
      	keyMap.put(LoanListParamKey.remark, null);
 
 
-		keyMap.put(LoanListParamKey.userName, null);
+		keyMap.put(LoanListParamKey.account, null);
 
 		keyMap.put(LoanListParamKey.treeCode, null);
 
 		keyMap.put(LoanListParamKey.price, null);
+
+		keyMap.put(LoanListParamKey.rate, null);
 	 
 	}
 	

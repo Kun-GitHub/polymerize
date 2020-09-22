@@ -26,9 +26,10 @@ public class LoanListEntry implements Serializable {
     private String  remark; //
     private Double price;
 
-    private String  userName; //
+    private String  account; //
     private String  treeCode; //
-     
+    private Double rate; //
+
     //默认空构造函数
 	public LoanListEntry(){
 	
@@ -180,22 +181,22 @@ public class LoanListEntry implements Serializable {
     public String getRemark(  ){ 
 	    return this.remark;    
     }
-    
-    
-      
-    /**
-     * @param userName 
-     */
-	public void setUserName(String userName){
-	   	this.userName=userName;    
-    }
-    /**
-     * @return userName 
-     */
-    public String getUserName(  ){ 
-	    return this.userName;    
+
+    public String getAccount() {
+        return account;
     }
 
+    public void setAccount(String account) {
+        this.account = account;
+    }
+
+    public Double getRate() {
+        return rate;
+    }
+
+    public void setRate(Double rate) {
+        this.rate = rate;
+    }
 
     public String getTreeCode() {
         return treeCode;

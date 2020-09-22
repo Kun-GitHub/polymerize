@@ -41,9 +41,9 @@ public class LoanListVO extends BaseValueObject {
    
     
       
- 	private String  userName; //
+ 	private String  account; //
     private String  treeCode; //
-   
+   private Double rate;
    
 	 
       
@@ -234,24 +234,23 @@ public class LoanListVO extends BaseValueObject {
      public String getRemark(  ){ 
 	    return this.remark;    
      }
-   
-    
-    
-      
-      
- 	/**
-     * @param userName 
-     */
-     public void setUserName(String userName){
-	    this.userName=userName;    
-     }
-    /**
-     * @return userName 
-     */
-     public String getUserName(  ){ 
-	    return this.userName;    
-     }
 
+
+    public Double getRate() {
+        return rate;
+    }
+
+    public void setRate(Double rate) {
+        this.rate = rate;
+    }
+
+    public String getAccount() {
+        return account;
+    }
+
+    public void setAccount(String account) {
+        this.account = account;
+    }
 
     public String getTreeCode() {
         return treeCode;

@@ -7,7 +7,7 @@
 
   <!-- 显示的记录对应的列-->
   <sql id="LoanListColumns" >
-		    loanlist.id as id,loanlist.user_id as userId,loanlist.name as name,loanlist.phone as phone,loanlist.sex as sex,loanlist.city as city,loanlist.quota as quota,loanlist.status as status,loanlist.loan_time as loanTime,loanlist.source as source,loanlist.remark as remark,userlist.name as userName,userlist.tree_code as treeCode,loanlist.price as price
+		    loanlist.id as id,loanlist.user_id as userId,loanlist.name as name,loanlist.phone as phone,loanlist.sex as sex,loanlist.city as city,loanlist.quota as quota,loanlist.status as status,loanlist.loan_time as loanTime,loanlist.source as source,loanlist.remark as remark,userlist.account as account,userlist.rate as rate,userlist.tree_code as treeCode,loanlist.price as price
   </sql>
   
   
@@ -25,8 +25,9 @@
            <if test="paramMap.userId != null"> AND loanlist.user_id = #{paramMap.userId}</if>
            <if test="paramMap.price != null"> AND loanlist.price = #{paramMap.price}</if>
 
-           <if test="paramMap.userName != null and paramMap.userName != '' "> AND userlist.name like #{paramMap.userName}</if>
+           <if test="paramMap.account != null and paramMap.account != '' "> AND userlist.account like #{paramMap.account}</if>
            <if test="paramMap.treeCode != null and paramMap.treeCode != '' "> AND userlist.tree_code like #{paramMap.treeCode}</if>
+           <if test="paramMap.rate != null and paramMap.rate != '' "> AND userlist.rate like #{paramMap.rate}</if>
        </where>
   </sql>
 
@@ -48,7 +49,8 @@
                        <when test="order.columnName=='source'"> loanlist.source ${order.type} </when>
 				       <when test="order.columnName=='userId'"> loanlist.user_id ${order.type} </when> 
 				       <when test="order.columnName=='status'"> loanlist.status ${order.type} </when>
-                       <when test="order.columnName=='userName'"> userlist.name ${order.type} </when>
+                       <when test="order.columnName=='account'"> userlist.account ${order.type} </when>
+                       <when test="order.columnName=='rate'"> userlist.name ${order.rate} </when>
                        <when test="order.columnName=='treeCode'"> userlist.tree_code ${order.type} </when>
                        
 				       <when test="order.columnName=='id'"> loanlist.id  ${order.type}  </when>
@@ -121,7 +123,7 @@
                 phone=#{loanList.phone,jdbcType=VARCHAR},
                 city=#{loanList.city,jdbcType=VARCHAR},
                 sex=#{loanList.sex,jdbcType=VARCHAR},
-               price=#{loanList.price},
+                price=#{loanList.price},
                 quota=#{loanList.quota,jdbcType=NUMERIC},
                 name=#{loanList.name,jdbcType=VARCHAR},
                 remark=#{loanList.remark,jdbcType=VARCHAR},

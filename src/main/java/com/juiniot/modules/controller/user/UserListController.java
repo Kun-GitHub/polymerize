@@ -161,6 +161,10 @@ public class UserListController extends BaseController {
 			return BaseResponse.failure("密码不能为空");
 		}
 
+		if(null == vo.getRate()){
+			return BaseResponse.failure("费率不能为空");
+		}
+
 		//设值，请自行修正或删除不正确的设值
 
 		String userId = Cookies.getValue(request, "userId");
@@ -198,6 +202,8 @@ public class UserListController extends BaseController {
 		userListInfo.setMoney(0d);
 
 		userListInfo.setSurplus(0d);
+
+		userListInfo.setRate(vo.getRate());
 		
 		userListInfo.setCreateTime(new Timestamp(System.currentTimeMillis()));
 		try {
@@ -234,6 +240,8 @@ public class UserListController extends BaseController {
 		userListInfo.setMobile(vo.getMobile());
 
 		userListInfo.setName(vo.getName());
+
+		userListInfo.setRate(vo.getRate());
 
 		userListInfo.setPwd(vo.getPwd());
 		

@@ -20,7 +20,7 @@ public class UserListParam {
 	 * UserList参数key枚举类型
 	 */
 	public enum UserListParamKey {
-	    id, parentId, account, mobile, pwd, name, money, treeCode, uniqueIdentify, createTime, createTime1, createTime2, parentName
+	    id, parentId, account, mobile, pwd, name, money, treeCode, createTime, createTime1, createTime2, parentName, rate, surplus
     }
     
     //构造函数，初始化参数默认值
@@ -41,8 +41,10 @@ public class UserListParam {
      	keyMap.put(UserListParamKey.money, null);
 	  
      	keyMap.put(UserListParamKey.treeCode, null);
-	  
-     	keyMap.put(UserListParamKey.uniqueIdentify, null);
+
+		keyMap.put(UserListParamKey.surplus, null);
+
+		keyMap.put(UserListParamKey.rate, null);
 	  
      	keyMap.put(UserListParamKey.createTime1, null); keyMap.put(UserListParamKey.createTime2, null);
 	 

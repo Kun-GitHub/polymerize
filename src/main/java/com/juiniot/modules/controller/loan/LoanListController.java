@@ -68,21 +68,15 @@ public class LoanListController extends BaseController {
 
 		param1.putValue(LoanListParamKey.name, this.allFuzzy(vo.getName()));
 
-		param1.putValue(LoanListParamKey.userName, this.allFuzzy(vo.getUserName()));
+		param1.putValue(LoanListParamKey.account, this.allFuzzy(vo.getAccount()));
 	 	 
      	param1.putValue(LoanListParamKey.phone, this.allFuzzy(vo.getPhone()));
 	 	 
-     	param1.putValue(LoanListParamKey.status, vo.getStatus());
-	 	 
+
      	param1.putValue(LoanListParamKey.loanTime1, vo.getLoanTime1());
 
      	param1.putValue(LoanListParamKey.loanTime2, vo.getLoanTime());
 
-		param1.putValue(LoanListParamKey.source, this.allFuzzy(vo.getSource()));
-
-	 	//数据过滤。若需要过滤数据，请自行在下面设置参数
-	 	
-	 	
 	 	//将查询参数转为HashMap
 		HashMap<LoanListParamKey, Object> keyMap1 = param1.getKeyMap();
 		
@@ -101,9 +95,6 @@ public class LoanListController extends BaseController {
 
 		//获取分页模型对象
 		PageModel<LoanListInfo> pm = this.getPageModel(vo.getPage(), totalRows, vo.getPageSize(), list1);
-
-		String userId = Cookies.getValue(request, "userId");
-		UserListInfo userListInfo = UserListInfo.findOne(Long.valueOf(userId));
 
 		//将数据集合返回到页面端
 		model.addAttribute("type", type);
