@@ -48,9 +48,6 @@ public class UserListController extends BaseController {
 	@Autowired
 	private UserListInfo userListInfo;
 
-	@Autowired
-	private RechargeListInfo rechargeListInfo;
-    
     /**
 	 * 查询列表数据
 	 */

@@ -21,10 +21,10 @@
                 <li role="presentation">
                     <a href="${ctx!''}/loan/loan-list">订单管理</a>
                 </li>
-                <li role="presentation" class="active">
+                <li role="presentation">
                     <a href="${ctx!''}/recharge/recharge-list">充值记录</a>
                 </li>
-                <li role="presentation">
+                <li role="presentation" class="active">
                     <a href="${ctx!''}/deduction/deduction-list">扣费记录</a>
                 </li>
                 <#--<#if type??&&type=='admin'>
@@ -49,7 +49,7 @@
 <#--                    <#if type == 'admin'>-->
                     <#--<div class="col-xs-3 col-sm-1 placeholder">
                         <div class="thumbnail tile tile-medium tile-blue">
-                            <a href="#" class="fa-links" data-toggle="modal" data-target="#addRechargeInfo">
+                            <a href="#" class="fa-links" data-toggle="modal" data-target="#addDeductionInfo">
                                 <i class="icon-plus-sign-alt icon-2x"></i>
                                 <h5>新增</h5>
                             </a>
@@ -68,9 +68,9 @@
                 <form method="get" id="searchForm">
                     <h4 class="sub-header" style="clear:both;">
                         <input class="form-control" type="text" name="userName" value="${vo.userName!''}" placeholder="商户昵称" style="display: inline-block; width: auto;"/>
-                        <input type="text" name="rechargeTime1" value="${vo.rechargeTime1!''}" placeholder="开始充值时间  " class="form-control time_input" style="display: inline-block; width: auto;"
+                        <input type="text" name="deductionTime1" value="${vo.deductionTime1!''}" placeholder="开始充值时间  " class="form-control time_input" style="display: inline-block; width: auto;"
                                onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" >~
-                        <input type="text" name="rechargeTime2" value="${vo.rechargeTime2!''}" placeholder="结束充值时间  " class="form-control time_input" style="display: inline-block; width: auto;"
+                        <input type="text" name="deductionTime2" value="${vo.deductionTime2!''}" placeholder="结束充值时间  " class="form-control time_input" style="display: inline-block; width: auto;"
                                onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" ><br/><br/>
                         <button type="submit" class="btn btn-primary">查询</button>
                         <button type="button" class="btn btn-default" onclick="resetForm('searchForm')"> 重置</button>
@@ -82,7 +82,7 @@
                         <tr>
                             <th data-sort="field:'userName'">商户昵称</th>
                             <th data-sort="field:'price'">金额</th>
-                            <th data-sort="field:'rechargeTime'">添加时间</th>
+                            <th data-sort="field:'deductionTime'">添加时间</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -90,7 +90,7 @@
                         <tr>
                             <td>${item.userName!''}</td>
                             <td>${item.price!''}</td>
-                            <td>${(item.rechargeTime?datetime)!''}</td>
+                            <td>${(item.deductionTime?datetime)!''}</td>
                         </tr>
                         </#list>
                         </tbody>

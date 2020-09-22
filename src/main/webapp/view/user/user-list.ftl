@@ -25,7 +25,7 @@
                     <a href="${ctx!''}/recharge/recharge-list">充值记录</a>
                 </li>
                 <li role="presentation">
-                    <a href="${ctx!''}/loan/loan-list">扣费记录</a>
+                    <a href="${ctx!''}/deduction/deduction-list">扣费记录</a>
                 </li>
                 <#--<#if type??&&type=='admin'>
                     <li role="presentation">

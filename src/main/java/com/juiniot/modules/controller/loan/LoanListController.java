@@ -10,7 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import com.juiniot.common.utils.*;
 import com.juiniot.common.web.preview.Authority;
 import com.juiniot.common.web.preview.NeedSession;
+import com.juiniot.modules.business.deduction.DeductionListInfo;
 import com.juiniot.modules.business.recharge.RechargeListInfo;
+import com.juiniot.modules.business.recharge.RechargeListParam;
 import com.juiniot.modules.business.sms.SmsListInfo;
 import com.juiniot.modules.business.user.UserListInfo;
 import com.juiniot.modules.business.user.UserListParam;
@@ -65,6 +67,10 @@ public class LoanListController extends BaseController {
 
 		//设置查询参数，请自行修改或删除不需要的参数
 		LoanListParam param1 = new LoanListParam();
+
+		if(!StringUtil.isBlank(treeCode)){
+			param1.putValue(LoanListParamKey.treeCode, this.allFuzzy(treeCode));
+		}
 
 		param1.putValue(LoanListParamKey.name, this.allFuzzy(vo.getName()));
 
@@ -225,21 +231,18 @@ public class LoanListController extends BaseController {
 			if(id != null){
 				loanListInfo = LoanListInfo.findOne(id);
 
-				loanListInfo.setStatus(1);
-				loanListInfo.modify();
-				return BaseResponse.success("下发成功");
-			} else {
-				return BaseResponse.failure("下发失败");
-			}
-		}
-	}
+				UserListInfo userListInfo = UserListInfo.findOne(loanListInfo.getUserId());
+				if(userListInfo.getSurplus()-loanListInfo.getPrice() < 0){
+					return BaseResponse.failure("下发失败,商户可用余额不足");
+				}
+				userListInfo.setSurplus(userListInfo.getSurplus()-loanListInfo.getPrice());
+				userListInfo.modify();
 
-	@ResponseBody
-	@RequestMapping("add-card")
-	public BaseResponse addCard(HttpServletRequest request, Model model, Long id) throws Exception{
-		synchronized (id) {
-			if(id != null){
-				loanListInfo = LoanListInfo.findOne(id);
+				DeductionListInfo rechargeListInfo = new DeductionListInfo();
+				rechargeListInfo.setPrice(loanListInfo.getPrice());
+				rechargeListInfo.setDeductionTime(new Timestamp(System.currentTimeMillis()));
+				rechargeListInfo.setUserId(loanListInfo.getUserId());
+				rechargeListInfo.add();
 
 				loanListInfo.setStatus(1);
 				loanListInfo.modify();
@@ -249,7 +252,6 @@ public class LoanListController extends BaseController {
 			}
 		}
 	}
-
 
 	/**
 	 * 更新方法

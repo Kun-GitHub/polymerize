@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.juiniot.modules.dao.mapper.deduction.DeductionListMapper">
+
+  <!-- 以下配置是系统自动生成的 -->
+
+  <!-- 显示的记录对应的列-->
+  <sql id="DeductionListColumns" >
+		    deductionlist.id as id,deductionlist.user_id as userId,deductionlist.deduction_time as deductionTime,userlist.name as userName,userlist.tree_code as treeCode,deductionlist.price as price
+  </sql>
+  
+  
+  <!-- 列表对应的查询条件组合  -->
+  <sql id="queryOptions">
+       <where>
+            	  <if test="paramMap.deductionTime != null"> AND deductionlist.deduction_time = #{paramMap.deductionTime}</if><if test="paramMap.deductionTime1 != null"> AND deductionlist.deduction_time &gt;= #{paramMap.deductionTime1}</if><if test="paramMap.deductionTime2!=null"> AND deductionlist.deduction_time &lt;= #{paramMap.deductionTime2}</if>
+           <if test="paramMap.userId != null"> AND deductionlist.user_id = #{paramMap.userId}</if>
+           <if test="paramMap.price != null"> AND deductionlist.price = #{paramMap.price}</if>
+
+           <if test="paramMap.userName != null and paramMap.userName != '' "> AND userlist.name like #{paramMap.userName}</if>
+           <if test="paramMap.treeCode != null and paramMap.treeCode != '' "> AND userlist.tree_code like #{paramMap.treeCode}</if>
+       </where>
+  </sql>
+
+
+  <!-- 列表查询对应的排序选项  -->
+  <sql id="orderControl">
+       <if test="orderList!=null">
+		  <trim prefix="ORDER BY" prefixOverrides=",">
+				<foreach collection="orderList" item="order" open=""  separator="," close="" >
+				   <choose> 
+				       <when test="order.columnName=='deductionTime'"> deductionlist.deduction_time ${order.type} </when> 
+                       <when test="order.columnName=='price'"> deductionlist.price ${order.type} </when>
+                       <when test="order.columnName=='userName'"> userlist.name ${order.type} </when>
+                       <when test="order.columnName=='treeCode'"> userlist.tree_code ${order.type} </when>
+                       
+				       <when test="order.columnName=='id'"> deductionlist.id  ${order.type}  </when>
+				       
+				  </choose>
+			 </foreach>
+		 </trim>
+	   </if>
+  </sql>
+
+ 
+  <!-- 列表查询对应的表关系SQL  -->
+  <sql id="querySqlMain">
+			  deduction_list  deductionlist LEFT JOIN user_list userlist ON deductionlist.user_id = userlist.id
+  </sql>
+
+  
+   
+   <!-- 根据ID查询记录 -->
+   <select id="findOne" resultType="com.juiniot.modules.dao.entity.deduction.DeductionListEntry">
+	     SELECT  <include refid="DeductionListColumns"/>              
+		    FROM <include refid="querySqlMain"/>
+			where deductionlist.id=#{id}
+   </select>
+   
+
+
+   <!-- 返回记录总数的语句 -->
+   <select id="queryDeductionListsRecordCount" resultType="int">
+        SELECT count(*) num  FROM  <include refid="querySqlMain"/>
+        <include refid="queryOptions"/> 
+   </select>
+   
+   
+    <!-- 分页查询对应的记录 -->
+   <select id="queryDeductionLists" resultType="com.juiniot.modules.dao.entity.deduction.DeductionListEntry">
+      
+	   SELECT <include refid="DeductionListColumns"/>   
+	   		FROM <include refid="querySqlMain"/>
+		         <include refid="queryOptions"/>
+		         <include refid="orderControl"/>
+		    LIMIT ${startRow},${pageSize} 
+   </select>
+   
+   <!-- 不分页查询所有记录 -->
+   <select id="queryAll" resultType="com.juiniot.modules.dao.entity.deduction.DeductionListEntry">
+      
+	   SELECT <include refid="DeductionListColumns"/>   
+	   		FROM <include refid="querySqlMain"/>
+		         <include refid="queryOptions"/>
+		         <include refid="orderControl"/>
+   </select>
+   
+
+   <!-- 新增记录 -->
+   <insert id="insertDeductionList" useGeneratedKeys="true" keyProperty="deductionList.id">
+
+        INSERT INTO deduction_list (price,deduction_time,user_id)
+        VALUES(#{deductionList.price},#{deductionList.deductionTime},#{deductionList.userId,jdbcType=NUMERIC})
+           
+   </insert>
+   
+   
+   
+   <!-- 更新记录 -->       
+   <update id="updateDeductionList" >
+           UPDATE deduction_list 
+           <set>
+                deduction_time=#{deductionList.deductionTime},
+               price=#{deductionList.price},
+                user_id=#{deductionList.userId,jdbcType=NUMERIC},
+	   </set>
+	       WHERE id = #{deductionList.id}
+   </update> 
+   
+
+
+   
+   <!-- 删除记录 -->
+   <delete id="deleteDeductionList">
+          DELETE FROM deduction_list
+          WHERE id in 
+          <foreach collection="ids" item="id" open="("  separator="," close=")" >
+                #{id}
+          </foreach>
+   </delete>
+  
+  
+  
+  <!-- 检查是字段值是否已存在 -->
+   <select id="isExist" resultType="int">
+   		SELECT COUNT(1) FROM deduction_list WHERE ${columnName} = #{columnValue}
+   		<if test="id != null">
+   			AND id != #{id}
+   		</if>
+   </select>
+   
+   <!-- 以下是自定义的配置信息，配置要写上注释用途 -->
+   
+   
+   
+   
+
+</mapper>
+
+
+
