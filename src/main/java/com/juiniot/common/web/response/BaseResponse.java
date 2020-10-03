@@ -11,80 +11,94 @@ import org.apache.commons.lang.builder.ToStringStyle;
 public class BaseResponse {
 
 	// 请求结果
-	private boolean success = true;
+	private int resultCode = -1;
 
 	// 返回信息
-	private Object message;
+	private String message;
+
+	// 返回信息
+	private String resultData;
 
 	/**
 	 * 返回{success：true}
 	 */
-	public static final BaseResponse SUCCESS = new BaseResponse(true);
+	public static final BaseResponse SUCCESS = new BaseResponse(0);
 	
 	/**
 	 * 返回{success：false}
 	 */
-	public static final BaseResponse FAILURE = new BaseResponse(false);
+	public static final BaseResponse FAILURE = new BaseResponse(-1);
 
 	public BaseResponse() {
 		
 	}
 
-	public BaseResponse(boolean success) {
-		this.success = success;
+	public BaseResponse(int resultCode) {
+		this.resultCode = resultCode;
 	}
 
-	public BaseResponse(boolean success, Object message) {
-		this.success = success;
+	public BaseResponse(int resultCode, String message) {
+		this.resultCode = resultCode;
 		this.message = message;
+	}
+
+	public BaseResponse(int resultCode, String message, String resultData) {
+		this.resultCode = resultCode;
+		this.message = message;
+		this.resultData = resultData;
 	}
 
 	/**
 	 * 返回{success：true,message:"message"}
 	 */
-	public static BaseResponse success(Object message) {
-		return new BaseResponse(true, message);
+	public static BaseResponse success(String message) {
+		return new BaseResponse(0, message);
+	}
+	public static BaseResponse success(String message, String resultData) {
+		return new BaseResponse(0, message, resultData);
 	}
 
 	/**
 	 * 返回{success：false,message:"message"}
 	 */
-	public static BaseResponse failure(Object message) {
-		return new BaseResponse(false, message);
+	public static BaseResponse failure(String message) {
+		return new BaseResponse(-1, message);
 	}
 
 	/**
 	 * 判断是否成功
 	 * @return success
 	 */
-	public boolean isSuccess() {
-		return success;
+	public int getResultCode() {
+		return resultCode;
 	}
 
 	/**
 	 * 设置成功标识
 	 */
-	public void setSuccess(boolean success) {
-		this.success = success;
+	public void setResultCode(int resultCode) {
+		this.resultCode = resultCode;
 	}
 
 	/**
 	 * 获取返回信息
 	 */
-	public Object getMessage() {
+	public String getMessage() {
 		return message;
 	}
 
 	/**
 	 * 设置返回信息
 	 */
-	public void setMessage(Object message) {
+	public void setMessage(String message) {
 		this.message = message;
 	}
 
-	@Override
-	public String toString() {
-		return ToStringBuilder.reflectionToString(this,ToStringStyle.SHORT_PREFIX_STYLE);
+	public String getResultData() {
+		return resultData;
 	}
 
+	public void setResultData(String resultData) {
+		this.resultData = resultData;
+	}
 }

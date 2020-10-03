@@ -175,16 +175,16 @@ public class LoanListInfo extends BaseBusiness {
          }
      
         /**
-         * @param source 
+         * @param orderNumber
          */
-         public void setSource(String source){
-	         this.loanListEntry.setSource(source);     
+         public void setOrderNumber(String orderNumber){
+	         this.loanListEntry.setOrderNumber(orderNumber);
          }
         /**
          * @return source 
          */
-         public String getSource( ){ 
-	         return this.loanListEntry.getSource( );   
+         public String getOrderNumber( ){
+	         return this.loanListEntry.getOrderNumber( );
          }
      
         /**

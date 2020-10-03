@@ -161,7 +161,7 @@ public class UserListController extends BaseController {
 		if(null == vo.getRate()){
 			return BaseResponse.failure("费率不能为空");
 		}
-		if(0 < vo.getRate() || 100 > vo.getRate()){
+		if(0 > vo.getRate() || 100 < vo.getRate()){
 			return BaseResponse.failure("费率区间在0~100");
 		}
 		//设值，请自行修正或删除不正确的设值

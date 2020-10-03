@@ -22,7 +22,7 @@ public class LoanListEntry implements Serializable {
     private Long  quota; //贷款额度 
     private Integer  status; //0：未联系，1：无效信息，2：无需贷款，3：已放款； 
     private Timestamp  loanTime; // 
-    private String  source; // 
+    private String orderNumber; //
     private String  remark; //
     private Double price;
 
@@ -157,16 +157,16 @@ public class LoanListEntry implements Serializable {
     }
      
     /**
-     * @param source 
+     * @param orderNumber
      */
-    public void setSource(String source){
-	    this.source=source;    
+    public void setOrderNumber(String orderNumber){
+	    this.orderNumber = orderNumber;
     }
     /**
      * @return source 
      */
-    public String getSource(  ){ 
-	    return this.source;    
+    public String getOrderNumber(  ){
+	    return this.orderNumber;
     }
      
     /**

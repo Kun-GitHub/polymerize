@@ -35,15 +35,15 @@ public class LoanListVO extends BaseValueObject {
 
     private Double  price;
 
- 	private String  source; //  
+ 	private String orderNumber; //
      
  	private String  remark; //  
    
-    
-      
+
+
  	private String  account; //
     private String  treeCode; //
-   private Double rate;
+    private Double rate;
    
 	 
       
@@ -208,16 +208,16 @@ public class LoanListVO extends BaseValueObject {
      
       
  	/**
-     * @param source 
+     * @param orderNumber
      */
-     public void setSource(String source){
-	    this.source=source;    
+     public void setOrderNumber(String orderNumber){
+	    this.orderNumber = orderNumber;
      }
     /**
      * @return source 
      */
-     public String getSource(  ){ 
-	    return this.source;    
+     public String getOrderNumber(  ){
+	    return this.orderNumber;
      }
    
      

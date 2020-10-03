@@ -47,14 +47,14 @@
                         </div>
                     </div>-->
 <#--                    <#if type == 'admin'>-->
-                    <div class="col-xs-3 col-sm-1 placeholder">
+                    <#--<div class="col-xs-3 col-sm-1 placeholder">
                         <div class="thumbnail tile tile-medium tile-blue">
                             <a href="#" class="fa-links" data-toggle="modal" data-target="#addLoanInfo">
                                 <i class="icon-plus-sign-alt icon-2x"></i>
                                 <h5>新增</h5>
                             </a>
                         </div>
-                    </div>
+                    </div>-->
                     <div class="col-xs-3 col-sm-1 placeholder">
                         <div class="thumbnail tile tile-medium tile-danger">
                             <a href="#" class="fa-links" data-confirm="确定要删除选中项吗？" onclick="delRows()">
@@ -90,7 +90,7 @@
                         <input type="text" name="loanTime2" value="${vo.loanTime2!''}" placeholder="结束添加时间  " class="form-control time_input" style="display: inline-block; width: auto;"
                                onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" ><br/><br/>
                         <#--<input class="form-control" type="text" name="userName" value="${vo.userName!''}" placeholder="跟进人" style="display: inline-block; width: auto;"/>-->
-                        <input class="form-control" type="text" name="source" value="${vo.source!''}" placeholder="订单号" style="display: inline-block; width: auto;"/>
+                        <input class="form-control" type="text" name="source" value="${vo.orderNumber!''}" placeholder="订单号" style="display: inline-block; width: auto;"/>
                         <button type="submit" class="btn btn-primary">查询</button>
                         <button type="button" class="btn btn-default" onclick="resetForm('searchForm')"> 重置</button>
                     </h4>
@@ -100,18 +100,18 @@
                         <thead>
                         <tr>
                             <th class="th-checkbox"><input type="checkbox" onclick="selectAll('itemCb')" disabled></th>
-                            <th data-sort="field:'account'">商户</th>
-                            <th data-sort="field:'rate'">费率</th>
-                            <th data-sort="field:'source'">订单号</th>
-                            <th data-sort="field:'name'">姓名</th>
+                            <th data-sort="field:'account'">商户账号</th>
+                            <th data-sort="field:'rate'">商户费率</th>
+                            <th data-sort="field:'orderNumber'">订单号</th>
                             <th data-sort="field:'phone'">卡号</th>
+                            <th data-sort="field:'name'">姓名</th>
                             <th data-sort="field:'price'">金额</th>
-                            <#--<th data-sort="field:'city'">居住地</th>-->
-                            <#--<th data-sort="field:'quota'">贷款额度</th>-->
+                            <th data-sort="field:'city'">银行卡号</th>
+                            <th data-sort="field:'quota'">银行名称</th>
+                            <th data-sort="field:'remark'">收款人</th>
                             <th data-sort="field:'status'">订单状态</th>
-                            <#--<th data-sort="field:'userName'">商户</th>-->
                             <th data-sort="field:'loanTime'">添加时间</th>
-                            <th data-sort="field:'operator/remark'">操作</th>
+                            <th data-sort="field:'operator'">操作</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -126,29 +126,21 @@
                             </td>
                             <td>${item.account!''}</td>
                             <td><#if item.rate??>${item.rate!''}%<#else>无</#if></td>
-                            <td><#if item.source??>${item.source!''}<#else>无</#if></td>
-                            <td>${item.name!''}</td>
+                            <td><#if item.orderNumber??>${item.orderNumber!''}<#else>无</#if></td>
                             <td>${item.phone!''}</td>
+                            <td>${item.name!''}</td>
                             <td>${item.price!''}</td>
-                            <#--<td><#if item.city??&&item.city=='guangzhou'>广州<#elseif item.city??&&item.city=='shenzhen'>
-                                深圳<#else>其他</#if></td>-->
-                            <#--<td>${item.quota!''}</td>-->
+                            <td>${item.city!''}</td>
+                            <td>${item.quota!''}</td>
+                            <td>${item.remark!''}</td>
                             <td><#if item.status??&&item.status==0><span class="label label-warning">未下发</span>
                             <#else><span class="label label-default">已下发</span></#if></td>
-                            <#--<td>${item.userName!''}</td>-->
                             <td>${(item.loanTime?datetime)!''}</td>
                             <td>
                                 <#if item.status??&&item.status==0>
                                     <#if type??&&type=='admin'>
                                     <a href="#"
                                        onclick="robbing(${item.id!''})">点击下发</a>&nbsp;&nbsp;</#if>
-                                <#--<#elseif item.status??&&item.status!=0&&item.status!=11&&item.status!=10&&item.status!=5&&item.status!=2&&item.status!=12>
-                                    &lt;#&ndash;<a href="#" data-toggle="modal" data-target="#setUserModal"
-                                       onclick="initEdit(${item.id!''})">安排跟进</a>&nbsp;&nbsp;&ndash;&gt;
-                                    <a href="#" data-toggle="modal" data-target="#updateStatusModal"
-                                       onclick="initEdit(${item.id!''})">跟进结果</a>&nbsp;&nbsp;
-                                    <a href="#" data-toggle="modal" data-target="#updateLoanModal"
-                                       onclick="initEdit(${item.id!''})">客户信息</a>&nbsp;&nbsp;-->
                                 </#if>
                             </td>
                         </tr>
@@ -289,36 +281,6 @@
                             function (data) {
                                 location.reload();
                                 alert(data.message);
-                            }, "json");
-                }
-
-                function setUser() {
-                    if (!$("#setUserForm").valid()) {
-                        return;
-                    }
-                    $.post(ctx + "/loan/loan-user",
-                            $("#setUserForm").serialize(),
-                            function (data) {
-                                if (data.success) {
-                                    location.reload();
-                                } else {
-                                    notice(data.message, "red");
-                                }
-                            }, "json");
-                }
-
-                function updateStatus() {
-                    if (!$("#updateStatusForm").valid()) {
-                        return;
-                    }
-                    $.post(ctx + "/loan/loan-status",
-                            $("#updateStatusForm").serialize(),
-                            function (data) {
-                                if (data.success) {
-                                    location.reload();
-                                } else {
-                                    notice(data.message, "red");
-                                }
                             }, "json");
                 }
 

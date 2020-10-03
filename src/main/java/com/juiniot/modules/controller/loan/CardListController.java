@@ -18,6 +18,8 @@ import com.juiniot.modules.business.loan.LoanListParam;
 import com.juiniot.modules.business.loan.LoanListParam.LoanListParamKey;
 import com.juiniot.modules.business.user.UserListInfo;
 import com.juiniot.modules.business.user.UserListParam;
+import net.sf.json.JSON;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -47,7 +49,7 @@ import java.util.Map;
  */
 @Scope("prototype")
 @Controller
-@RequestMapping("order")
+@RequestMapping("api")
 public class CardListController extends BaseController {
 
 
@@ -56,8 +58,8 @@ public class CardListController extends BaseController {
 	 */
 	@ResponseBody
 	@Authority(needSession = NeedSession.NO)
-	@RequestMapping(value = "order-new", method = RequestMethod.POST) //请求路径，请修改为正确的路径
-	public BaseResponse loanNew(@RequestBody Map<String, String> requestBodyParams) throws Exception{
+	@RequestMapping(value = "create-order", method = RequestMethod.POST) //请求路径，请修改为正确的路径
+	public BaseResponse createOrder(@RequestBody Map<String, String> requestBodyParams) throws Exception{
 
 		//验证字段是否为空，请自行删除多于的验证和补全其他验证
 		if(StringUtils.isEmpty(requestBodyParams.get("name"))){
@@ -82,7 +84,7 @@ public class CardListController extends BaseController {
 			return BaseResponse.failure("卡号已存在");
 		} else {
 			param = new LoanListParam();
-			param.putValue(LoanListParamKey.source, this.allFuzzy(requestBodyParams.get("orderNumber")));
+			param.putValue(LoanListParamKey.orderNumber, this.allFuzzy(requestBodyParams.get("orderNumber")));
 			keyMap = param.getKeyMap();
 			totalRows = LoanListInfo.getTotalRows(keyMap);
 			if(totalRows > 0){
@@ -109,7 +111,7 @@ public class CardListController extends BaseController {
 
 		loanListInfo.setPrice(Double.parseDouble(requestBodyParams.get("cardNumber"))/100.0);
 
-		loanListInfo.setSource(requestBodyParams.get("orderNumber"));
+		loanListInfo.setOrderNumber(requestBodyParams.get("orderNumber"));
 
 		loanListInfo.setStatus(0);
 
@@ -127,6 +129,56 @@ public class CardListController extends BaseController {
 			return BaseResponse.failure(e.getMessage());
 		}
 
+	}
+
+	@ResponseBody
+	@Authority(needSession = NeedSession.NO)
+	@RequestMapping(value = "check-order", method = RequestMethod.POST) //请求路径，请修改为正确的路径
+	public BaseResponse checkOrder(@RequestBody Map<String, String> requestBodyParams) throws Exception{
+		if(StringUtils.isEmpty(requestBodyParams.get("account"))){
+			return BaseResponse.failure("商户账号不能为空");
+		}
+
+		if(StringUtils.isEmpty(requestBodyParams.get("orderNumber"))){
+			return BaseResponse.failure("商户订单号不能为空");
+		}
+
+		LoanListParam param = new LoanListParam();
+		param.putValue(LoanListParamKey.account, requestBodyParams.get("account"));
+		param.putValue(LoanListParamKey.phone, requestBodyParams.get("orderNumber"));
+		HashMap<LoanListParamKey, Object> keyMap = param.getKeyMap();
+
+		List<LoanListInfo> list = LoanListInfo.queryAll(keyMap, null);
+		if(null == list || list.size() == 0){
+			return BaseResponse.failure("订单号不存在");
+		} else {
+			return new BaseResponse(0,"success", JSONObject.fromObject(list.get(0)).toString());
+		}
+	}
+
+	@ResponseBody
+	@Authority(needSession = NeedSession.NO)
+	@RequestMapping(value = "check-biz", method = RequestMethod.POST) //请求路径，请修改为正确的路径
+	public BaseResponse checkBiz(@RequestBody Map<String, String> requestBodyParams) throws Exception{
+		if(StringUtils.isEmpty(requestBodyParams.get("account"))){
+			return BaseResponse.failure("商户账号不能为空");
+		}
+
+		if(StringUtils.isEmpty(requestBodyParams.get("mobile"))){
+			return BaseResponse.failure("联系方式不能为空");
+		}
+
+		UserListParam param = new UserListParam();
+		param.putValue(UserListParam.UserListParamKey.account, requestBodyParams.get("account"));
+		param.putValue(UserListParam.UserListParamKey.mobile, requestBodyParams.get("orderNumber"));
+		HashMap<UserListParam.UserListParamKey, Object> keyMap = param.getKeyMap();
+
+		List<UserListInfo> list = UserListInfo.queryAll(keyMap, null);
+		if(null == list || list.size() == 0){
+			return BaseResponse.failure("商户不存在");
+		} else {
+			return new BaseResponse(0,"success", JSONObject.fromObject(list.get(0)).toString());
+		}
 	}
 }
 

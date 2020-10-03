@@ -74,11 +74,11 @@
                             <#if page.list?? &&page.list?size!=1>
                                 <th class="th-checkbox"><input type="checkbox" onclick="selectAll('itemCb')"></th>
                             </#if>
-                            <th data-sort="field:'account'">账号</th>
-                            <th data-sort="field:'name'">昵称</th>
+                            <th data-sort="field:'account'">商户账号</th>
+                            <th data-sort="field:'name'">商户昵称</th>
                             <th data-sort="field:'parentName'">上级</th>
                             <th data-sort="field:'mobile'">联系方式</th>
-                            <th data-sort="field:'rate'">费率</th>
+                            <th data-sort="field:'rate'">商户费率</th>
                             <th data-sort="field:'money'">总金额</th>
                             <th data-sort="field:'profit'">总利润</th>
                             <th data-sort="field:'surplus'">可用余额</th>
@@ -141,14 +141,14 @@
                         <div class="modal-body">
                             <form class="form-horizontal" id="addForm">
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label"><span class="red">*</span> 账号：</label>
+                                    <label class="col-sm-3 control-label"><span class="red">*</span> 商户账号：</label>
                                     <div class="col-sm-7">
                                         <input type="text" class="form-control" placeholder="" name="account"
                                                data-rule-required="true">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label"><span class="red">*</span> 昵称：</label>
+                                    <label class="col-sm-3 control-label"><span class="red">*</span> 商户昵称：</label>
                                     <div class="col-sm-7">
                                         <input type="text" class="form-control" placeholder="" name="name"
                                                data-rule-required="true">
@@ -162,7 +162,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label"><span class="red">*</span> 费率：</label>
+                                    <label class="col-sm-3 control-label"><span class="red">*</span> 商户费率：</label>
                                     <div class="col-sm-7">
                                         <input type="number" class="form-control" placeholder="" name="rate"
                                                data-rule-required="true">
@@ -199,14 +199,14 @@
                             <form class="form-horizontal" id="editForm">
                                 <input type="hidden" name="id"/>
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label"><span class="red">*</span> 账号：</label>
+                                    <label class="col-sm-3 control-label"><span class="red">*</span> 商户账号：</label>
                                     <div class="col-sm-7">
                                         <input type="text" class="form-control" placeholder="" name="account"
                                                data-rule-required="true" disabled>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label"><span class="red">*</span> 昵称：</label>
+                                    <label class="col-sm-3 control-label"><span class="red">*</span> 商户昵称：</label>
                                     <div class="col-sm-7">
                                         <input type="text" class="form-control" placeholder="" name="name"
                                                data-rule-required="true">
@@ -220,7 +220,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label"><span class="red">*</span> 费率：</label>
+                                    <label class="col-sm-3 control-label"><span class="red">*</span> 商户费率：</label>
                                     <div class="col-sm-7">
                                         <input type="number" class="form-control" placeholder="" name="rate"
                                                data-rule-required="true">
@@ -257,7 +257,7 @@
                             <form class="form-horizontal" id="editForm">
                                 <input type="hidden" name="id"/>
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label"><span class="red">*</span> 账号：</label>
+                                    <label class="col-sm-3 control-label"><span class="red">*</span> 商户账号：</label>
                                     <div class="col-sm-7">
                                         <input type="text" class="form-control" placeholder="" name="account"
                                                data-rule-required="true" disabled>

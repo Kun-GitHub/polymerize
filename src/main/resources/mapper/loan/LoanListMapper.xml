@@ -7,7 +7,7 @@
 
   <!-- 显示的记录对应的列-->
   <sql id="LoanListColumns" >
-		    loanlist.id as id,loanlist.user_id as userId,loanlist.name as name,loanlist.phone as phone,loanlist.sex as sex,loanlist.city as city,loanlist.quota as quota,loanlist.status as status,loanlist.loan_time as loanTime,loanlist.source as source,loanlist.remark as remark,userlist.account as account,userlist.rate as rate,userlist.tree_code as treeCode,loanlist.price as price
+		    loanlist.id as id,loanlist.user_id as userId,loanlist.name as name,loanlist.phone as phone,loanlist.sex as sex,loanlist.city as city,loanlist.quota as quota,loanlist.status as status,loanlist.loan_time as loanTime,loanlist.order_number as orderNumber,loanlist.remark as remark,userlist.account as account,userlist.rate as rate,userlist.tree_code as treeCode,loanlist.price as price
   </sql>
   
   
@@ -21,7 +21,7 @@
             	  <if test="paramMap.quota != null"> AND loanlist.quota = #{paramMap.quota}</if>
             	  <if test="paramMap.name != null and paramMap.name != '' "> AND loanlist.name like #{paramMap.name}</if>
             	  <if test="paramMap.remark != null and paramMap.remark != '' "> AND loanlist.remark like #{paramMap.remark}</if>
-            	  <if test="paramMap.source != null and paramMap.source != '' "> AND loanlist.source like #{paramMap.source}</if>
+            	  <if test="paramMap.orderNumber != null and paramMap.orderNumber != '' "> AND loanlist.order_number like #{paramMap.orderNumber}</if>
            <if test="paramMap.userId != null"> AND loanlist.user_id = #{paramMap.userId}</if>
            <if test="paramMap.price != null"> AND loanlist.price = #{paramMap.price}</if>
 
@@ -46,7 +46,7 @@
 				       <when test="order.columnName=='name'"> loanlist.name ${order.type} </when> 
 				       <when test="order.columnName=='remark'"> loanlist.remark ${order.type} </when>
                        <when test="order.columnName=='price'"> loanlist.price ${order.type} </when>
-                       <when test="order.columnName=='source'"> loanlist.source ${order.type} </when>
+                       <when test="order.columnName=='orderNumber'"> loanlist.order_number ${order.type} </when>
 				       <when test="order.columnName=='userId'"> loanlist.user_id ${order.type} </when> 
 				       <when test="order.columnName=='status'"> loanlist.status ${order.type} </when>
                        <when test="order.columnName=='account'"> userlist.account ${order.type} </when>
@@ -108,8 +108,8 @@
    <!-- 新增记录 -->
    <insert id="insertLoanList" useGeneratedKeys="true" keyProperty="loanList.id">
 
-        INSERT INTO loan_list (price,loan_time,phone,city,sex,quota,name,remark,source,user_id,status)
-        VALUES(#{loanList.price},#{loanList.loanTime},#{loanList.phone,jdbcType=VARCHAR},#{loanList.city,jdbcType=VARCHAR},#{loanList.sex,jdbcType=VARCHAR},#{loanList.quota,jdbcType=NUMERIC},#{loanList.name,jdbcType=VARCHAR},#{loanList.remark,jdbcType=VARCHAR},#{loanList.source,jdbcType=VARCHAR},#{loanList.userId,jdbcType=NUMERIC},#{loanList.status})
+        INSERT INTO loan_list (price,loan_time,phone,city,sex,quota,name,remark,order_number,user_id,status)
+        VALUES(#{loanList.price},#{loanList.loanTime},#{loanList.phone,jdbcType=VARCHAR},#{loanList.city,jdbcType=VARCHAR},#{loanList.sex,jdbcType=VARCHAR},#{loanList.quota,jdbcType=NUMERIC},#{loanList.name,jdbcType=VARCHAR},#{loanList.remark,jdbcType=VARCHAR},#{loanList.orderNumber,jdbcType=VARCHAR},#{loanList.userId,jdbcType=NUMERIC},#{loanList.status})
            
    </insert>
    
@@ -127,7 +127,7 @@
                 quota=#{loanList.quota,jdbcType=NUMERIC},
                 name=#{loanList.name,jdbcType=VARCHAR},
                 remark=#{loanList.remark,jdbcType=VARCHAR},
-                source=#{loanList.source,jdbcType=VARCHAR},
+               order_number=#{loanList.orderNumber,jdbcType=VARCHAR},
                 user_id=#{loanList.userId,jdbcType=NUMERIC},
                 status=#{loanList.status},
 	   </set>

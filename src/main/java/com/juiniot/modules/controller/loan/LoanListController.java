@@ -123,88 +123,6 @@ public class LoanListController extends BaseController {
 	}
 
 	/**
-	 * 更新方法
-	 */
-	@ResponseBody
-	@RequestMapping(value = "loan-user", method = RequestMethod.POST) //请求路径
-	public BaseResponse setUser(HttpServletRequest request,LoanListVO vo) throws Exception{
-		
-		//验证字段是否为空，请自行删除多于的验证和补全其他验证	
-		
-		if(StringUtil.isBlank(vo.getUserId())){
-			return BaseResponse.failure("请选择跟进人员");
-		}
-		
-		//检查ID值是否为空
-		if(vo.getId() == null){
-			return BaseResponse.failure("保存失败，请刷新页面再试试");
-		}
-		loanListInfo = LoanListInfo.findOne(vo.getId());
-		
-		//设值，请自行修正或删除不正确的设值
-		
-		loanListInfo.setUserId(vo.getUserId());
-		
-		loanListInfo.setStatus(1);
-		
-		try {
-			loanListInfo.modify();
-
-			UserListInfo userListInfo = UserListInfo.findOne(vo.getUserId());
-
-			if(userListInfo.getMoney()-loanListInfo.getPrice()<0){
-
-				return BaseResponse.success("推广余额不足，请先充值");
-
-			} else {
-				userListInfo.setMoney(userListInfo.getMoney()-loanListInfo.getPrice());
-
-				userListInfo.modify();
-				return BaseResponse.SUCCESS;
-			}
-		} catch (BusinessException e) {
-			logger.error(e.getMessage(), e);
-			return BaseResponse.failure(e.getMessage());
-		}
-	}
-
-	/**
-	 * 更新方法
-	 */
-	@ResponseBody
-	@RequestMapping(value = "loan-status", method = RequestMethod.POST) //请求路径
-	public BaseResponse updateStatus(HttpServletRequest request,LoanListVO vo) throws Exception{
-
-		//验证字段是否为空，请自行删除多于的验证和补全其他验证
-
-		if(StringUtil.isBlank(vo.getStatus())){
-			return BaseResponse.failure("请选择跟进结果");
-		}
-
-		//检查ID值是否为空
-		if(vo.getId() == null){
-			return BaseResponse.failure("保存失败，请刷新页面再试试");
-		}
-		loanListInfo = LoanListInfo.findOne(vo.getId());
-
-		//设值，请自行修正或删除不正确的设值
-
-		loanListInfo.setStatus(vo.getStatus());
-
-		loanListInfo.setRemark(vo.getRemark());
-
-		try {
-			loanListInfo.modify();
-
-			return BaseResponse.SUCCESS;
-
-		} catch (BusinessException e) {
-			logger.error(e.getMessage(), e);
-			return BaseResponse.failure(e.getMessage());
-		}
-	}
-	
-	/**
 	 * 删除方法
 	 */
 	@ResponseBody
@@ -326,7 +244,7 @@ public class LoanListController extends BaseController {
 
 		loanListInfo.setPrice(vo.getPrice());
 
-		loanListInfo.setSource(IdUtils.snowflakeID()+"");
+		loanListInfo.setOrderNumber(IdUtils.snowflakeID()+"");
 
 		loanListInfo.setStatus(0);
 
