@@ -243,7 +243,7 @@
                     $.post(ctx + "/student/student-save",
                             $("#addForm").serialize(),
                             function (data) {
-                                if (data.success) {
+                                if (data.resultCode == 0) {
                                     location.reload();
                                 } else {
                                     notice(data.message, "red");
@@ -258,7 +258,7 @@
                     $.post(ctx + "/student/student-update",
                             $("#editForm").serialize(),
                             function (data) {
-                                if (data.success) {
+                                if (data.resultCode == 0) {
                                     location.reload();
                                 } else {
                                     notice(data.message, "red");
@@ -275,7 +275,7 @@
                     $.post(ctx + "/student/student-delete",
                             {ids: ids},
                             function (data) {
-                                if (data.success) {
+                                if (data.resultCode == 0) {
                                     location.reload();
                                 } else {
                                     notice(data.message, "red");

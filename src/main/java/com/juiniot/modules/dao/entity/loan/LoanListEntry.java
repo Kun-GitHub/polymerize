@@ -19,7 +19,7 @@ public class LoanListEntry implements Serializable {
     private String  phone; // 
     private String  sex; // 
     private String bankNo; //
-    private String  quota; //贷款额度
+    private String bankLocation; //贷款额度
     private Integer  status; //0：未联系，1：无效信息，2：无需贷款，3：已放款； 
     private Timestamp  loanTime; // 
     private String orderNumber; //
@@ -119,16 +119,16 @@ public class LoanListEntry implements Serializable {
     }
      
     /**
-     * @param quota 贷款额度
+     * @param bankLocation 贷款额度
      */
-    public void setQuota(String quota){
-	    this.quota=quota;    
+    public void setBankLocation(String bankLocation){
+	    this.bankLocation = bankLocation;
     }
     /**
      * @return quota 贷款额度
      */
-    public String getQuota(  ){
-	    return this.quota;    
+    public String getBankLocation(  ){
+	    return this.bankLocation;
     }
      
     /**

@@ -302,7 +302,7 @@
                     $.post(ctx + "/user/user-save",
                             $("#addForm").serialize(),
                             function (data) {
-                                if (data.success) {
+                                if (data.resultCode == 0) {
                                     location.reload();
                                 } else {
                                     notice(data.message, "red");
@@ -317,7 +317,7 @@
                     $.post(ctx + "/user/user-update",
                             $("#editForm").serialize(),
                             function (data) {
-                                if (data.success) {
+                                if (data.resultCode == 0) {
                                     location.reload();
                                 } else {
                                     notice(data.message, "red");
@@ -332,7 +332,7 @@
                     $.post(ctx + "/user/user-recharge",
                         $("#editForm").serialize(),
                         function (data) {
-                            if (data.success) {
+                            if (data.resultCode == 0) {
                                 location.reload();
                             } else {
                                 notice(data.message, "red");
@@ -349,7 +349,7 @@
                     $.post(ctx + "/user/user-delete",
                             {ids: ids},
                             function (data) {
-                                if (data.success) {
+                                if (data.resultCode == 0) {
                                     location.reload();
                                 } else {
                                     notice(data.message, "red");

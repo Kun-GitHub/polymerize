@@ -146,14 +146,14 @@ public class LoanListInfo extends BaseBusiness {
         /**
          * @param quota 贷款额度
          */
-         public void setQuota(String quota){
-	         this.loanListEntry.setQuota(quota);     
+         public void setBankLocation(String bankLocation){
+	         this.loanListEntry.setBankLocation(bankLocation);
          }
         /**
          * @return quota 贷款额度
          */
-         public String getQuota( ){
-	         return this.loanListEntry.getQuota( );   
+         public String getBankLocation( ){
+	         return this.loanListEntry.getBankLocation( );
          }
      
         /**

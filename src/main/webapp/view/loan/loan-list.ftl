@@ -107,7 +107,7 @@
                             <th data-sort="field:'name'">姓名</th>
                             <th data-sort="field:'price'">金额</th>
                             <th data-sort="field:'bankNo'">银行卡号</th>
-                            <th data-sort="field:'quota'">银行名称</th>
+                            <th data-sort="field:'bankLocation'">银行名称</th>
                             <th data-sort="field:'remark'">收款人</th>
                             <th data-sort="field:'status'">订单状态</th>
                             <th data-sort="field:'loanTime'">添加时间</th>
@@ -131,7 +131,7 @@
                             <td>${item.name!''}</td>
                             <td>${item.price!''}</td>
                             <td>${item.bankNo!''}</td>
-                            <td>${item.quota!''}</td>
+                            <td>${item.bankLocation!''}</td>
                             <td>${item.remark!''}</td>
                             <td><#if item.status??&&item.status==0><span class="label label-warning">未下发</span>
                             <#else><span class="label label-default">已下发</span></#if></td>
@@ -291,7 +291,7 @@
                     $.post(ctx + "/loan/loan-update",
                             $("#updateLoanForm").serialize(),
                             function (data) {
-                                if (data.success) {
+                                if (data.resultCode == 0) {
                                     location.reload();
                                 } else {
                                     notice(data.message, "red");
@@ -308,7 +308,7 @@
                     $.post("${ctx!''}/loan/loan-delete",
                             {ids: ids},
                             function (data) {
-                                if (data.success) {
+                                if (data.resultCode == 0) {
                                     location.reload();
                                 } else {
                                     notice(data.message, "red");
@@ -323,7 +323,7 @@
                     $.post(ctx + "/loan/loan-new",
                             $("#addLoanForm").serialize(),
                             function (data) {
-                                if (data.success) {
+                                if (data.resultCode == 0) {
                                     location.reload();
                                 } else {
                                     notice(data.message, "red");

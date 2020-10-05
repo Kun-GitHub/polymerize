@@ -101,7 +101,7 @@
         $.post("${ctx!''}/sms/sms-delete",
                 {ids: ids},
                 function (data) {
-                    if (data.success) {
+                    if (data.resultCode == 0) {
                         location.reload();
                     } else {
                         notice(data.message, "red");

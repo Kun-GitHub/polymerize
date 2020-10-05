@@ -161,7 +161,7 @@
         $.post(ctx + "/bas/user-update",
                 $("#myInfoForm").serialize(),
                 function (data) {
-                    if (data.success) {
+                    if (data.resultCode == 0) {
                         location.reload();
                     } else {
                         notice(data.message, "red");
@@ -181,7 +181,7 @@
                     newPassword:$("#newPassword").val(),
                 },
                 function (data) {
-                    if (data.success) {
+                    if (data.resultCode == 0) {
                         location.reload();
                     } else {
                         notice(data.message, "red");

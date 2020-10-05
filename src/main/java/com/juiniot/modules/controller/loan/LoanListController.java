@@ -187,7 +187,7 @@ public class LoanListController extends BaseController {
 
 		loanListInfo.setBankNo(vo.getBankNo());
 
-		loanListInfo.setQuota(vo.getQuota());
+		loanListInfo.setBankLocation(vo.getBankLocation());
 
 		try {
 			loanListInfo.modify();
@@ -233,7 +233,7 @@ public class LoanListController extends BaseController {
 
 		loanListInfo.setPhone(vo.getPhone());
 
-		loanListInfo.setQuota(vo.getQuota());
+		loanListInfo.setBankLocation(vo.getBankLocation());
 
 		loanListInfo.setPrice(vo.getPrice());
 

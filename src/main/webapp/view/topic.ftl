@@ -202,7 +202,7 @@
         $.post("/topic-save",
                 $("#addForm").serialize(),
                 function (data) {
-                    if (data.success) {
+                    if (data.resultCode == 0) {
                         window.location.href = '${ctx!''}/topic-list';
                     } else {
                         notice(data.message, "red");

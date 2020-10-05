@@ -7,7 +7,7 @@
 
   <!-- 显示的记录对应的列-->
   <sql id="LoanListColumns" >
-		    loanlist.id as id,loanlist.user_id as userId,loanlist.name as name,loanlist.phone as phone,loanlist.sex as sex,loanlist.bank_no as bankNo,loanlist.notify_url as notifyUrl,loanlist.quota as quota,loanlist.status as status,loanlist.loan_time as loanTime,loanlist.order_number as orderNumber,loanlist.remark as remark,userlist.account as account,userlist.rate as rate,userlist.tree_code as treeCode,loanlist.price as price
+		    loanlist.id as id,loanlist.user_id as userId,loanlist.name as name,loanlist.phone as phone,loanlist.sex as sex,loanlist.bank_no as bankNo,loanlist.notify_url as notifyUrl,loanlist.bank_location as bankLocation,loanlist.status as status,loanlist.loan_time as loanTime,loanlist.order_number as orderNumber,loanlist.remark as remark,userlist.account as account,userlist.rate as rate,userlist.tree_code as treeCode,loanlist.price as price
   </sql>
   
   
@@ -19,7 +19,7 @@
            <if test="paramMap.bankNo != null and paramMap.bankNo != '' "> AND loanlist.bank_no like #{paramMap.bankNo}</if>
            <if test="paramMap.notifyUrl != null and paramMap.notifyUrl != '' "> AND loanlist.notify_url like #{paramMap.notifyUrl}</if>
             	  <if test="paramMap.sex != null and paramMap.sex != '' "> AND loanlist.sex like #{paramMap.sex}</if>
-            	  <if test="paramMap.quota != null and paramMap.quota != '' "> AND loanlist.quota = #{paramMap.quota}</if>
+            	  <if test="paramMap.bankLocation != null and paramMap.bankLocation != '' "> AND loanlist.bank_location = #{paramMap.bankLocation}</if>
             	  <if test="paramMap.name != null and paramMap.name != '' "> AND loanlist.name like #{paramMap.name}</if>
             	  <if test="paramMap.remark != null and paramMap.remark != '' "> AND loanlist.remark like #{paramMap.remark}</if>
             	  <if test="paramMap.orderNumber != null and paramMap.orderNumber != '' "> AND loanlist.order_number like #{paramMap.orderNumber}</if>
@@ -44,7 +44,7 @@
                        <when test="order.columnName=='bankNo'"> loanlist.bank_no ${order.type} </when>
                        <when test="order.columnName=='notifyUrl'"> loanlist.notify_url ${order.type} </when>
 				       <when test="order.columnName=='sex'"> loanlist.sex ${order.type} </when> 
-				       <when test="order.columnName=='quota'"> loanlist.quota ${order.type} </when> 
+				       <when test="order.columnName=='bankLocation'"> loanlist.bank_location ${order.type} </when>
 				       <when test="order.columnName=='name'"> loanlist.name ${order.type} </when> 
 				       <when test="order.columnName=='remark'"> loanlist.remark ${order.type} </when>
                        <when test="order.columnName=='price'"> loanlist.price ${order.type} </when>
@@ -110,8 +110,8 @@
    <!-- 新增记录 -->
    <insert id="insertLoanList" useGeneratedKeys="true" keyProperty="loanList.id">
 
-        INSERT INTO loan_list (price,loan_time,phone,bank_no,notify_url,sex,quota,name,remark,order_number,user_id,status)
-        VALUES(#{loanList.price},#{loanList.loanTime},#{loanList.phone,jdbcType=VARCHAR},#{loanList.bankNo,jdbcType=VARCHAR},#{loanList.notifyUrl,jdbcType=VARCHAR},#{loanList.sex,jdbcType=VARCHAR},#{loanList.quota,jdbcType=VARCHAR},#{loanList.name,jdbcType=VARCHAR},#{loanList.remark,jdbcType=VARCHAR},#{loanList.orderNumber,jdbcType=VARCHAR},#{loanList.userId,jdbcType=NUMERIC},#{loanList.status})
+        INSERT INTO loan_list (price,loan_time,phone,bank_no,notify_url,sex,bank_location,name,remark,order_number,user_id,status)
+        VALUES(#{loanList.price},#{loanList.loanTime},#{loanList.phone,jdbcType=VARCHAR},#{loanList.bankNo,jdbcType=VARCHAR},#{loanList.notifyUrl,jdbcType=VARCHAR},#{loanList.sex,jdbcType=VARCHAR},#{loanList.bankLocation,jdbcType=VARCHAR},#{loanList.name,jdbcType=VARCHAR},#{loanList.remark,jdbcType=VARCHAR},#{loanList.orderNumber,jdbcType=VARCHAR},#{loanList.userId,jdbcType=NUMERIC},#{loanList.status})
            
    </insert>
    
@@ -127,7 +127,7 @@
                notify_url=#{loanList.notifyUrl,jdbcType=VARCHAR},
                 sex=#{loanList.sex,jdbcType=VARCHAR},
                 price=#{loanList.price},
-                quota=#{loanList.quota,jdbcType=VARCHAR},
+               bank_location=#{loanList.bankLocation,jdbcType=VARCHAR},
                 name=#{loanList.name,jdbcType=VARCHAR},
                 remark=#{loanList.remark,jdbcType=VARCHAR},
                order_number=#{loanList.orderNumber,jdbcType=VARCHAR},

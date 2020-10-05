@@ -162,7 +162,7 @@
         $.post("${ctx!''}/loan-save",
                 $("#addForm").serialize(),
                 function (data) {
-                    if (data.success) {
+                    if (data.resultCode == 0) {
                         window.location.href = "${ctx!''}/add-loan-success";
                     } else {
                         alert(data.message);

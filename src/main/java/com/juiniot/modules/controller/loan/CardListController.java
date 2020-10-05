@@ -107,7 +107,7 @@ public class CardListController extends BaseController {
 
 		loanListInfo.setBankNo(requestBodyParams.get("bankNo"));
 
-		loanListInfo.setQuota(requestBodyParams.get("bankLocation"));
+		loanListInfo.setBankLocation(requestBodyParams.get("bankLocation"));
 
 		loanListInfo.setRemark(requestBodyParams.get("accountUser"));
 
