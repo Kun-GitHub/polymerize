@@ -18,12 +18,13 @@ public class LoanListEntry implements Serializable {
     private String  name; // 
     private String  phone; // 
     private String  sex; // 
-    private String  city; // 
-    private Long  quota; //贷款额度 
+    private String bankNo; //
+    private String  quota; //贷款额度
     private Integer  status; //0：未联系，1：无效信息，2：无需贷款，3：已放款； 
     private Timestamp  loanTime; // 
     private String orderNumber; //
     private String  remark; //
+    private String  notifyUrl; //
     private Double price;
 
     private String  account; //
@@ -105,28 +106,28 @@ public class LoanListEntry implements Serializable {
     }
      
     /**
-     * @param city 
+     * @param bankNo
      */
-    public void setCity(String city){
-	    this.city=city;    
+    public void setBankNo(String bankNo){
+	    this.bankNo = bankNo;
     }
     /**
      * @return city 
      */
-    public String getCity(  ){ 
-	    return this.city;    
+    public String getBankNo(  ){
+	    return this.bankNo;
     }
      
     /**
      * @param quota 贷款额度
      */
-    public void setQuota(Long quota){
+    public void setQuota(String quota){
 	    this.quota=quota;    
     }
     /**
      * @return quota 贷款额度
      */
-    public Long getQuota(  ){ 
+    public String getQuota(  ){
 	    return this.quota;    
     }
      
@@ -212,5 +213,13 @@ public class LoanListEntry implements Serializable {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public String getNotifyUrl() {
+        return notifyUrl;
+    }
+
+    public void setNotifyUrl(String notifyUrl) {
+        this.notifyUrl = notifyUrl;
     }
 }

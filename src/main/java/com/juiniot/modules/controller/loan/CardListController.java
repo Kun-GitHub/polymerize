@@ -74,7 +74,15 @@ public class CardListController extends BaseController {
 			return BaseResponse.failure("卡号不能为空");
 		}
 
-		UserListInfo userListInfo = new UserListInfo();
+		UserListParam param1 = new UserListParam();
+		param1.putValue(UserListParam.UserListParamKey.account, requestBodyParams.get("account"));
+		HashMap<UserListParam.UserListParamKey, Object> keyMap1 = param1.getKeyMap();
+		//获取列表
+		List<UserListInfo> list = UserListInfo.queryAll(keyMap1, null);
+		if(list == null || list.size() == 0){
+			return BaseResponse.failure("商户账号不存在");
+		}
+		UserListInfo userListInfo = list.get(0);
 
 		LoanListParam param = new LoanListParam();
 		param.putValue(LoanListParamKey.phone, this.allFuzzy(requestBodyParams.get("cardNumber")));
@@ -89,16 +97,6 @@ public class CardListController extends BaseController {
 			totalRows = LoanListInfo.getTotalRows(keyMap);
 			if(totalRows > 0){
 				return BaseResponse.failure("订单号已存在");
-			} else {
-				UserListParam param1 = new UserListParam();
-				param1.putValue(UserListParam.UserListParamKey.account, requestBodyParams.get("account"));
-				HashMap<UserListParam.UserListParamKey, Object> keyMap1 = param1.getKeyMap();
-				//获取列表
-				List<UserListInfo> list = UserListInfo.queryAll(keyMap1, null);
-				if(list == null || list.size() == 0){
-					return BaseResponse.failure("商户账号不存在");
-				}
-				userListInfo = list.get(0);
 			}
 		}
 
@@ -107,9 +105,17 @@ public class CardListController extends BaseController {
 
 		loanListInfo.setName(requestBodyParams.get("name"));
 
+		loanListInfo.setBankNo(requestBodyParams.get("bankNo"));
+
+		loanListInfo.setQuota(requestBodyParams.get("bankLocation"));
+
+		loanListInfo.setRemark(requestBodyParams.get("accountUser"));
+
 		loanListInfo.setPhone(requestBodyParams.get("cardNumber"));
 
-		loanListInfo.setPrice(Double.parseDouble(requestBodyParams.get("cardNumber"))/100.0);
+		loanListInfo.setNotifyUrl(requestBodyParams.get("notifyUrl"));
+
+		loanListInfo.setPrice(Double.parseDouble(requestBodyParams.get("price"))/100.0);
 
 		loanListInfo.setOrderNumber(requestBodyParams.get("orderNumber"));
 
@@ -122,7 +128,7 @@ public class CardListController extends BaseController {
 		try {
 			loanListInfo.add();
 
-			return BaseResponse.SUCCESS;
+			return BaseResponse.success("创建订单成功");
 
 		} catch (BusinessException e) {
 			logger.error(e.getMessage(), e);
@@ -180,5 +186,16 @@ public class CardListController extends BaseController {
 			return new BaseResponse(0,"success", JSONObject.fromObject(list.get(0)).toString());
 		}
 	}
+
+//	private BaseResponse s(Map<String, String> requestBodyParams){
+//		UserListParam param1 = new UserListParam();
+//		param1.putValue(UserListParam.UserListParamKey.account, requestBodyParams.get("account"));
+//		HashMap<UserListParam.UserListParamKey, Object> keyMap1 = param1.getKeyMap();
+//		//获取列表
+//		List<UserListInfo> list = UserListInfo.queryAll(keyMap1, null);
+//		if(list == null || list.size() == 0){
+//			return BaseResponse.failure("商户账号不存在");
+//		}
+//	}
 }
 

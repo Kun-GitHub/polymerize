@@ -14,10 +14,10 @@ public class BaseResponse {
 	private int resultCode = -1;
 
 	// 返回信息
-	private String message;
+	private String message = null;
 
 	// 返回信息
-	private String resultData;
+	private String resultData = null;
 
 	/**
 	 * 返回{success：true}

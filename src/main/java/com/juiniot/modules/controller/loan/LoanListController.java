@@ -1,21 +1,14 @@
 package com.juiniot.modules.controller.loan;
  
-import java.net.URLEncoder;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 
 import com.juiniot.common.utils.*;
 import com.juiniot.common.web.preview.Authority;
 import com.juiniot.common.web.preview.NeedSession;
 import com.juiniot.modules.business.deduction.DeductionListInfo;
-import com.juiniot.modules.business.recharge.RechargeListInfo;
-import com.juiniot.modules.business.recharge.RechargeListParam;
-import com.juiniot.modules.business.sms.SmsListInfo;
 import com.juiniot.modules.business.user.UserListInfo;
-import com.juiniot.modules.business.user.UserListParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -192,7 +185,7 @@ public class LoanListController extends BaseController {
 
 		loanListInfo.setName(vo.getName());
 
-		loanListInfo.setCity(vo.getCity());
+		loanListInfo.setBankNo(vo.getBankNo());
 
 		loanListInfo.setQuota(vo.getQuota());
 

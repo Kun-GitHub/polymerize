@@ -22,9 +22,9 @@ public class LoanListVO extends BaseValueObject {
      
  	private String  sex; //  
      
- 	private String  city; //  
+ 	private String bankNo; //
      
- 	private Long  quota; //贷款额度  
+ 	private String  quota; //贷款额度
      
  	private Integer  status; //0：未联系，1：无效信息，2：无需贷款，3：已放款；  
    
@@ -32,6 +32,7 @@ public class LoanListVO extends BaseValueObject {
     private Timestamp loanTime1; //  开始时间
     private Timestamp loanTime2; //  结束时间
 
+    private String  notifyUrl; //
 
     private Double  price;
 
@@ -123,16 +124,16 @@ public class LoanListVO extends BaseValueObject {
      
       
  	/**
-     * @param city 
+     * @param bankNo
      */
-     public void setCity(String city){
-	    this.city=city;    
+     public void setBankNo(String bankNo){
+	    this.bankNo = bankNo;
      }
     /**
      * @return city 
      */
-     public String getCity(  ){ 
-	    return this.city;    
+     public String getBankNo(  ){
+	    return this.bankNo;
      }
    
      
@@ -140,13 +141,13 @@ public class LoanListVO extends BaseValueObject {
  	/**
      * @param quota 贷款额度
      */
-     public void setQuota(Long quota){
+     public void setQuota(String quota){
 	    this.quota=quota;    
      }
     /**
      * @return quota 贷款额度
      */
-     public Long getQuota(  ){ 
+     public String getQuota(  ){
 	    return this.quota;    
      }
    
@@ -266,5 +267,13 @@ public class LoanListVO extends BaseValueObject {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public String getNotifyUrl() {
+        return notifyUrl;
+    }
+
+    public void setNotifyUrl(String notifyUrl) {
+        this.notifyUrl = notifyUrl;
     }
 }

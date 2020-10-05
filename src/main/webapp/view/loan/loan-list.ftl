@@ -106,7 +106,7 @@
                             <th data-sort="field:'phone'">卡号</th>
                             <th data-sort="field:'name'">姓名</th>
                             <th data-sort="field:'price'">金额</th>
-                            <th data-sort="field:'city'">银行卡号</th>
+                            <th data-sort="field:'bankNo'">银行卡号</th>
                             <th data-sort="field:'quota'">银行名称</th>
                             <th data-sort="field:'remark'">收款人</th>
                             <th data-sort="field:'status'">订单状态</th>
@@ -130,7 +130,7 @@
                             <td>${item.phone!''}</td>
                             <td>${item.name!''}</td>
                             <td>${item.price!''}</td>
-                            <td>${item.city!''}</td>
+                            <td>${item.bankNo!''}</td>
                             <td>${item.quota!''}</td>
                             <td>${item.remark!''}</td>
                             <td><#if item.status??&&item.status==0><span class="label label-warning">未下发</span>

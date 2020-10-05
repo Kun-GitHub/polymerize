@@ -125,26 +125,34 @@ public class LoanListInfo extends BaseBusiness {
         /**
          * @param city 
          */
-         public void setCity(String city){
-	         this.loanListEntry.setCity(city);     
+         public void setBankNo(String city){
+	         this.loanListEntry.setBankNo(city);
          }
         /**
          * @return city 
          */
-         public String getCity( ){ 
-	         return this.loanListEntry.getCity( );   
+         public String getBankNo( ){
+	         return this.loanListEntry.getBankNo( );
          }
-     
+
+	public String getNotifyUrl() {
+		return this.loanListEntry.getNotifyUrl( );
+	}
+
+	public void setNotifyUrl(String notifyUrl) {
+		this.loanListEntry.setNotifyUrl(notifyUrl);
+	}
+
         /**
          * @param quota 贷款额度
          */
-         public void setQuota(Long quota){
+         public void setQuota(String quota){
 	         this.loanListEntry.setQuota(quota);     
          }
         /**
          * @return quota 贷款额度
          */
-         public Long getQuota( ){ 
+         public String getQuota( ){
 	         return this.loanListEntry.getQuota( );   
          }
      
