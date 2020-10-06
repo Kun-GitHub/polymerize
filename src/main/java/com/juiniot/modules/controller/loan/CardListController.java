@@ -1,12 +1,10 @@
 package com.juiniot.modules.controller.loan;
 
+import cn.hutool.crypto.digest.MD5;
 import com.juiniot.common.business.BusinessException;
 import com.juiniot.common.business.OrderItem;
 import com.juiniot.common.business.OrderType;
-import com.juiniot.common.utils.Cookies;
-import com.juiniot.common.utils.IdUtils;
-import com.juiniot.common.utils.NumberUtil;
-import com.juiniot.common.utils.StringUtil;
+import com.juiniot.common.utils.*;
 import com.juiniot.common.web.BaseController;
 import com.juiniot.common.web.PageModel;
 import com.juiniot.common.web.preview.Authority;
@@ -20,6 +18,7 @@ import com.juiniot.modules.business.user.UserListInfo;
 import com.juiniot.modules.business.user.UserListParam;
 import net.sf.json.JSON;
 import net.sf.json.JSONObject;
+import org.apache.commons.codec.digest.Md5Crypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -34,11 +33,10 @@ import javax.servlet.http.HttpServletRequest;
 import java.beans.BeanInfo;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
+import java.io.IOException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 
 /**
@@ -61,6 +59,11 @@ public class CardListController extends BaseController {
 	@RequestMapping(value = "create-order", method = RequestMethod.POST) //请求路径，请修改为正确的路径
 	public BaseResponse createOrder(@RequestBody Map<String, String> requestBodyParams) throws Exception{
 
+		BaseResponse baseResponse = checkApi(requestBodyParams);
+		if(baseResponse.getResultCode() != 0){
+			return baseResponse;
+		}
+
 		//验证字段是否为空，请自行删除多于的验证和补全其他验证
 		if(StringUtils.isEmpty(requestBodyParams.get("name"))){
 			return BaseResponse.failure("姓名不能为空");
@@ -70,7 +73,7 @@ public class CardListController extends BaseController {
 			return BaseResponse.failure("金额不能为空");
 		}
 
-		if(StringUtils.isEmpty(requestBodyParams.get("cardNumber"))){
+		if(StringUtils.isEmpty(requestBodyParams.get("bankNo"))){
 			return BaseResponse.failure("卡号不能为空");
 		}
 
@@ -85,21 +88,14 @@ public class CardListController extends BaseController {
 		UserListInfo userListInfo = list.get(0);
 
 		LoanListParam param = new LoanListParam();
-		param.putValue(LoanListParamKey.phone, this.allFuzzy(requestBodyParams.get("cardNumber")));
+		param.putValue(LoanListParamKey.phone, this.allFuzzy(requestBodyParams.get("orderNumber")));
 		HashMap<LoanListParamKey, Object> keyMap = param.getKeyMap();
 		int totalRows = LoanListInfo.getTotalRows(keyMap);
 		if(totalRows > 0){
-			return BaseResponse.failure("卡号已存在");
+			return BaseResponse.failure("订单号已存在");
 		} else {
-			param = new LoanListParam();
-			param.putValue(LoanListParamKey.orderNumber, this.allFuzzy(requestBodyParams.get("orderNumber")));
-			keyMap = param.getKeyMap();
-			totalRows = LoanListInfo.getTotalRows(keyMap);
-			if(totalRows > 0){
-				return BaseResponse.failure("订单号已存在");
-			}
-		}
 
+		}
 
 		LoanListInfo loanListInfo = new LoanListInfo();
 
@@ -108,10 +104,6 @@ public class CardListController extends BaseController {
 		loanListInfo.setBankNo(requestBodyParams.get("bankNo"));
 
 		loanListInfo.setBankLocation(requestBodyParams.get("bankLocation"));
-
-		loanListInfo.setRemark(requestBodyParams.get("accountUser"));
-
-		loanListInfo.setPhone(requestBodyParams.get("cardNumber"));
 
 		loanListInfo.setNotifyUrl(requestBodyParams.get("notifyUrl"));
 
@@ -141,6 +133,11 @@ public class CardListController extends BaseController {
 	@Authority(needSession = NeedSession.NO)
 	@RequestMapping(value = "check-order", method = RequestMethod.POST) //请求路径，请修改为正确的路径
 	public BaseResponse checkOrder(@RequestBody Map<String, String> requestBodyParams) throws Exception{
+		BaseResponse baseResponse = checkApi(requestBodyParams);
+		if(baseResponse.getResultCode() != 0){
+			return baseResponse;
+		}
+
 		if(StringUtils.isEmpty(requestBodyParams.get("account"))){
 			return BaseResponse.failure("商户账号不能为空");
 		}
@@ -151,14 +148,28 @@ public class CardListController extends BaseController {
 
 		LoanListParam param = new LoanListParam();
 		param.putValue(LoanListParamKey.account, requestBodyParams.get("account"));
-		param.putValue(LoanListParamKey.phone, requestBodyParams.get("orderNumber"));
+		param.putValue(LoanListParamKey.orderNumber, requestBodyParams.get("orderNumber"));
 		HashMap<LoanListParamKey, Object> keyMap = param.getKeyMap();
 
 		List<LoanListInfo> list = LoanListInfo.queryAll(keyMap, null);
 		if(null == list || list.size() == 0){
 			return BaseResponse.failure("订单号不存在");
 		} else {
-			return new BaseResponse(0,"success", JSONObject.fromObject(list.get(0)).toString());
+			LoanListInfo loanListInfo = list.get(0);
+
+			JSONObject object = new JSONObject();
+			object.put("name", loanListInfo.getName());
+			object.put("bankNo", loanListInfo.getBankNo());
+			object.put("bankLocation", loanListInfo.getBankLocation());
+			object.put("status", loanListInfo.getStatus());
+			object.put("orderNumber", loanListInfo.getOrderNumber());
+			object.put("account", loanListInfo.getAccount());
+			object.put("price", loanListInfo.getPrice());
+
+			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//定义格式，不显示毫秒
+			object.put("createTime", df.format(loanListInfo.getLoanTime()));
+
+			return new BaseResponse(0,"success", object);
 		}
 	}
 
@@ -166,36 +177,79 @@ public class CardListController extends BaseController {
 	@Authority(needSession = NeedSession.NO)
 	@RequestMapping(value = "check-biz", method = RequestMethod.POST) //请求路径，请修改为正确的路径
 	public BaseResponse checkBiz(@RequestBody Map<String, String> requestBodyParams) throws Exception{
+		BaseResponse baseResponse = checkApi(requestBodyParams);
+		if(baseResponse.getResultCode() != 0){
+			return baseResponse;
+		}
+
 		if(StringUtils.isEmpty(requestBodyParams.get("account"))){
 			return BaseResponse.failure("商户账号不能为空");
 		}
 
-		if(StringUtils.isEmpty(requestBodyParams.get("mobile"))){
-			return BaseResponse.failure("联系方式不能为空");
-		}
-
 		UserListParam param = new UserListParam();
 		param.putValue(UserListParam.UserListParamKey.account, requestBodyParams.get("account"));
-		param.putValue(UserListParam.UserListParamKey.mobile, requestBodyParams.get("orderNumber"));
 		HashMap<UserListParam.UserListParamKey, Object> keyMap = param.getKeyMap();
 
 		List<UserListInfo> list = UserListInfo.queryAll(keyMap, null);
 		if(null == list || list.size() == 0){
 			return BaseResponse.failure("商户不存在");
 		} else {
-			return new BaseResponse(0,"success", JSONObject.fromObject(list.get(0)).toString());
+			UserListInfo userListInfo = list.get(0);
+
+			JSONObject object = new JSONObject();
+			object.put("account", userListInfo.getAccount());
+			object.put("rate", userListInfo.getRate());
+			object.put("surplus", userListInfo.getSurplus());
+			object.put("money", userListInfo.getMoney());
+			object.put("profit", userListInfo.getProfit());
+
+			return new BaseResponse(0,"success", object);
 		}
 	}
 
-//	private BaseResponse s(Map<String, String> requestBodyParams){
-//		UserListParam param1 = new UserListParam();
-//		param1.putValue(UserListParam.UserListParamKey.account, requestBodyParams.get("account"));
-//		HashMap<UserListParam.UserListParamKey, Object> keyMap1 = param1.getKeyMap();
-//		//获取列表
-//		List<UserListInfo> list = UserListInfo.queryAll(keyMap1, null);
-//		if(list == null || list.size() == 0){
-//			return BaseResponse.failure("商户账号不存在");
-//		}
-//	}
+	private BaseResponse checkApi(Map<String, String> requestBodyParams)  throws Exception{
+		UserListParam param = new UserListParam();
+		param.putValue(UserListParam.UserListParamKey.account, requestBodyParams.get("appKey"));
+		HashMap<UserListParam.UserListParamKey, Object> keyMap1 = param.getKeyMap();
+		//获取列表
+		List<UserListInfo> list = UserListInfo.queryAll(keyMap1, null);
+		if(list == null || list.size() == 0){
+			return BaseResponse.failure("不合法的appKey");
+		} else {
+			List<String> ignoreParamNames = new ArrayList<>();
+			ignoreParamNames.add("appKey");
+			ignoreParamNames.add("sign");
+
+			String sign = sign(requestBodyParams,ignoreParamNames,list.get(0).getMobile());
+			if(!sign.equalsIgnoreCase(requestBodyParams.get("sign"))){
+				return BaseResponse.failure("签名有误");
+			} else {
+				return BaseResponse.SUCCESS;
+			}
+		}
+	}
+
+	public static String sign(Map<String, String> paramValues, List<String> ignoreParamNames,String secret) {
+
+		StringBuilder sb = new StringBuilder();
+		List<String> paramNames = new ArrayList<String>(paramValues.size());
+		paramNames.addAll(paramValues.keySet());
+		if(ignoreParamNames != null && ignoreParamNames.size() > 0){
+			for (String ignoreParamName : ignoreParamNames) {
+				paramNames.remove(ignoreParamName);
+			}
+		}
+		Collections.sort(paramNames);
+
+		sb.append(secret);
+		for (String paramName : paramNames) {
+			Object value = paramValues.get(paramName);
+			if (value != null) {
+				sb.append(paramName).append(value);
+			}
+		}
+		sb.append(secret);
+		return MD5.create().digestHex16(sb.toString());
+	}
 }
 

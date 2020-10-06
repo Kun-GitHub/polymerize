@@ -68,23 +68,7 @@
                 <form method="get" id="searchForm">
                     <h4 class="sub-header" style="clear:both;">
                         <input class="form-control" type="text" name="name" value="${vo.name!''}" placeholder="姓名" style="display: inline-block; width: auto;"/>
-                        <input class="form-control" type="text" name="phone" value="${vo.phone!''}" placeholder="卡号" style="display: inline-block; width: auto;"/>
-                        <#--<select class="form-control" name="ammeterType" style="display: inline-block; width: auto;">
-                            <option value="">请选择跟进结果</option>
-                            <option value="0">待跟进</option>
-                            <option value="1">跟进中</option>
-                            <option value="2">条件不符</option>
-                            <option value="3">电话未接通</option>
-                            <option value="4">用户考虑中</option>
-                            <option value="5">用户放弃</option>
-                            <option value="6">邀约到店中</option>
-                            <option value="7">提交资料</option>
-                            <option value="8">提交审批中</option>
-                            <option value="9">审批通过</option>
-                            <option value="10">审批未通过</option>
-                            <option value="11">完成放款</option>
-                            <option value="12">异地客户</option>
-                        </select>-->
+                        <input class="form-control" type="text" name="orderNumber" value="${vo.orderNumber!''}" placeholder="订单号" style="display: inline-block; width: auto;"/>
                         <input type="text" name="loanTime1" value="${vo.loanTime1!''}" placeholder="开始添加时间  " class="form-control time_input" style="display: inline-block; width: auto;"
                                onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" >~
                         <input type="text" name="loanTime2" value="${vo.loanTime2!''}" placeholder="结束添加时间  " class="form-control time_input" style="display: inline-block; width: auto;"
@@ -103,12 +87,10 @@
                             <th data-sort="field:'account'">商户账号</th>
                             <th data-sort="field:'rate'">商户费率</th>
                             <th data-sort="field:'orderNumber'">订单号</th>
-                            <th data-sort="field:'phone'">卡号</th>
                             <th data-sort="field:'name'">姓名</th>
-                            <th data-sort="field:'price'">金额</th>
                             <th data-sort="field:'bankNo'">银行卡号</th>
                             <th data-sort="field:'bankLocation'">银行名称</th>
-                            <th data-sort="field:'remark'">收款人</th>
+                            <th data-sort="field:'price'">金额</th>
                             <th data-sort="field:'status'">订单状态</th>
                             <th data-sort="field:'loanTime'">添加时间</th>
                             <th data-sort="field:'operator'">操作</th>
@@ -127,12 +109,10 @@
                             <td>${item.account!''}</td>
                             <td><#if item.rate??>${item.rate!''}%<#else>无</#if></td>
                             <td><#if item.orderNumber??>${item.orderNumber!''}<#else>无</#if></td>
-                            <td>${item.phone!''}</td>
                             <td>${item.name!''}</td>
-                            <td>${item.price!''}</td>
                             <td>${item.bankNo!''}</td>
                             <td>${item.bankLocation!''}</td>
-                            <td>${item.remark!''}</td>
+                            <td>${item.price!''}</td>
                             <td><#if item.status??&&item.status==0><span class="label label-warning">未下发</span>
                             <#else><span class="label label-default">已下发</span></#if></td>
                             <td>${(item.loanTime?datetime)!''}</td>
@@ -177,12 +157,6 @@
                                                data-rule-required="true">
                                     </div>
                                 </div>
-                                <#--<div class="form-group">
-                                    <label class="col-sm-3 control-label"> 贷款额度：</label>
-                                    <div class="col-sm-7">
-                                        <input type="number" class="form-control" placeholder="" name="quota">
-                                    </div>
-                                </div>-->
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label"><span class="red">*</span> 金额：</label>
                                     <div class="col-sm-7">
@@ -206,53 +180,6 @@
                 </div>
             </div>
 
-            <!-- 新增Modal -->
-            <div class="modal fade" id="updateLoanModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                            <h4 class="modal-title">更新客户信息</h4>
-                        </div>
-                        <div class="modal-body">
-                            <form class="form-horizontal" id="updateLoanForm">
-                                <input type="hidden" name="id"/>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label"><span class="red">*</span> 客户姓名：</label>
-                                    <div class="col-sm-6">
-                                        <input type="text" class="form-control" placeholder="" name="name"
-                                               data-rule-required="true" >
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label"> 贷款额度：</label>
-                                    <div class="col-sm-6">
-                                        <input type="number" class="form-control" placeholder="" name="quota">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">所在地：</label>
-                                    <div class="col-sm-6">
-                                        <select name="city" class="form-control status">
-                                            <option value="">请选择跟进结果</option>
-                                            <option value="guangzhou">广州</option>
-                                            <option value="shenzhen">深圳</option>
-                                            <option value="other">其他城市</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-sm-3 errorText"></div>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                            <button type="button" class="btn btn-primary" onclick="updateLoan()">确定</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
         <#include "/common/footer.ftl">
 

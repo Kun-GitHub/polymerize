@@ -7,7 +7,7 @@
 
   <!-- 显示的记录对应的列-->
   <sql id="RechargeListColumns" >
-		    rechargelist.id as id,rechargelist.user_id as userId,rechargelist.recharge_time as rechargeTime,userlist.name as userName,userlist.tree_code as treeCode,rechargelist.price as price
+		    rechargelist.id as id,rechargelist.user_id as userId,rechargelist.recharge_time as rechargeTime,userlist.account as account,userlist.tree_code as treeCode,rechargelist.price as price
   </sql>
   
   
@@ -18,7 +18,7 @@
            <if test="paramMap.userId != null"> AND rechargelist.user_id = #{paramMap.userId}</if>
            <if test="paramMap.price != null"> AND rechargelist.price = #{paramMap.price}</if>
 
-           <if test="paramMap.userName != null and paramMap.userName != '' "> AND userlist.name like #{paramMap.userName}</if>
+           <if test="paramMap.account != null and paramMap.account != '' "> AND userlist.account like #{paramMap.account}</if>
            <if test="paramMap.treeCode != null and paramMap.treeCode != '' "> AND userlist.tree_code like #{paramMap.treeCode}</if>
        </where>
   </sql>
@@ -32,7 +32,7 @@
 				   <choose> 
 				       <when test="order.columnName=='rechargeTime'"> rechargelist.recharge_time ${order.type} </when> 
                        <when test="order.columnName=='price'"> rechargelist.price ${order.type} </when>
-                       <when test="order.columnName=='userName'"> userlist.name ${order.type} </when>
+                       <when test="order.columnName=='account'"> userlist.account ${order.type} </when>
                        <when test="order.columnName=='treeCode'"> userlist.tree_code ${order.type} </when>
                        
 				       <when test="order.columnName=='id'"> rechargelist.id  ${order.type}  </when>
@@ -129,10 +129,20 @@
    			AND id != #{id}
    		</if>
    </select>
+
+
    
    <!-- 以下是自定义的配置信息，配置要写上注释用途 -->
-   
-   
+
+<!--    &lt;!&ndash; 分页查询对应的记录 &ndash;&gt;-->
+<!--    <select id="queryRechargeLists" resultType="com.juiniot.modules.dao.entity.recharge.RechargeListEntry">-->
+
+<!--        SELECT <include refid="RechargeListColumns"/>-->
+<!--        FROM <include refid="querySqlMain"/>-->
+<!--        <include refid="queryOptions"/>-->
+<!--        <include refid="orderControl"/>-->
+<!--        LIMIT ${startRow},${pageSize}-->
+<!--    </select>-->
    
    
 

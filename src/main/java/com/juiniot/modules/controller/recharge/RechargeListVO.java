@@ -23,7 +23,7 @@ public class RechargeListVO extends BaseValueObject {
 
     private Double  price;
 
- 	private String  userName; //
+ 	private String account; //
 
     public Long getId() {
         return id;
@@ -73,11 +73,11 @@ public class RechargeListVO extends BaseValueObject {
         this.price = price;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getAccount() {
+        return account;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setAccount(String account) {
+        this.account = account;
     }
 }

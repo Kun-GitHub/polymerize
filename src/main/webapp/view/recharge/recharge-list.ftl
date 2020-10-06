@@ -67,7 +67,7 @@
                 </div>
                 <form method="get" id="searchForm">
                     <h4 class="sub-header" style="clear:both;">
-                        <input class="form-control" type="text" name="userName" value="${vo.userName!''}" placeholder="商户昵称" style="display: inline-block; width: auto;"/>
+                        <input class="form-control" type="text" name="userName" value="${vo.account!''}" placeholder="商户昵称" style="display: inline-block; width: auto;"/>
                         <input type="text" name="rechargeTime1" value="${vo.rechargeTime1!''}" placeholder="开始充值时间  " class="form-control time_input" style="display: inline-block; width: auto;"
                                onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" >~
                         <input type="text" name="rechargeTime2" value="${vo.rechargeTime2!''}" placeholder="结束充值时间  " class="form-control time_input" style="display: inline-block; width: auto;"
@@ -80,7 +80,7 @@
                     <table class="table table-striped">
                         <thead>
                         <tr>
-                            <th data-sort="field:'userName'">商户昵称</th>
+                            <th data-sort="field:'account'">商户账号</th>
                             <th data-sort="field:'price'">充值金额</th>
                             <th data-sort="field:'rechargeTime'">充值时间</th>
                         </tr>
@@ -88,7 +88,7 @@
                         <tbody>
                         <#list page.list as item>
                         <tr>
-                            <td>${item.userName!''}</td>
+                            <td>${item.account!''}</td>
                             <td>${item.price!''}</td>
                             <td>${(item.rechargeTime?datetime)!''}</td>
                         </tr>

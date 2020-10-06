@@ -217,7 +217,7 @@ public class LoanListController extends BaseController {
 			return BaseResponse.failure("金额不能为空");
 		}
 
-		if(StringUtils.isEmpty(vo.getPhone())){
+		if(StringUtils.isEmpty(vo.getBankNo())){
 			return BaseResponse.failure("卡号不能为空");
 		}
 
@@ -258,6 +258,6 @@ public class LoanListController extends BaseController {
 		}
 
 	}
-	
+
 }
 

@@ -59,10 +59,6 @@ public class UserListController extends BaseController {
 
      	param.putValue(UserListParamKey.account, this.allFuzzy(vo.getAccount()));
 
-		param.putValue(UserListParamKey.name, this.allFuzzy(vo.getName()));
-
-		param.putValue(UserListParamKey.parentName, this.allFuzzy(vo.getParentName()));
-	 	 
 		String treeCode = Cookies.getValue(request, "treeCode");
 
 		if(!StringUtil.isBlank(treeCode)){
@@ -145,11 +141,6 @@ public class UserListController extends BaseController {
 	public BaseResponse save(HttpServletRequest request,UserListVO vo) throws Exception{
 		
 		//验证字段是否为空，请自行删除多于的验证和补全其他验证	
-
-		if(StringUtils.isEmpty(vo.getName())){
-			return BaseResponse.failure("昵称不能为空");
-		}
-
 		if(StringUtils.isEmpty(vo.getAccount())){
 			return BaseResponse.failure("账号不能为空");
 		}
@@ -224,11 +215,7 @@ public class UserListController extends BaseController {
 	@RequestMapping(value = "user-update", method = RequestMethod.POST) //请求路径
 	public BaseResponse update(HttpServletRequest request,UserListVO vo) throws Exception{
 		
-		//验证字段是否为空，请自行删除多于的验证和补全其他验证	
-
-        if(StringUtils.isEmpty(vo.getMobile()) || vo.getMobile().length() != 11){
-			return BaseResponse.failure("联系方式错误");
-		}
+		//验证字段是否为空，请自行删除多于的验证和补全其他验证
 
 		//检查ID值是否为空
 		if(vo.getId() == null){

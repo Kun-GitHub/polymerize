@@ -20,7 +20,7 @@ public class RechargeListParam {
 	 * RechargeList参数key枚举类型
 	 */
 	public enum RechargeListParamKey {
-	    id, userId, rechargeTime, rechargeTime1, rechargeTime2, price, userName, treeCode
+	    id, userId, rechargeTime, rechargeTime1, rechargeTime2, price, account, treeCode
     }
     
     //构造函数，初始化参数默认值
@@ -34,7 +34,7 @@ public class RechargeListParam {
 	  
 		keyMap.put(RechargeListParamKey.price, null);
 
-		keyMap.put(RechargeListParamKey.userName, null);
+		keyMap.put(RechargeListParamKey.account, null);
 
 		keyMap.put(RechargeListParamKey.treeCode, null);
 	}

@@ -88,15 +88,15 @@ public class RechargeListInfo extends BaseBusiness {
         /**
          * @param userName 
          */
-         private void setUserName(String userName){
-	         this.rechargeListEntry.setUserName(userName);
+         private void setAccount(String userName){
+	         this.rechargeListEntry.setAccount(userName);
          }
          
         /**
           * @return userName 
          */
-         public String getUserName( ){ 
-	         return this.rechargeListEntry.getUserName( );     
+         public String getAccount( ){
+	         return this.rechargeListEntry.getAccount( );
          }
 
 	public Double getPrice() {
@@ -213,6 +213,21 @@ public class RechargeListInfo extends BaseBusiness {
 		}
 		return list;
 	}
+
+//	@Transactional(propagation=Propagation.NEVER)
+//	public static List<RechargeListInfo> queryRechargeLists(int startRow, int pageSize,String account) throws BusinessException{
+//		//实例化List对象
+//		List<RechargeListInfo> list = new ArrayList<RechargeListInfo>();
+//		//查询结果实体
+//		RechargeListMapper rechargeListMapper= SpringUtil.getBean("rechargeListMapper");
+//		List<RechargeListEntry> entryList = rechargeListMapper.queryRechargeLists(startRow, pageSize, toParamMap(keyMap), orderList);
+//		if (entryList != null){
+//			for (RechargeListEntry entry : entryList) {
+//				list.add(new RechargeListInfo(entry));
+//			}
+//		}
+//		return list;
+//	}
 	
 	/**
 	 * 查询所有

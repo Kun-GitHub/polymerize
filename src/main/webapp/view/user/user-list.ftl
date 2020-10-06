@@ -59,10 +59,6 @@
                     <h4 class="sub-header" style="clear:both;">
                         <input class="form-control" type="text" name="account" value="${vo.account!''}" placeholder="账号"
                                style="display: inline-block; width: auto;"/>
-                        <input class="form-control" type="text" name="name" value="${vo.name!''}" placeholder="昵称"
-                               style="display: inline-block; width: auto;"/>
-                        <input class="form-control" type="text" name="mobile" value="${vo.mobile!''}" placeholder="联系方式"
-                               style="display: inline-block; width: auto;"/>
                         <button type="submit" class="btn btn-primary">查询</button>
                         <button type="button" class="btn btn-default" onclick="resetForm('searchForm')"> 重置</button>
                     </h4>
@@ -75,9 +71,7 @@
                                 <th class="th-checkbox"><input type="checkbox" onclick="selectAll('itemCb')"></th>
                             </#if>
                             <th data-sort="field:'account'">商户账号</th>
-                            <th data-sort="field:'name'">商户昵称</th>
                             <th data-sort="field:'parentName'">上级</th>
-                            <th data-sort="field:'mobile'">联系方式</th>
                             <th data-sort="field:'rate'">商户费率</th>
                             <th data-sort="field:'money'">总金额</th>
                             <th data-sort="field:'profit'">总利润</th>
@@ -99,9 +93,7 @@
                                 </td>
                             </#if>
                             <td>${item.account!''}</td>
-                            <td>${item.name!''}</td>
                             <td>${item.parentName!''}</td>
-                            <td>${item.mobile!''}</td>
                             <td><#if item.rate??>${item.rate!''}%<#else>无</#if></td>
                             <td>${item.money!''}</td>
                             <td>${item.profit!''}</td>
@@ -148,20 +140,6 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label"><span class="red">*</span> 商户昵称：</label>
-                                    <div class="col-sm-7">
-                                        <input type="text" class="form-control" placeholder="" name="name"
-                                               data-rule-required="true">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label"><span class="red">*</span> 联系方式：</label>
-                                    <div class="col-sm-7">
-                                        <input type="text" class="form-control" placeholder="" name="mobile"
-                                               data-rule-required="true">
-                                    </div>
-                                </div>
-                                <div class="form-group">
                                     <label class="col-sm-3 control-label"><span class="red">*</span> 商户费率：</label>
                                     <div class="col-sm-7">
                                         <input type="number" class="form-control" placeholder="" name="rate"
@@ -203,20 +181,6 @@
                                     <div class="col-sm-7">
                                         <input type="text" class="form-control" placeholder="" name="account"
                                                data-rule-required="true" disabled>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label"><span class="red">*</span> 商户昵称：</label>
-                                    <div class="col-sm-7">
-                                        <input type="text" class="form-control" placeholder="" name="name"
-                                               data-rule-required="true">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label"><span class="red">*</span> 联系方式：</label>
-                                    <div class="col-sm-7">
-                                        <input type="text" class="form-control" placeholder="" name="mobile"
-                                               data-rule-required="true">
                                     </div>
                                 </div>
                                 <div class="form-group">

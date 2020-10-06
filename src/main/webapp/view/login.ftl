@@ -137,7 +137,7 @@
                     password: password
                 },
                 function (response) {
-                    if (response.success == true) {
+                    if (response.resultCode == 0) {
                         if(response.message == "user"){
                             window.location.href = '${ctx!''}/student/student-feedback';
                         } else if(response.message == "loan"){

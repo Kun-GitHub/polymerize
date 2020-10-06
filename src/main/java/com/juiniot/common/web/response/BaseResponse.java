@@ -17,7 +17,7 @@ public class BaseResponse {
 	private String message = null;
 
 	// 返回信息
-	private String resultData = null;
+	private Object resultData = null;
 
 	/**
 	 * 返回{success：true}
@@ -42,7 +42,7 @@ public class BaseResponse {
 		this.message = message;
 	}
 
-	public BaseResponse(int resultCode, String message, String resultData) {
+	public BaseResponse(int resultCode, String message, Object resultData) {
 		this.resultCode = resultCode;
 		this.message = message;
 		this.resultData = resultData;
@@ -94,11 +94,11 @@ public class BaseResponse {
 		this.message = message;
 	}
 
-	public String getResultData() {
+	public Object getResultData() {
 		return resultData;
 	}
 
-	public void setResultData(String resultData) {
+	public void setResultData(Object resultData) {
 		this.resultData = resultData;
 	}
 }

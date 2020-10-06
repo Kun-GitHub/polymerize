@@ -4,19 +4,14 @@ import com.juiniot.common.business.BusinessException;
 import com.juiniot.common.business.OrderItem;
 import com.juiniot.common.business.OrderType;
 import com.juiniot.common.utils.Cookies;
-import com.juiniot.common.utils.IdUtils;
 import com.juiniot.common.utils.NumberUtil;
 import com.juiniot.common.utils.StringUtil;
 import com.juiniot.common.web.BaseController;
 import com.juiniot.common.web.PageModel;
-import com.juiniot.common.web.preview.Authority;
-import com.juiniot.common.web.preview.NeedSession;
 import com.juiniot.common.web.response.BaseResponse;
 import com.juiniot.modules.business.recharge.RechargeListInfo;
 import com.juiniot.modules.business.recharge.RechargeListParam;
 import com.juiniot.modules.business.recharge.RechargeListParam.RechargeListParamKey;
-import com.juiniot.modules.business.user.UserListInfo;
-import com.juiniot.modules.business.user.UserListParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -27,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -63,7 +57,7 @@ public class RechargeListController extends BaseController {
 		//设置查询参数，请自行修改或删除不需要的参数
 		RechargeListParam param1 = new RechargeListParam();
 
-		param1.putValue(RechargeListParamKey.userName, this.allFuzzy(vo.getUserName()));
+		param1.putValue(RechargeListParamKey.account, this.allFuzzy(vo.getAccount()));
 
 		if(!StringUtil.isBlank(treeCode)){
 			param1.putValue(RechargeListParamKey.treeCode, this.allFuzzy(treeCode));

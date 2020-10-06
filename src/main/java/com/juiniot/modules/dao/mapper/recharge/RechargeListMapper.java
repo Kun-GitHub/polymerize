@@ -104,8 +104,8 @@ public interface RechargeListMapper {
 	
 	//自定义方法，方法要写上注释用途
 	//************************************************************************************************************************
-	
-	
+
+	List<RechargeListEntry> queryRechargeLists(@Param("startRow") int startRow, @Param("pageSize") int pageSize, @Param("account") String account);
 	
 }
 

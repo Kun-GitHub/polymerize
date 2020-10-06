@@ -18,7 +18,7 @@ public class RechargeListEntry implements Serializable {
     private Timestamp  rechargeTime; //
     private Double price;
 
-    private String  userName; //
+    private String account; //
 
     //默认空构造函数
 	public RechargeListEntry(){
@@ -57,11 +57,11 @@ public class RechargeListEntry implements Serializable {
         this.price = price;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getAccount() {
+        return account;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setAccount(String account) {
+        this.account = account;
     }
 }
