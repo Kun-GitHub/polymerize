@@ -24,9 +24,9 @@ public class LoanListVO extends BaseValueObject {
      
  	private String bankNo; //
      
- 	private String bankLocation; //贷款额度
+ 	private String bankLocation;
      
- 	private Integer  status; //0：未联系，1：无效信息，2：无需贷款，3：已放款；  
+ 	private Integer  status; //
    
     private Timestamp loanTime; // 
     private Timestamp loanTime1; //  开始时间
@@ -39,7 +39,12 @@ public class LoanListVO extends BaseValueObject {
  	private String orderNumber; //
      
  	private String  remark; //  
-   
+
+    private String notifyResult;
+
+    private Integer  notifyStatus;
+
+    private Timestamp issueTime; //
 
 
  	private String  account; //
@@ -275,5 +280,29 @@ public class LoanListVO extends BaseValueObject {
 
     public void setNotifyUrl(String notifyUrl) {
         this.notifyUrl = notifyUrl;
+    }
+
+    public String getNotifyResult() {
+        return notifyResult;
+    }
+
+    public void setNotifyResult(String notifyResult) {
+        this.notifyResult = notifyResult;
+    }
+
+    public Integer getNotifyStatus() {
+        return notifyStatus;
+    }
+
+    public void setNotifyStatus(Integer notifyStatus) {
+        this.notifyStatus = notifyStatus;
+    }
+
+    public Timestamp getIssueTime() {
+        return issueTime;
+    }
+
+    public void setIssueTime(Timestamp issueTime) {
+        this.issueTime = issueTime;
     }
 }

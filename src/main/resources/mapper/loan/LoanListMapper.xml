@@ -7,15 +7,16 @@
 
   <!-- 显示的记录对应的列-->
   <sql id="LoanListColumns" >
-		    loanlist.id as id,loanlist.user_id as userId,loanlist.name as name,loanlist.phone as phone,loanlist.sex as sex,loanlist.bank_no as bankNo,loanlist.notify_url as notifyUrl,loanlist.bank_location as bankLocation,loanlist.status as status,loanlist.loan_time as loanTime,loanlist.order_number as orderNumber,loanlist.remark as remark,userlist.account as account,userlist.rate as rate,userlist.tree_code as treeCode,loanlist.price as price
+		    loanlist.id as id,loanlist.user_id as userId,loanlist.name as name,loanlist.phone as phone,loanlist.sex as sex,loanlist.bank_no as bankNo,loanlist.notify_url as notifyUrl,loanlist.bank_location as bankLocation,loanlist.notify_result as notifyResult,loanlist.status as status,loanlist.notify_status as notifyStatus,loanlist.loan_time as loanTime,loanlist.issue_time as issueTime,loanlist.order_number as orderNumber,loanlist.remark as remark,userlist.account as account,userlist.rate as rate,userlist.tree_code as treeCode,loanlist.price as price
   </sql>
   
   
   <!-- 列表对应的查询条件组合  -->
   <sql id="queryOptions">
        <where>
-            	  <if test="paramMap.loanTime != null"> AND loanlist.loan_time = #{paramMap.loanTime}</if><if test="paramMap.loanTime1 != null"> AND loanlist.loan_time &gt;= #{paramMap.loanTime1}</if><if test="paramMap.loanTime2!=null"> AND loanlist.loan_time &lt;= #{paramMap.loanTime2}</if>
-            	  <if test="paramMap.phone != null and paramMap.phone != '' "> AND loanlist.phone like #{paramMap.phone}</if>
+           <if test="paramMap.loanTime != null"> AND loanlist.loan_time = #{paramMap.loanTime}</if><if test="paramMap.loanTime1 != null"> AND loanlist.loan_time &gt;= #{paramMap.loanTime1}</if><if test="paramMap.loanTime2!=null"> AND loanlist.loan_time &lt;= #{paramMap.loanTime2}</if>
+           <if test="paramMap.issueTime != null"> AND loanlist.issue_time = #{paramMap.issueTime}</if>
+           <if test="paramMap.phone != null and paramMap.phone != '' "> AND loanlist.phone like #{paramMap.phone}</if>
            <if test="paramMap.bankNo != null and paramMap.bankNo != '' "> AND loanlist.bank_no like #{paramMap.bankNo}</if>
            <if test="paramMap.notifyUrl != null and paramMap.notifyUrl != '' "> AND loanlist.notify_url like #{paramMap.notifyUrl}</if>
             	  <if test="paramMap.sex != null and paramMap.sex != '' "> AND loanlist.sex like #{paramMap.sex}</if>
@@ -38,19 +39,18 @@
        <if test="orderList!=null">
 		  <trim prefix="ORDER BY" prefixOverrides=",">
 				<foreach collection="orderList" item="order" open=""  separator="," close="" >
-				   <choose> 
-				       <when test="order.columnName=='loanTime'"> loanlist.loan_time ${order.type} </when> 
+				   <choose>
+                       <when test="order.columnName=='loanTime'"> loanlist.loan_time ${order.type} </when>
+                       <when test="order.columnName=='issueTime'"> loanlist.issue_time ${order.type} </when>
 				       <when test="order.columnName=='phone'"> loanlist.phone ${order.type} </when>
                        <when test="order.columnName=='bankNo'"> loanlist.bank_no ${order.type} </when>
                        <when test="order.columnName=='notifyUrl'"> loanlist.notify_url ${order.type} </when>
-				       <when test="order.columnName=='sex'"> loanlist.sex ${order.type} </when> 
 				       <when test="order.columnName=='bankLocation'"> loanlist.bank_location ${order.type} </when>
 				       <when test="order.columnName=='name'"> loanlist.name ${order.type} </when> 
 				       <when test="order.columnName=='remark'"> loanlist.remark ${order.type} </when>
                        <when test="order.columnName=='price'"> loanlist.price ${order.type} </when>
                        <when test="order.columnName=='orderNumber'"> loanlist.order_number ${order.type} </when>
 				       <when test="order.columnName=='userId'"> loanlist.user_id ${order.type} </when> 
-				       <when test="order.columnName=='status'"> loanlist.status ${order.type} </when>
                        <when test="order.columnName=='account'"> userlist.account ${order.type} </when>
                        <when test="order.columnName=='rate'"> userlist.name ${order.rate} </when>
                        <when test="order.columnName=='treeCode'"> userlist.tree_code ${order.type} </when>
@@ -110,8 +110,8 @@
    <!-- 新增记录 -->
    <insert id="insertLoanList" useGeneratedKeys="true" keyProperty="loanList.id">
 
-        INSERT INTO loan_list (price,loan_time,phone,bank_no,notify_url,sex,bank_location,name,remark,order_number,user_id,status)
-        VALUES(#{loanList.price},#{loanList.loanTime},#{loanList.phone,jdbcType=VARCHAR},#{loanList.bankNo,jdbcType=VARCHAR},#{loanList.notifyUrl,jdbcType=VARCHAR},#{loanList.sex,jdbcType=VARCHAR},#{loanList.bankLocation,jdbcType=VARCHAR},#{loanList.name,jdbcType=VARCHAR},#{loanList.remark,jdbcType=VARCHAR},#{loanList.orderNumber,jdbcType=VARCHAR},#{loanList.userId,jdbcType=NUMERIC},#{loanList.status})
+        INSERT INTO loan_list (price,loan_time,issue_time,phone,bank_no,notify_url,sex,bank_location,notify_result,name,remark,order_number,user_id,status,notify_status)
+        VALUES(#{loanList.price},#{loanList.loanTime},#{loanList.issueTime},#{loanList.phone,jdbcType=VARCHAR},#{loanList.bankNo,jdbcType=VARCHAR},#{loanList.notifyUrl,jdbcType=VARCHAR},#{loanList.sex,jdbcType=VARCHAR},#{loanList.bankLocation,jdbcType=VARCHAR},#{loanList.notifyResult,jdbcType=VARCHAR},#{loanList.name,jdbcType=VARCHAR},#{loanList.remark,jdbcType=VARCHAR},#{loanList.orderNumber,jdbcType=VARCHAR},#{loanList.userId,jdbcType=NUMERIC},#{loanList.status},#{loanList.notifyStatus})
            
    </insert>
    
@@ -121,18 +121,21 @@
    <update id="updateLoanList" >
            UPDATE loan_list 
            <set>
-                loan_time=#{loanList.loanTime},
+               loan_time=#{loanList.loanTime},
+               issue_time=#{loanList.issueTime},
                 phone=#{loanList.phone,jdbcType=VARCHAR},
                bank_no=#{loanList.bankNo,jdbcType=VARCHAR},
                notify_url=#{loanList.notifyUrl,jdbcType=VARCHAR},
                 sex=#{loanList.sex,jdbcType=VARCHAR},
                 price=#{loanList.price},
                bank_location=#{loanList.bankLocation,jdbcType=VARCHAR},
+               notify_result=#{loanList.notifyResult,jdbcType=VARCHAR},
                 name=#{loanList.name,jdbcType=VARCHAR},
                 remark=#{loanList.remark,jdbcType=VARCHAR},
                order_number=#{loanList.orderNumber,jdbcType=VARCHAR},
                 user_id=#{loanList.userId,jdbcType=NUMERIC},
-                status=#{loanList.status},
+               status=#{loanList.status},
+               notify_status=#{loanList.notifyStatus},
 	   </set>
 	       WHERE id = #{loanList.id}
    </update> 

@@ -134,15 +134,24 @@
    
    <!-- 以下是自定义的配置信息，配置要写上注释用途 -->
 
-<!--    &lt;!&ndash; 分页查询对应的记录 &ndash;&gt;-->
-<!--    <select id="queryRechargeLists" resultType="com.juiniot.modules.dao.entity.recharge.RechargeListEntry">-->
-
-<!--        SELECT <include refid="RechargeListColumns"/>-->
-<!--        FROM <include refid="querySqlMain"/>-->
-<!--        <include refid="queryOptions"/>-->
-<!--        <include refid="orderControl"/>-->
-<!--        LIMIT ${startRow},${pageSize}-->
-<!--    </select>-->
+    <!-- 分页查询对应的记录 -->
+    <select id="queryGroupByRechargeLists" resultType="com.juiniot.modules.dao.entity.recharge.RechargeListEntry">
+        SELECT
+        rechargelist.id AS id,
+        rechargelist.user_id AS userId,
+        rechargelist.recharge_time AS rechargeTime,
+        userlist.account AS account,
+        userlist.tree_code AS treeCode,
+        sum(rechargelist.price) AS price
+        FROM <include refid="querySqlMain"/>
+        <include refid="queryOptions"/>
+        AND userlist.id is not NULL
+        GROUP BY
+        DATE_FORMAT(rechargelist.recharge_time, '%Y%m%d'),
+        rechargelist.user_id
+        <include refid="orderControl"/>
+        LIMIT ${startRow},${pageSize}
+    </select>
    
    
 

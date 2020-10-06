@@ -144,13 +144,11 @@ public class LoanListInfo extends BaseBusiness {
 	}
 
         /**
-         * @param quota 贷款额度
          */
          public void setBankLocation(String bankLocation){
 	         this.loanListEntry.setBankLocation(bankLocation);
          }
         /**
-         * @return quota 贷款额度
          */
          public String getBankLocation( ){
 	         return this.loanListEntry.getBankLocation( );
@@ -223,7 +221,31 @@ public class LoanListInfo extends BaseBusiness {
 	public void setAccount(String account) {
 		this.loanListEntry.setAccount(account);
 	}
-               
+
+	public String getNotifyResult() {
+		return this.loanListEntry.getNotifyResult( );
+	}
+
+	public void setNotifyResult(String notifyResult) {
+		this.loanListEntry.setNotifyResult(notifyResult);
+	}
+
+	public Integer getNotifyStatus() {
+		return this.loanListEntry.getNotifyStatus( );
+	}
+
+	public void setNotifyStatus(Integer notifyStatus) {
+		this.loanListEntry.setNotifyStatus(notifyStatus);
+	}
+
+	public Timestamp getIssueTime() {
+		return this.loanListEntry.getIssueTime( );
+	}
+
+	public void setIssueTime(Timestamp issueTime) {
+		this.loanListEntry.setIssueTime(issueTime);
+	}
+
 
 	public Double getPrice() {
 		return this.loanListEntry.getPrice();

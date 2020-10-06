@@ -19,6 +19,8 @@ import com.juiniot.modules.business.user.UserListParam;
 import net.sf.json.JSON;
 import net.sf.json.JSONObject;
 import org.apache.commons.codec.digest.Md5Crypt;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -168,6 +170,7 @@ public class CardListController extends BaseController {
 
 			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//定义格式，不显示毫秒
 			object.put("createTime", df.format(loanListInfo.getLoanTime()));
+			object.put("issueTime", df.format(loanListInfo.getIssueTime()));
 
 			return new BaseResponse(0,"success", object);
 		}
@@ -229,7 +232,8 @@ public class CardListController extends BaseController {
 		}
 	}
 
-	public static String sign(Map<String, String> paramValues, List<String> ignoreParamNames,String secret) {
+	public static String sign(Map<String, String> paramValues, List<String> ignoreParamNames, String secret) {
+		Logger logger = LoggerFactory.getLogger("签名");
 
 		StringBuilder sb = new StringBuilder();
 		List<String> paramNames = new ArrayList<String>(paramValues.size());
@@ -249,6 +253,7 @@ public class CardListController extends BaseController {
 			}
 		}
 		sb.append(secret);
+		logger.info(sb.toString());
 		return MD5.create().digestHex16(sb.toString());
 	}
 }

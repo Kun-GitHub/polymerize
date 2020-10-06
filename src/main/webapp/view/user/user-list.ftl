@@ -177,7 +177,7 @@
                             <form class="form-horizontal" id="editForm">
                                 <input type="hidden" name="id"/>
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label"><span class="red">*</span> 商户账号：</label>
+                                    <label class="col-sm-3 control-label"> 商户账号：</label>
                                     <div class="col-sm-7">
                                         <input type="text" class="form-control" placeholder="" name="account"
                                                data-rule-required="true" disabled>
@@ -221,7 +221,7 @@
                             <form class="form-horizontal" id="editForm">
                                 <input type="hidden" name="id"/>
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label"><span class="red">*</span> 商户账号：</label>
+                                    <label class="col-sm-3 control-label"> 商户账号：</label>
                                     <div class="col-sm-7">
                                         <input type="text" class="form-control" placeholder="" name="account"
                                                data-rule-required="true" disabled>

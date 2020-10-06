@@ -1,14 +1,18 @@
 package com.juiniot.modules.controller.loan;
  
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import javax.servlet.http.HttpServletRequest;
 
+import cn.hutool.http.HttpUtil;
 import com.juiniot.common.utils.*;
 import com.juiniot.common.web.preview.Authority;
 import com.juiniot.common.web.preview.NeedSession;
 import com.juiniot.modules.business.deduction.DeductionListInfo;
 import com.juiniot.modules.business.user.UserListInfo;
+import com.juiniot.modules.business.user.UserListParam;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -137,33 +141,96 @@ public class LoanListController extends BaseController {
 
 	@ResponseBody
 	@RequestMapping("loan-robbing")
-	public BaseResponse robbing(HttpServletRequest request, Model model, Long id) throws Exception{
-		synchronized (id) {
-			if(id != null){
-				loanListInfo = LoanListInfo.findOne(id);
-
-				UserListInfo userListInfo = UserListInfo.findOne(loanListInfo.getUserId());
-				if(userListInfo.getSurplus()-loanListInfo.getPrice() < 0){
-					return BaseResponse.failure("下发失败,商户可用余额不足");
-				}
-				if(userListInfo != null && 0 <= userListInfo.getRate() && userListInfo.getRate() <= 100){
-					userListInfo.setSurplus(userListInfo.getSurplus()-(loanListInfo.getPrice()+loanListInfo.getPrice()*(userListInfo.getRate()/100d)));
-					userListInfo.setProfit(userListInfo.getProfit()+loanListInfo.getPrice()*(userListInfo.getRate()/100d));
-					userListInfo.modify();
-				}
-
-				DeductionListInfo rechargeListInfo = new DeductionListInfo();
-				rechargeListInfo.setPrice(loanListInfo.getPrice());
-				rechargeListInfo.setDeductionTime(new Timestamp(System.currentTimeMillis()));
-				rechargeListInfo.setUserId(loanListInfo.getUserId());
-				rechargeListInfo.add();
-
-				loanListInfo.setStatus(1);
-				loanListInfo.modify();
-				return BaseResponse.success("下发成功");
-			} else {
-				return BaseResponse.failure("下发失败");
+	public BaseResponse robbing(HttpServletRequest request, Model model, LoanListVO vo) throws Exception{
+		synchronized (vo) {
+			if(StringUtil.isBlank(vo.getStatus())){
+				return BaseResponse.failure("请选择下发结果");
 			}
+
+			//检查ID值是否为空
+			if(vo.getId() == null){
+				return BaseResponse.failure("更新下发结果失败，请刷新页面再试试");
+			}
+
+			loanListInfo = LoanListInfo.findOne(vo.getId());
+
+			UserListInfo userListInfo = UserListInfo.findOne(loanListInfo.getUserId());
+			if(userListInfo.getSurplus()-loanListInfo.getPrice() < 0){
+				return BaseResponse.failure("下发失败,商户可用余额不足");
+			}
+			if(userListInfo != null && 0 <= userListInfo.getRate() && userListInfo.getRate() <= 100){
+				userListInfo.setSurplus(userListInfo.getSurplus()-(loanListInfo.getPrice()+loanListInfo.getPrice()*(userListInfo.getRate()/100d)));
+				userListInfo.setProfit(userListInfo.getProfit()+loanListInfo.getPrice()*(userListInfo.getRate()/100d));
+				userListInfo.modify();
+			}
+
+			DeductionListInfo rechargeListInfo = new DeductionListInfo();
+			rechargeListInfo.setPrice(loanListInfo.getPrice());
+			rechargeListInfo.setDeductionTime(new Timestamp(System.currentTimeMillis()));
+			rechargeListInfo.setUserId(loanListInfo.getUserId());
+			rechargeListInfo.add();
+
+			Long t = System.currentTimeMillis();
+			loanListInfo.setIssueTime(new Timestamp(t));
+			loanListInfo.setStatus(vo.getStatus());
+			loanListInfo.modify();
+
+			Map<String, String> map = new HashMap<>();
+			JSONObject rMap = new JSONObject();
+			map.put("orderNumber",loanListInfo.getOrderNumber());
+			map.put("account",loanListInfo.getAccount());
+			map.put("price",new Double(loanListInfo.getPrice()*100).intValue()+"");
+			map.put("status",loanListInfo.getStatus()+"");
+			rMap.put("orderNumber",loanListInfo.getOrderNumber());
+			rMap.put("account",loanListInfo.getAccount());
+			rMap.put("price",new Double(loanListInfo.getPrice()*100).intValue());
+			rMap.put("status",loanListInfo.getStatus());
+
+			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//定义格式，不显示毫秒
+			map.put("issueTime",df.format(t));
+			rMap.put("issueTime",df.format(t));
+
+			UserListParam param = new UserListParam();
+			param.putValue(UserListParam.UserListParamKey.account, userListInfo.getAccount());
+			//将查询参数转为HashMap
+			HashMap<UserListParam.UserListParamKey, Object> keyMap = param.getKeyMap();
+			List<UserListInfo> list = UserListInfo.queryAll(keyMap, null);
+
+			String sign = CardListController.sign(map,null, list.get(0).getMobile());
+			rMap.put("sign",sign.toUpperCase());
+
+			logger.info("第三方平台回调参数："+rMap.toString()+"，"+list.get(0).getMobile());
+
+			if(StringUtil.isNotBlank(loanListInfo.getNotifyUrl())){
+				String result = HttpUtil.post(loanListInfo.getNotifyUrl(), rMap.toString(), 5000);
+				if(StringUtil.isNotBlank(result)){
+					logger.info("第一次第三方平台回调结果："+result);
+					loanListInfo.setNotifyStatus(1);
+					loanListInfo.setNotifyResult(result);
+					loanListInfo.modify();
+
+					if(result.contains("\"resultCode\":-1")){
+						result = HttpUtil.post(loanListInfo.getNotifyUrl(), rMap.toString(), 5000);
+						if(StringUtil.isNotBlank(result)){
+							logger.info("第二次第三方平台回调结果："+result);
+							loanListInfo.setNotifyStatus(1);
+							loanListInfo.setNotifyResult(result);
+							loanListInfo.modify();
+
+							if(result.contains("\"resultCode\":-1")){
+								result = HttpUtil.post(loanListInfo.getNotifyUrl(), rMap.toString(), 5000);
+								if(StringUtil.isNotBlank(result)){
+									logger.info("第三次第三方平台回调结果："+result);
+									loanListInfo.setNotifyStatus(1);
+									loanListInfo.setNotifyResult(result);
+									loanListInfo.modify();
+								}
+							}
+						}
+					}
+				}
+			}
+			return BaseResponse.success("下发成功");
 		}
 	}
 

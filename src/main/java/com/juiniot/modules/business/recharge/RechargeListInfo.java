@@ -267,8 +267,22 @@ public class RechargeListInfo extends BaseBusiness {
 	
 	//自定义方法，方法要写上注释用途
 	//*****************************************************************************************************************
-	
-	
+
+	@Transactional(propagation=Propagation.NEVER)
+	public static List<RechargeListInfo> queryGroupByRechargeLists(int startRow, int pageSize,
+															HashMap<RechargeListParamKey, Object> keyMap, List<OrderItem>orderList) throws BusinessException{
+		//实例化List对象
+		List<RechargeListInfo> list = new ArrayList<RechargeListInfo>();
+		//查询结果实体
+		RechargeListMapper rechargeListMapper= SpringUtil.getBean("rechargeListMapper");
+		List<RechargeListEntry> entryList = rechargeListMapper.queryGroupByRechargeLists(startRow, pageSize, toParamMap(keyMap), orderList);
+		if (entryList != null){
+			for (RechargeListEntry entry : entryList) {
+				list.add(new RechargeListInfo(entry));
+			}
+		}
+		return list;
+	}
 	
 	
 }

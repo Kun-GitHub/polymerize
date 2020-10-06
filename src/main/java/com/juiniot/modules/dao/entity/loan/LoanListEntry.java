@@ -26,6 +26,9 @@ public class LoanListEntry implements Serializable {
     private String  remark; //
     private String  notifyUrl; //
     private Double price;
+    private String notifyResult;
+    private Integer  notifyStatus;
+    private Timestamp issueTime;
 
     private String  account; //
     private String  treeCode; //
@@ -221,5 +224,29 @@ public class LoanListEntry implements Serializable {
 
     public void setNotifyUrl(String notifyUrl) {
         this.notifyUrl = notifyUrl;
+    }
+
+    public String getNotifyResult() {
+        return notifyResult;
+    }
+
+    public void setNotifyResult(String notifyResult) {
+        this.notifyResult = notifyResult;
+    }
+
+    public Integer getNotifyStatus() {
+        return notifyStatus;
+    }
+
+    public void setNotifyStatus(Integer notifyStatus) {
+        this.notifyStatus = notifyStatus;
+    }
+
+    public Timestamp getIssueTime() {
+        return issueTime;
+    }
+
+    public void setIssueTime(Timestamp issueTime) {
+        this.issueTime = issueTime;
     }
 }

@@ -67,7 +67,7 @@
                 </div>
                 <form method="get" id="searchForm">
                     <h4 class="sub-header" style="clear:both;">
-                        <input class="form-control" type="text" name="userName" value="${vo.account!''}" placeholder="商户昵称" style="display: inline-block; width: auto;"/>
+                        <input class="form-control" type="text" name="account" value="${vo.account!''}" placeholder="商户账号" style="display: inline-block; width: auto;"/>
                         <input type="text" name="rechargeTime1" value="${vo.rechargeTime1!''}" placeholder="开始充值时间  " class="form-control time_input" style="display: inline-block; width: auto;"
                                onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" >~
                         <input type="text" name="rechargeTime2" value="${vo.rechargeTime2!''}" placeholder="结束充值时间  " class="form-control time_input" style="display: inline-block; width: auto;"
@@ -83,6 +83,7 @@
                             <th data-sort="field:'account'">商户账号</th>
                             <th data-sort="field:'price'">充值金额</th>
                             <th data-sort="field:'rechargeTime'">充值时间</th>
+                            <th data-sort="field:'operator'">操作</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -90,7 +91,9 @@
                         <tr>
                             <td>${item.account!''}</td>
                             <td>${item.price!''}</td>
-                            <td>${(item.rechargeTime?datetime)!''}</td>
+                            <td>${(item.rechargeTime?date)!''}</td>
+                            <td><a href="#"
+                                   onclick="robbing(${item.id!''})">明细</a></td>
                         </tr>
                         </#list>
                         </tbody>

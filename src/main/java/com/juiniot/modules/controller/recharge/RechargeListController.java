@@ -57,7 +57,7 @@ public class RechargeListController extends BaseController {
 		//设置查询参数，请自行修改或删除不需要的参数
 		RechargeListParam param1 = new RechargeListParam();
 
-		param1.putValue(RechargeListParamKey.account, this.allFuzzy(vo.getAccount()));
+		param1.putValue(RechargeListParamKey.account, vo.getAccount());
 
 		if(!StringUtil.isBlank(treeCode)){
 			param1.putValue(RechargeListParamKey.treeCode, this.allFuzzy(treeCode));
@@ -79,7 +79,7 @@ public class RechargeListController extends BaseController {
 		//获取总数
 		int totalRows = RechargeListInfo.getTotalRows(keyMap1);
 		//获取列表
-		List<RechargeListInfo> list1 = RechargeListInfo.queryRechargeLists(vo.getStartRow(), vo.getPageSize(), keyMap1, orderList);
+		List<RechargeListInfo> list1 = RechargeListInfo.queryGroupByRechargeLists(vo.getStartRow(), vo.getPageSize(), keyMap1, orderList);
 
 		//获取分页模型对象
 		PageModel<RechargeListInfo> pm = this.getPageModel(vo.getPage(), totalRows, vo.getPageSize(), list1);
